@@ -1,0 +1,7 @@
+TODO*
+*.log
+target
+
+.classpath
+.project
+.settings
