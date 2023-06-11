@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+    SOAP Service Tester - an application for low-level testing of SOAP Services.
+    Copyright (C) 2011 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see http://www.gnu.org/licenses/.
+-->
+
+<HTML lang="en">
+<HEAD>
+<META HTTP-EQUIV="Content-Type"     CONTENT="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Content-Language" CONTENT="en">
+<META http-equiv="Content-Style-Type" content="text/css">
+<LINK rel="stylesheet" href="soaptester.css" type="text/css">
+
+<TITLE> SOAP Service Tester - Read Me </TITLE>
+
+<META NAME="Author" CONTENT="Bogdan D.">
+<META NAME="Description" CONTENT="SOAP Service Tester">
+<META NAME="Keywords" CONTENT="SOAP, WSDL, service tester">
+<META NAME="Language" CONTENT="en">
+<META NAME="Generator" CONTENT="KWrite/Kate; www.kate-editor.org">
+
+</HEAD><BODY>
+
+<h1 class="c">SOAP Service Tester - Read Me</h1>
+<hr>
+
+<p>
+This is the README file for SOAP Service Tester - an application for
+ low-level testing of SOAP Services.
+</p>
+<p>
+Author: Bogdan Drozdowski, bogdandr @ op . pl
+</p>
+<p>
+License: <a href="copying.html" hreflang="en">AGPLv3+</a>.
+</p>
+
+<hr>
+
+<p>
+Requirements for compiling the application:
+</p>
+<ul>
+ <li> a non-root account. Please, NEVER compile or 'make' anything as root.</li>
+ <li> a working Java compiler.</li>
+ <li> development kit for the Java language</li>
+ <li> the following JAR files on your CLASSPATH:
+  <ul>
+	<li> wsdl4j.jar (1.6.2 is OK) - the <a href="http://wsdl4j.sf.net/"
+		hreflang="en">WSDL4J project</a></li>
+	<li> xbean.jar (2.5.0 is OK) - the <a href="http://xmlbeans.apache.org/"
+		hreflang="en">Apache XmlBeans</a></li>
+	<li> httpclient.jar (4.1.1 is OK) - the <a href="http://hc.apache.org"
+		hreflang="en">Apache HttpComponents</a></li>
+	<li> httpcore.jar (4.1 is OK) - the Apache HttpComponents</li>
+	<li> commons-logging.jar (1.1.1 is OK) - the Apache HttpComponents</li>
+  </ul></li>
+ <li> recommended: the GNU 'make' utility</li>
+</ul>
+<p>
+If you'll be using <code>make</code>, change the paths to the JAR files in the Makefile.
+</p>
+<p>
+Type <code>make</code> to compile the application. Alternatively, you can compile the
+ classes yourself.
+</p>
+<p>
+Type <code>make deploy</code> or copy the required files into the "deploy" directory:
+ deploy/WEB-INF/classes/BogDroSoft/soaptest/.
+</p>
+<p>
+Type <code>make war</code> to create a Web Archive (WAR) file ready for deployment.
+ Alternatively, you can create a ZIP archive from the contents of the
+ "deploy" directory (the "deploy" directory itself MUST NOT be in the
+ archive).
+</p>
+
+<hr>
+<p>
+How to run:
+</p>
+<ol>
+ <li> deploy the application on your webserver with the following JAR files on
+  your server's CLASSPATH:
+  <ul>
+	<li> wsdl4j.jar (1.6.2 is OK) - the <a href="http://wsdl4j.sf.net/"
+		hreflang="en">WSDL4J project</a></li>
+	<li> xbean.jar (2.5.0 is OK) - the <a href="http://xmlbeans.apache.org/"
+		hreflang="en">Apache XmlBeans</a></li>
+	<li> httpclient.jar (4.1.1 is OK) - the <a href="http://hc.apache.org"
+		hreflang="en">Apache HttpComponents</a></li>
+	<li> httpcore.jar (4.1 is OK) - the Apache HttpComponents</li>
+	<li> commons-logging.jar (1.1.1 is OK) - the Apache HttpComponents</li>
+  </ul></li>
+ <li> access it from a browser</li>
+ <li> type the WSDL address and proceed</li>
+ <li> choose the operation to run, fill the data and press the button with
+   the operation's name.</li>
+</ol>
+<p>
+You can start from the page with the list of operations by passing the
+ address of the WSDL file in the URL.
+</p>
+
+
+</BODY>
+</HTML>

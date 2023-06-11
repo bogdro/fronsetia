@@ -1,0 +1,9 @@
+2011-07-17	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* First release of SOAP Service Tester, version 0.1.
+	  Parses WSDL files, prepares XML templates from external and
+	  internal schema definitions, displayes the list of operations,
+	  allows adding HTTP headers, changing SOAP envelope tags, SOAP
+	  header and SOAP body data. Displays the data sent, response code,
+	  line and body.
+
