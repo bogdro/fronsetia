@@ -5,7 +5,7 @@
 
 <!--
     SOAP Service Tester - an application for low-level testing of SOAP Services.
-    Copyright (C) 2011 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+    Copyright (C) 2011-2012 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -38,7 +38,7 @@
 
 </HEAD><BODY>
 
-<h1 class="c">SOAP Service Tester 0.2</h1>
+<h1 class="c">SOAP Service Tester 0.3</h1>
 <hr>
 
 <p>

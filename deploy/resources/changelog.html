@@ -3,7 +3,7 @@
 
 <!--
     SOAP Service Tester - an application for low-level testing of SOAP Services.
-    Copyright (C) 2011 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+    Copyright (C) 2011-2012 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -43,6 +43,33 @@
 ChangeLog of SOAP Service Tester:
 </p>
 <ul>
+ <li>2012-06-05	Bogdan Drozdowski<br><br>
+  <ul>
+	<li> SOAPServiceTester version 0.3<br>
+	  Allow changing the character set used for parsing the server's
+	  replies, if can't be detected automatically. Fixed problems
+	  reported by the "findbugs" and "jlint" programs. Allow all SSL certificates
+	  (as an option).<br><br></li>
+	<li> resources/soaptester.css: bakground on anchors is now inherited
+	  <br><br></li>
+	<li> WSDLCheck.java: made wsdlLocation non-static to allow concurrent
+	  runs. Changed untyped references (raw types) to have the &lt;?&gt; type.
+	  <br><br></li>
+	<li> RequestUtilities.java (makeHTMLSafe): added the ampersand to the
+	  list of replaced characters.<br><br></li>
+	<li> Makefile: corrected the WAR file creation<br><br></li>
+	<li> OperationLauncher.java (perform): using the provided charset (and
+	  the one from RequestUtilities, not the platform default, if no
+	  charset was provided by the user) when the charset can't be
+	  detected from the HTTP reply. Allow all SSL certificates (when
+	  the right option is enabled on the JSP page).<br><br></li>
+	<li> show_operations.jsp, perform_operation.jsp: allow setting the
+	  character set for parsing the server's replies. A new option
+	  to allow using SSL with no verification.<br><br></li>
+	<li> OperationLauncher.java (getRespHeaders): checking the response
+	  for null (may happen in case of exceptions)<br><br></li>
+  </ul>
+ </li>
  <li>2011-12-15	Bogdan Drozdowski<br><br>
   <ul>
 	<li> SOAPServiceTester version 0.2<br>

@@ -27,7 +27,7 @@ HASH_ALGO	= RIPEMD160
 # ========== don't change ====================================================
 
 PROG_NAME	= SOAPServiceTester
-PROG_VERSION	= 0.2
+PROG_VERSION	= 0.3
 
 PACKAGE_DIR	= BogDroSoft/soaptest
 
@@ -39,26 +39,22 @@ empty		=
 space		= $(empty) $(empty)
 
 TARGETS		:= $(patsubst %.java,%.class,$(JAVA_FILES))
-TARGETS_COMMAS	:= $(subst $(space),$(comma),$(TARGETS))
-TARGET_NAMES	= $(patsubst $(PACKAGE_DIR)/,deploy/WEB-INF/classes/$(PACKAGE_DIR)/,$(TARGETS))
 
 
 all: compile
 
-compile: $(TARGETS)
+compile: $(TARGETS) Makefile
 
-%.class: %.java
+%.class: %.java Makefile
 	$(JAVAC) $(JAVAC_OPTS) $<
-	$(CP) $@ deploy/WEB-INF/classes/$(PACKAGE_DIR)
+#$(CP) $@ deploy/WEB-INF/classes/$(PACKAGE_DIR)
 
-deploy:	compile Makefile $(TARGET_NAMES)
-
-#$(TARGET_NAMES):
-#	$(CP) $(TARGETS) deploy/WEB-INF/classes/$(PACKAGE_DIR)
+deploy:	compile Makefile
+	$(CP) $(PACKAGE_DIR)/*.class deploy/WEB-INF/classes/$(PACKAGE_DIR)
 
 war:	$(PROG_NAME).war
 
-$(PROG_NAME).war: deploy Makefile $(TARGET_NAMES) $(shell find deploy)
+$(PROG_NAME).war: deploy Makefile $(shell find deploy)
 	$(DEL) $(PROG_NAME).war
 	cd deploy && $(ZIP_PACKER) ../$(PROG_NAME).war .
 

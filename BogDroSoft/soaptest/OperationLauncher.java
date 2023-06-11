@@ -4,7 +4,7 @@
  * Author: Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
  *
  *    SOAP Service Tester - an application for low-level testing of SOAP Services.
- *    Copyright (C) 2011 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+ *    Copyright (C) 2011-2012 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
  *
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU Affero General Public License as
@@ -30,7 +30,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletRequest;
 
 import org.apache.http.Header;
@@ -61,7 +68,11 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.client.params.AuthPolicy;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -71,6 +82,7 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
+
 
 /**
  * OperationLauncher - a class that calls SOAP operations.
@@ -94,6 +106,25 @@ public class OperationLauncher
 	private String soapEpilogue;
 	private String soapCType;
 	private String responseBody;
+	private String respCharset;
+
+	private static final X509TrustManager ACCEPT_ALL_TM = new X509TrustManager()
+	{
+		public void checkClientTrusted (X509Certificate[] xcs, String string)
+			throws CertificateException
+		{
+		}
+
+		public void checkServerTrusted (X509Certificate[] xcs, String string)
+			throws CertificateException
+		{
+		}
+
+		public X509Certificate[] getAcceptedIssuers ()
+		{
+			return null;
+		}
+	};
 
 	/**
 	 * Prepare data for the operation specified by the request.
@@ -118,6 +149,7 @@ public class OperationLauncher
 		{
 			soapCType = RequestUtilities.defContentType;
 		}
+		respCharset = request.getParameter (RequestUtilities.reqParNameCharset);
 		par = new BasicHttpParams ();
 		String protoName = RequestUtilities.getParameter (request,
 			RequestUtilities.reqParNameProtoName);
@@ -149,6 +181,7 @@ public class OperationLauncher
 		CredentialsProvider cp = new BasicCredentialsProvider ();
 		String opURL = RequestUtilities.getParameter (request,
 			RequestUtilities.reqParNameOpURL);
+		int servicePortNumber = -1;
 		if ( (! httpAuthUser.isEmpty ()) && (! httpAuthPass.isEmpty ()) )
 		{
 			Credentials cred;
@@ -164,7 +197,8 @@ public class OperationLauncher
 				cred = new UsernamePasswordCredentials (httpAuthUser, httpAuthPass);
 			}
 			URI opURI = new URI (opURL);
-			AuthScope as = new AuthScope (opURI.getHost (), opURI.getPort ());
+			servicePortNumber = opURI.getPort ();
+			AuthScope as = new AuthScope (opURI.getHost (), servicePortNumber);
 			cp.setCredentials (as, cred);
 			par.setParameter (AuthPNames.TARGET_AUTH_PREF, listOfAuth);
 		}
@@ -185,6 +219,7 @@ public class OperationLauncher
 			RequestUtilities.reqParNameProxyNTworkstation);
 		String proxyAuthNTdomain = RequestUtilities.getParameter (request,
 			RequestUtilities.reqParNameProxyNTdomain);
+		int proxyPortNumber = -1;
 		if ( (! httpProxy.isEmpty ()) && (! httpProxyPort.isEmpty ())
 			&& (! proxyAuthUser.isEmpty ()) && (! proxyAuthPass.isEmpty ()) )
 		{
@@ -200,13 +235,19 @@ public class OperationLauncher
 				// NT credentials NOT provided - use basic credentials
 				cred = new UsernamePasswordCredentials (proxyAuthUser, proxyAuthPass);
 			}
-			AuthScope as = new AuthScope (httpProxy, Integer.parseInt (httpProxyPort));
+			proxyPortNumber = Integer.parseInt (httpProxyPort);
+			AuthScope as = new AuthScope (httpProxy, proxyPortNumber);
 			cp.setCredentials (as, cred);
 			par.setParameter (AuthPNames.PROXY_AUTH_PREF, listOfAuth);
 		}
 		hc = new DefaultHttpClient ();
 		((AbstractHttpClient)hc).setParams (par);
 		((AbstractHttpClient)hc).setCredentialsProvider (cp);
+		if ( RequestUtilities.hasParameter (request,
+			RequestUtilities.reqParNameAcceptAllSSL) )
+		{
+			hc = wrapClientForSSL (hc, new int[] {servicePortNumber, proxyPortNumber});
+		}
 		String method = RequestUtilities.getParameter (request,
 			RequestUtilities.reqParNameProtoMethod).toUpperCase ();
 		if ( method.equals (RequestUtilities.protoMethodDelete) )
@@ -429,11 +470,18 @@ public class OperationLauncher
 		}
 		try
 		{
-			responseBody = baos.toString (encoding);
+			if ( respCharset != null && ! respCharset.isEmpty () )
+			{
+				responseBody = baos.toString (respCharset);
+			}
+			else
+			{
+				responseBody = baos.toString (encoding);
+			}
 		}
 		catch (Exception ex)
 		{
-			responseBody = baos.toString ();
+			responseBody = baos.toString (RequestUtilities.defaultCharset);
 		}
 		if ( RequestUtilities.hasParameter (request, RequestUtilities.reqParNameSOAPRespSplit) )
 		{
@@ -456,7 +504,8 @@ public class OperationLauncher
 	 */
 	public HeaderIterator getRespHeaders ()
 	{
-		return hr.headerIterator ();
+		if ( hr != null ) return hr.headerIterator ();
+		return null;
 	}
 
 	/**
@@ -496,6 +545,54 @@ public class OperationLauncher
 	public String getResponseBody ()
 	{
 		return responseBody;
+	}
+
+	/**
+	 * Creates an 'accept all SSL' HttpClient.
+	 * See http://tech.chitgoks.com/2011/04/24/how-to-avoid-javax-net-ssl-sslpeerunverifiedexception-peer-not-authenticated-problem-using-apache-httpclient/
+	 * @param base the instance to base on.
+	 * @return a HttpClient that accepts all SSL connections.
+	 */
+	private static HttpClient wrapClientForSSL (HttpClient base, int[] ports)
+	{
+		if ( base == null ) base = new DefaultHttpClient ();
+		try
+		{
+			SSLContext ctx = SSLContext.getInstance ("TLS");
+			ctx.init (null, new TrustManager[]{ACCEPT_ALL_TM}, null);
+			SSLSocketFactory ssf = new SSLSocketFactory (ctx,
+				SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+			ClientConnectionManager ccm = base.getConnectionManager ();
+			SchemeRegistry sr = ccm.getSchemeRegistry ();
+			// always include the default port, because the WSDL can provide
+			// just the "https" scheme without the port:
+			sr.register (new Scheme ("https", 443, ssf));
+			// add any additional provided ports:
+			for ( int port : ports )
+			{
+				if ( port != -1 && port != 443 )
+				{
+					sr.register (new Scheme ("https", port, ssf));
+				}
+			}
+			HttpClient ret = new DefaultHttpClient (ccm);
+			// copy the already-set fields:
+			((AbstractHttpClient)ret).setParams (base.getParams());
+			if ( base instanceof AbstractHttpClient )
+			{
+				((AbstractHttpClient)ret).setCredentialsProvider (
+					((AbstractHttpClient)base).getCredentialsProvider ());
+			}
+			return ret;
+		}
+		catch (NoSuchAlgorithmException nsaex)
+		{
+			return null;
+		}
+		catch (KeyManagementException kmex)
+		{
+			return null;
+		}
 	}
 }
 

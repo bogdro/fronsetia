@@ -1,3 +1,27 @@
+2012-06-05	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* SOAPServiceTester version 0.3
+	  Allow changing the character set used for parsing the server's
+	  replies, if can't be detected automatically. Fixed problems
+	  reported by the "findbugs" and "jlint" programs. Allow all SSL
+	  certificates (as an option).
+	* resources/soaptester.css: bakground on anchors is now inherited
+	* WSDLCheck.java: made wsdlLocation non-static to allow concurrent
+	  runs. Changed untyped references (raw types) to have the <?> type.
+	* RequestUtilities.java (makeHTMLSafe): added the ampersand to the
+	  list of replaced characters.
+	* Makefile: corrected the WAR file creation
+	* OperationLauncher.java (perform): using the provided charset (and
+	  the one from RequestUtilities, not the platform default, if no
+	  charset was provided by the user) when the charset can't be
+	  detected from the HTTP reply. Allow all SSL certificates (when
+	  the right option is enabled on the JSP page).
+	* show_operations.jsp, perform_operation.jsp: allow setting the
+	  character set for parsing the server's replies. A new option
+	  to allow using SSL with no verification.
+	* OperationLauncher.java (getRespHeaders): checking the response
+	  for null (may happen in case of exceptions)
+
 2011-12-15	Bogdan Drozdowski <bogdandr@op.pl>
 
 	* SOAPServiceTester version 0.2

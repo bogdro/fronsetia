@@ -10,6 +10,15 @@
 <%
 String wsdlLocation = request.getParameter (RequestUtilities.reqParNameWSDL);
 String opName = RequestUtilities.getParameter (request, RequestUtilities.reqParNameOpName);
+String soapPrologue = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPPrologue);
+String soapHeader = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPHeader);
+String soapMiddle = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPMiddle);
+String soapXML = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPBody);
+String soapEpilogue = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPEpilogue);
+String soapCType = RequestUtilities.getParameter (request, RequestUtilities.reqParNameCType);
+String proxyPort = RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyPort);
+
+OperationLauncher ol = new OperationLauncher ();
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -17,7 +26,7 @@ String opName = RequestUtilities.getParameter (request, RequestUtilities.reqParN
 
 <!--
     SOAP Service Tester - an application for low-level testing of SOAP Services.
-    Copyright (C) 2011 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+    Copyright (C) 2011-2012 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -53,18 +62,6 @@ String opName = RequestUtilities.getParameter (request, RequestUtilities.reqParN
 
 </HEAD><BODY>
 
-<%
-	OperationLauncher ol = new OperationLauncher ();
-	ol.prepare (request);
-
-	String soapPrologue = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPPrologue);
-	String soapHeader = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPHeader);
-	String soapMiddle = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPMiddle);
-	String soapXML = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPBody);
-	String soapEpilogue = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPEpilogue);
-	String soapCType = RequestUtilities.getParameter (request, RequestUtilities.reqParNameCType);
-	String proxyPort = RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyPort);
-%>
 <h1 class="c">SOAP Service Tester - result of operation</h1>
 <hr>
 WSDL location: <a href="<%= wsdlLocation %>"
@@ -110,6 +107,7 @@ User-defined request headers:
 <%
 	try
 	{
+		ol.prepare (request);
 		ol.perform (request);
 		Iterator reqhi = ol.getReqHeaders ();
 		out.flush ();
@@ -126,9 +124,6 @@ User-defined request headers:
 		StringWriter sw = new StringWriter ();
 		ex.printStackTrace (new PrintWriter (sw));
 		out.println (ex);
-%>
-
-<%
 		out.println (sw.toString ());
 	}
 %></PRE>
@@ -140,6 +135,9 @@ RequestUtilities.makeHTMLSafe (soapMiddle) +
 RequestUtilities.makeHTMLSafe (soapXML) +
 RequestUtilities.makeHTMLSafe (soapEpilogue) %></pre>
 
+Expected output encoding (used only if can't be detected automatically):
+ <code id="<%= RequestUtilities.reqParNameCharset %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameCharset) %></code>
 
 
 
@@ -238,6 +236,7 @@ HTTP response headers:
 <%
 		}
 %>
+<br>
 HTTP response body:
 <PRE id="<%= RequestUtilities.respFieldIDBody %>">
 <%
@@ -252,9 +251,6 @@ HTTP response body:
 		StringWriter sw = new StringWriter ();
 		ex.printStackTrace (new PrintWriter (sw));
 		out.println (ex);
-%>
-
-<%
 		out.println (sw.toString ());
 %></pre>
 <%

@@ -4,7 +4,7 @@
  * Author: Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
  *
  *    SOAP Service Tester - an application for low-level testing of SOAP Services.
- *    Copyright (C) 2011 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+ *    Copyright (C) 2011-2012 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
  *
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU Affero General Public License as
@@ -37,6 +37,8 @@ public class RequestUtilities
 	public static final String reqParNameOpName = "SOAPTester_opName";
 	/** The name of the parameter which holds the URL of the operation to call. */
 	public static final String reqParNameOpURL = "SOAPTester_opURL";
+	/** The name of the parameter which holds the URL of the operation to call. */
+	public static final String reqParNameCharset = "SOAPTester_Charset";
 
 	/** The name of the parameter which holds the content type to use. */
 	public static final String reqParNameCType = "SOAPTester_CType";
@@ -70,6 +72,8 @@ public class RequestUtilities
 	public static final String reqParNameProxyNTworkstation = "SOAPTester_proxyNTWorkstation";
 	/** The name of the parameter which holds the proxy authentication domain name. */
 	public static final String reqParNameProxyNTdomain = "SOAPTester_proxyNTDomain";
+	/** The name of the parameter which tells if all SSL authentication should be accepted. */
+	public static final String reqParNameAcceptAllSSL = "SOAPTester_acceptAllSSL";
 
 	/** The name of the parameter which tells if the Content-Length header should be sent. */
 	public static final String reqParNameSendHdrContentLength = "SOAPTester_sendHeaderContentLength";
@@ -134,10 +138,18 @@ public class RequestUtilities
 	/** A String describing the TRACE HTTP method. */
 	public static final String protoMethodTrace = "TRACE";
 
+	/** The default character set to use when reading server replies. */
+	public static final String defaultCharset = "UTF-8";
+
 	private static final String leftAngBr = "<";
 	private static final String rightAngBr = ">";
+	private static final String ampersand = "&";
 	private static final String leftAngBrEnt = "&lt;";
 	private static final String rightAngBrEnt = "&gt;";
+	private static final String ampersandEnt = "&amp;";
+
+	private static final String rightAngBrLF = ">\n";
+	private static final String rightAngBrEntLF = "&gt;\n";
 
 	// this is a utility class
 	private RequestUtilities() {}
@@ -158,14 +170,15 @@ public class RequestUtilities
 
 	/**
 	 * Returns a HTML-safe version of the given String. This means replacing
-	 * all "&lt;" and "&gt;" characters to their corresponding entities.
+	 * all "&lt;", "&gt;" and "&amp;" characters to their corresponding entities.
 	 * @param s The String to correct.
 	 * @return The corrected (HTML-safe) String.
 	 */
 	public static String makeHTMLSafe (String s)
 	{
 		if ( s == null ) return empty;
-		return s.replaceAll (leftAngBr, leftAngBrEnt)
+		return s.replaceAll (ampersand, ampersandEnt)
+			.replaceAll (leftAngBr, leftAngBrEnt)
 			.replaceAll (rightAngBr, rightAngBrEnt);
 	}
 
@@ -177,8 +190,8 @@ public class RequestUtilities
 	public static String splitByTags (String s)
 	{
 		if ( s == null ) return empty;
-		return s.replaceAll (rightAngBr, rightAngBr + newLineLF)
-			.replaceAll (rightAngBrEnt, rightAngBrEnt + newLineLF);
+		return s.replaceAll (rightAngBr, rightAngBrLF)
+			.replaceAll (rightAngBrEnt, rightAngBrEntLF);
 	}
 
 	/**

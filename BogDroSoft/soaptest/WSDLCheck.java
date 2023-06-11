@@ -4,7 +4,7 @@
  * Author: Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
  *
  *    SOAP Service Tester - an application for low-level testing of SOAP Services.
- *    Copyright (C) 2011 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+ *    Copyright (C) 2011-2012 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
  *
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU Affero General Public License as
@@ -71,7 +71,7 @@ public class WSDLCheck
 
 	private WSDLReader wsdlReader = null;
 	private SchemaType[] globalElems = null;
-	private static String wsdlLocation = null;
+	private String wsdlLocation = null;
 	private Map<String, String> operationsAndXMLs = null;
 	private Map<String, String> operationsAndURLs = null;
 
@@ -136,7 +136,7 @@ public class WSDLCheck
 		{
 			return ret;
 		}
-		Map servicesMap = def.getAllServices ();
+		Map<?,?> servicesMap = def.getAllServices ();
 		if ( servicesMap == null )
 		{
 			return ret;
@@ -146,7 +146,7 @@ public class WSDLCheck
 		Set<Element> schemaElements = new HashSet<Element> (10);
 		if ( t != null )
 		{
-			List extElems = t.getExtensibilityElements ();
+			List<?> extElems = t.getExtensibilityElements ();
 			if ( extElems != null )
 			{
 				for ( Object o : t.getExtensibilityElements ())
@@ -159,10 +159,10 @@ public class WSDLCheck
 					{
 						Schema si = ((Schema) o);
 						schemaElements.add (si.getElement ());
-						Map schImports = si.getImports ();
+						Map<?,?> schImports = si.getImports ();
 						if ( schImports != null )
 						{
-							Collection schImportsValues = schImports.values ();
+							Collection<?> schImportsValues = schImports.values ();
 							if ( schImportsValues != null )
 							{
 								for (Object el : schImportsValues)
@@ -183,7 +183,7 @@ public class WSDLCheck
 								}
 							}
 						}
-						List schIncludes = si.getIncludes ();
+						List<?> schIncludes = si.getIncludes ();
 						if ( schIncludes != null )
 						{
 							for (Object el : schIncludes)
@@ -199,15 +199,15 @@ public class WSDLCheck
 				}
 			}
 		}
-		for ( Object sn : servicesMap.keySet () )
+		for ( Map.Entry<?,?> sn : servicesMap.entrySet () )
 		{
-			Object s = servicesMap.get (sn);
+			Object s = sn.getValue ();
 			if ( s != null && (s instanceof Service) )
 			{
-				Map ports = ((Service) s).getPorts ();
-				for ( Object pn : ports.keySet () )
+				Map<?,?> ports = ((Service) s).getPorts ();
+				for ( Map.Entry<?,?> pn : ports.entrySet () )
 				{
-					Object p = ports.get (pn);
+					Object p = pn.getValue ();
 					if ( p != null && (p instanceof Port) )
 					{
 						Port currPort = (Port) p;
@@ -215,9 +215,9 @@ public class WSDLCheck
 						if ( b == null ) continue;
 						PortType pt = b.getPortType();
 						if ( pt == null ) continue;
-						List operations = pt.getOperations ();
+						List<?> operations = pt.getOperations ();
 						if ( operations == null ) continue;
-						List portExtElems = currPort.getExtensibilityElements ();
+						List<?> portExtElems = currPort.getExtensibilityElements ();
 						for ( Object op : operations )
 						{
 							if ( op != null && (op instanceof Operation) )
@@ -264,9 +264,10 @@ public class WSDLCheck
 			}
 		}
 		// now change the root elements in the map to XML templates
-		for ( String opName : ret.keySet () )
+		for ( Map.Entry<String, String> opName : ret.entrySet () )
 		{
-			ret.put (opName, processXSD (schemaLocations, ret.get (opName), schemaElements));
+			ret.put (opName.getKey (), processXSD (schemaLocations,
+				ret.get (opName.getValue ()), schemaElements));
 		}
 		return ret;
 	}
@@ -321,7 +322,7 @@ public class WSDLCheck
 
 			XmlObject[] schemas = sdocs.toArray(new XmlObject[] {});
 			SchemaTypeSystem sts = null;
-			if ( schemas.length > 0 )
+			if ( schemas.length != 0 )
 			{
 				XmlOptions compileOptions = new XmlOptions ();
 				compileOptions.setCompileDownloadUrls ();

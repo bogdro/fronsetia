@@ -14,7 +14,7 @@
 
 <!--
     SOAP Service Tester - an application for low-level testing of SOAP Services.
-    Copyright (C) 2011 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+    Copyright (C) 2011-2012 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -120,7 +120,7 @@
 		<form method="POST" action="perform_operation.jsp">
 
 			<div class="httpdatablock">
-			<h3 class="important c">HTTP</h3>
+			<h3 class="important c">HTTP / HTTPS</h3>
 
 			<input type="hidden" name="<%= RequestUtilities.reqParNameOpName %>"
 				value="<%= opName %>">
@@ -238,6 +238,10 @@ SOAPAction:</textarea>
 				value="" size="60" class="noindent"><br>
 			</div>
 
+			<input type="checkbox" name="<%= RequestUtilities.reqParNameAcceptAllSSL %>"
+				checked="checked" class="noindent">Accept all SSL certificates
+				and authentication (applies both to the service and to the proxy)
+			<br><br>
 
 
 			</div><br>
@@ -290,6 +294,10 @@ SOAPAction:</textarea>
 
 			</div>
 
+			<br><br>
+			Reply character set (if can't be detected automatically):
+			<input type="text" name="<%= RequestUtilities.reqParNameCharset %>"
+				value="<%= RequestUtilities.defaultCharset %>" size="60">
 			<br><br>
 			<input type="checkbox" name="<%= RequestUtilities.reqParNameSOAPRespSplit %>"
 				checked="checked">Split response into lines
