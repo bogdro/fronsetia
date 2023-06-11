@@ -24,6 +24,16 @@ Requirements for compiling the application:
 		(http://hc.apache.org/),
 	* httpcore.jar (4.1 is OK) - the Apache HttpComponents,
 	* commons-logging.jar (1.1.1 is OK) - the Apache HttpComponents
+	* servlet-api.jar - from your JavaEE servlet container/server
+	* optional (for interpreting the SOAP response):
+		axiom.jar (1.2.12 is OK) - Apache Axiom
+		(http://ws.apache.org/axiom/)
+	* optional (for interpreting the SOAP response):
+		axis2-saaj.jar (1.6.1 is OK) - Apache Axis2
+		(http://axis.apache.org/axis2/java/core)
+	* optional (for HTTP authentications):
+		commons-codec.jar (1.5 is OK) - Apache Commons Codec
+		(http://commons.apache.org/codec/)
 
 - recommended: the GNU 'make' utility
 
@@ -43,7 +53,7 @@ Type 'make war' to create a Web Archive (WAR) file ready for deployment.
 ================================================================
 
 How to run:
-1. deploy the application on your webserver with
+1. deploy the application on your server with
    the following JAR files on your CLASSPATH:
 
 	* wsdl4j.jar (1.6.2 is OK) - the WSDL4J project
@@ -54,6 +64,16 @@ How to run:
 		(http://hc.apache.org/),
 	* httpcore.jar (4.1 is OK) - the Apache HttpComponents,
 	* commons-logging.jar (1.1.1 is OK) - the Apache HttpComponents
+	* servlet-api.jar - from your JavaEE servlet container/server
+	* optional (for interpreting the SOAP response):
+		axiom.jar (1.2.12 is OK) - Apache Axiom
+		(http://ws.apache.org/axiom/)
+	* optional (for interpreting the SOAP response):
+		axis2-saaj.jar (1.6.1 is OK) - Apache Axis2
+		(http://axis.apache.org/axis2/java/core)
+	* optional (for HTTP authentications):
+		commons-codec.jar (1.5 is OK) - Apache Commons Codec
+		(http://commons.apache.org/codec/)
 
 2. access it from a browser
 3. type the WSDL address and proceed

@@ -69,6 +69,17 @@ Requirements for compiling the application:
 		hreflang="en">Apache HttpComponents</a></li>
 	<li> httpcore.jar (4.1 is OK) - the Apache HttpComponents</li>
 	<li> commons-logging.jar (1.1.1 is OK) - the Apache HttpComponents</li>
+	<li> servlet-api.jar - from your JavaEE servlet container/server</li>
+	<li> optional (for interpreting the SOAP response):
+		axiom.jar (1.2.12 is OK) - <a href="http://ws.apache.org/axiom/"
+		hreflang="en">Apache Axiom</a></li>
+	<li> optional (for interpreting the SOAP response):
+		axis2-saaj.jar (1.6.1 is OK) - <a
+		href="http://axis.apache.org/axis2/java/core"
+		hreflang="en">Apache Axis2</a></li>
+	<li> optional (for HTTP authentications):
+		commons-codec.jar (1.5 is OK) - <a href="http://commons.apache.org/codec/"
+		hreflang="en">Apache Commons Codec</a></li>
   </ul></li>
  <li> recommended: the GNU 'make' utility</li>
 </ul>
@@ -95,7 +106,7 @@ Type <code>make war</code> to create a Web Archive (WAR) file ready for deployme
 How to run:
 </p>
 <ol>
- <li> deploy the application on your webserver with the following JAR files on
+ <li> deploy the application on your server with the following JAR files on
   your server's CLASSPATH:
   <ul>
 	<li> wsdl4j.jar (1.6.2 is OK) - the <a href="http://wsdl4j.sf.net/"
@@ -106,6 +117,17 @@ How to run:
 		hreflang="en">Apache HttpComponents</a></li>
 	<li> httpcore.jar (4.1 is OK) - the Apache HttpComponents</li>
 	<li> commons-logging.jar (1.1.1 is OK) - the Apache HttpComponents</li>
+	<li> servlet-api.jar - from your JavaEE servlet container/server</li>
+	<li> optional (for interpreting the SOAP response):
+		axiom.jar (1.2.12 is OK) - <a href="http://ws.apache.org/axiom/"
+		hreflang="en">Apache Axiom</a></li>
+	<li> optional (for interpreting the SOAP response):
+		axis2-saaj.jar (1.6.1 is OK) - <a
+		href="http://axis.apache.org/axis2/java/core"
+		hreflang="en">Apache Axis2</a></li>
+	<li> optional (for HTTP authentications):
+		commons-codec.jar (1.5 is OK) - <a href="http://commons.apache.org/codec/"
+		hreflang="en">Apache Commons Codec</a></li>
   </ul></li>
  <li> access it from a browser</li>
  <li> type the WSDL address and proceed</li>
@@ -116,7 +138,6 @@ How to run:
 You can start from the page with the list of operations by passing the
  address of the WSDL file in the URL.
 </p>
-
 
 </BODY>
 </HTML>

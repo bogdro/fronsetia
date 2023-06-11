@@ -1,16 +1,16 @@
 <%@ page language="java" session="false" %>
-<%@ page import="java.io.ByteArrayOutputStream" %>
-<%@ page import="org.apache.http.HeaderElement" %>
-<%@ page import="org.apache.http.HeaderIterator" %>
-<%@ page import="org.apache.http.HttpEntity" %>
-<%@ page import="org.apache.http.HttpResponse" %>
-<%@ page import="org.apache.http.entity.StringEntity" %>
-<%@ page import="org.apache.http.client.HttpClient" %>
-<%@ page import="org.apache.http.client.methods.HttpPost" %>
-<%@ page import="org.apache.http.impl.client.DefaultHttpClient" %>
-<%@ page import="org.apache.http.protocol.HTTP" %>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="java.io.StringWriter" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="java.util.List" %>
+<%@ page import="BogDroSoft.soaptest.RequestUtilities" %>
+<%@ page import="BogDroSoft.soaptest.OperationLauncher" %>
+<%@ page import="BogDroSoft.soaptest.SOAPInterpreter" %>
 
-<% String wsdlLocation = request.getParameter ("SOAPTester_WSDL"); %>
+<%
+String wsdlLocation = request.getParameter (RequestUtilities.reqParNameWSDL);
+String opName = RequestUtilities.getParameter (request, RequestUtilities.reqParNameOpName);
+%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
@@ -35,12 +35,15 @@
 
 <HTML lang="en">
 <HEAD>
-<META HTTP-EQUIV="Content-Type"     CONTENT="text/html; charset=UTF-8">
-<META HTTP-EQUIV="Content-Language" CONTENT="en">
-<META http-equiv="Content-Style-Type" content="text/css">
+<META HTTP-EQUIV="Content-Type"       CONTENT="text/html; charset=UTF-8">
+<META HTTP-EQUIV="Content-Language"   CONTENT="en">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+<meta HTTP-EQUIV="Cache-Control"      CONTENT="no-cache, no-store, private">
+<META HTTP-EQUIV="Pragma"	      CONTENT="no-cache">
+<%--<META HTTP-EQUIV="Expires"            CONTENT="">--%>
 <LINK rel="stylesheet" href="resources/soaptester.css" type="text/css">
 
-<TITLE> SOAP Service Tester - <%= wsdlLocation %> </TITLE>
+<TITLE> SOAP Service Tester: <%= opName %>: <%= wsdlLocation %> </TITLE>
 
 <META NAME="Author" CONTENT="Bogdan D.">
 <META NAME="Description" CONTENT="SOAP Service Tester">
@@ -51,73 +54,64 @@
 </HEAD><BODY>
 
 <%
-	final String newLineLF = "\n";
-	final String leftAngBr = "<";
-	final String rightAngBr = ">";
-	final String leftAngBrEnt = "&lt;";
-	final String rightAngBrEnt = "&gt;";
-	final String charsetParamName = "charset";
-	final String emptyString = "";
+	OperationLauncher ol = new OperationLauncher ();
+	ol.prepare (request);
 
-	String soapPrologue = request.getParameter ("SOAPTester_opPrologue");
-	String soapHeader = request.getParameter ("SOAPTester_opSoapHeader");
-	String soapMiddle = request.getParameter ("SOAPTester_opMiddle");
-	String soapXML = request.getParameter ("SOAPTester_opXML");
-	String soapEpilogue = request.getParameter ("SOAPTester_opEpilogue");
-	String soapCType = request.getParameter ("SOAPTester_CType");
-	if ( soapCType == null || soapCType.isEmpty () )
-	{
-		soapCType = "text/xml";
-	}
-	HttpPost hp = new HttpPost (request.getParameter ("SOAPTester_opURL"));
-	String soapHttpHeaders = request.getParameter ("SOAPTester_httpHeaders");
-	if ( soapHttpHeaders != null )
-	{
-		String[] soapHttpHdrs = soapHttpHeaders.replaceAll ("\r", newLineLF)
-			.replaceAll (newLineLF + "+", newLineLF).split (newLineLF);
-		if ( soapHttpHdrs != null )
-		{
-			for ( int i = 0; i < soapHttpHdrs.length; i++ )
-			{
-				if ( soapHttpHdrs[i] == null ) continue;
-				soapHttpHdrs[i] = soapHttpHdrs[i].trim ();
-				if ( soapHttpHdrs[i].isEmpty () ) continue;
-				int colonIndex = soapHttpHdrs[i].indexOf (':');
-				if ( colonIndex == -1 )
-				{
-					// no colon - just the header name
-					hp.addHeader (soapHttpHdrs[i], emptyString);
-				}
-				else
-				{
-					String headerName = soapHttpHdrs[i].substring (0, colonIndex);
-					if ( soapHttpHdrs[i].length () > colonIndex+1 )
-					{
-						// header content present
-						hp.addHeader (headerName, // header name
-							soapHttpHdrs[i].substring (colonIndex+1)); // header value
-					}
-					else
-					{
-						// just "HeaderName:" provided
-						hp.addHeader (headerName, // header name
-							emptyString);
-					}
-				}
-			}
-		}
-	}
+	String soapPrologue = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPPrologue);
+	String soapHeader = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPHeader);
+	String soapMiddle = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPMiddle);
+	String soapXML = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPBody);
+	String soapEpilogue = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPEpilogue);
+	String soapCType = RequestUtilities.getParameter (request, RequestUtilities.reqParNameCType);
+	String proxyPort = RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyPort);
 %>
 <h1 class="c">SOAP Service Tester - result of operation</h1>
 <hr>
-WSDL location: <a href="<%= wsdlLocation %>"><%= wsdlLocation %></a><br>
-Operation name: <code><%= request.getParameter ("SOAPTester_opName") %></code><br>
-HTTP request user-defined headers:
-<pre>
+WSDL location: <a href="<%= wsdlLocation %>"
+	id="<%= RequestUtilities.reqParNameWSDL %>"><%= wsdlLocation %></a><br>
+Operation name: <code id="<%= RequestUtilities.reqParNameOpName %>"><%= opName %></code><br>
+Protocol name and version: <code id="<%= RequestUtilities.reqParNameProtoName %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProtoName)
+	%>/<%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProtoMajor)
+	%>.<%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProtoMinor) %></code><br>
+Protocol method: <code id="<%= RequestUtilities.reqParNameProtoMethod %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProtoMethod) %></code><br>
+Protocol authentication: user=<code id="<%= RequestUtilities.reqParNameHTTPUser %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameHTTPUser) %></code>,
+	password=<code id="<%= RequestUtilities.reqParNameHTTPPass %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameHTTPPass) %></code>,
+	NT workstation=<code id="<%= RequestUtilities.reqParNameHTTPNTworkstation %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameHTTPNTworkstation) %></code>,
+	NT domain=<code id="<%= RequestUtilities.reqParNameHTTPNTdomain %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameHTTPNTdomain) %></code>
+	<br>
+Proxy: <code id="<%= RequestUtilities.reqParNameProxyHost %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyHost) %>
+<%
+	if ( ! proxyPort.isEmpty () )
+	{
+%>
+		:<%= proxyPort %>
+<%
+	}
+%>
+</code><br>
+Proxy authentication: user=<code id="<%= RequestUtilities.reqParNameProxyUser %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyUser) %></code>,
+	password=<code id="<%= RequestUtilities.reqParNameProxyPass %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyPass) %></code>,
+	NT workstation=<code id="<%= RequestUtilities.reqParNameProxyNTworkstation %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyNTworkstation) %></code>,
+	NT domain=<code id="<%= RequestUtilities.reqParNameProxyNTdomain %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyNTdomain) %></code>
+	<br>
+User-defined request headers:
+<pre id="<%= RequestUtilities.reqParNameHTTPHdrs %>">
 <%
 	try
 	{
-		HeaderIterator reqhi = hp.headerIterator ();
+		ol.perform (request);
+		Iterator reqhi = ol.getReqHeaders ();
 		out.flush ();
 		while (reqhi.hasNext ())
 		{
@@ -127,103 +121,145 @@ HTTP request user-defined headers:
 	}
 	catch (Exception ex)
 	{
-%>Exception occurred:<%
+%>Exception occurred while performing the operation or displaying input parameters:
+<%
+		StringWriter sw = new StringWriter ();
+		ex.printStackTrace (new PrintWriter (sw));
 		out.println (ex);
+%>
+
+<%
+		out.println (sw.toString ());
 	}
 %></PRE>
 Operation input (HTTP body):
-<pre>
-<%= soapPrologue.replaceAll (leftAngBr, leftAngBrEnt).replaceAll (rightAngBr, rightAngBrEnt) +
-soapHeader.replaceAll (leftAngBr, leftAngBrEnt).replaceAll (rightAngBr, rightAngBrEnt) +
-soapMiddle.replaceAll (leftAngBr, leftAngBrEnt).replaceAll (rightAngBr, rightAngBrEnt) +
-soapXML.replaceAll (leftAngBr, leftAngBrEnt).replaceAll (rightAngBr, rightAngBrEnt) +
-soapEpilogue.replaceAll (leftAngBr, leftAngBrEnt).replaceAll (rightAngBr, rightAngBrEnt) %></pre>
+<pre id="<%= RequestUtilities.reqParNameSOAPBody %>">
+<%= RequestUtilities.makeHTMLSafe (soapPrologue) +
+RequestUtilities.makeHTMLSafe (soapHeader) +
+RequestUtilities.makeHTMLSafe (soapMiddle) +
+RequestUtilities.makeHTMLSafe (soapXML) +
+RequestUtilities.makeHTMLSafe (soapEpilogue) %></pre>
+
+
+
 
 
 
 <br>
 <hr>
 <h2 class="c">Operation result:</h2>
+
+
+HTTP response code: <code id="<%= RequestUtilities.respFieldIDCode %>"
+	><%= (ol.getStatusCode () >= 0)? ol.getStatusCode () : "" %></code><br>
+HTTP response line: <code id="<%= RequestUtilities.respFieldIDStatusLine %>"
+	><%= ol.getStatusLine () %></code><br>
 <%
 	// flush the current page output to the user:
 	out.flush ();
-
-	HttpClient hc = new DefaultHttpClient ();
-	StringEntity se = new StringEntity (
-		soapPrologue + soapHeader + soapMiddle + soapXML + soapEpilogue,
-		soapCType, HTTP.UTF_8);
-	//SOAPAction: "Some-URI"
-	hp.setEntity (se);
 	try
 	{
-		HttpResponse hr = hc.execute (hp);
-		HeaderIterator hi = hr.headerIterator ();
-%>
-HTTP response code: <code><%= hr.getStatusLine ().getStatusCode () %></code><br>
-HTTP response line: <code><%= hr.getStatusLine () %></code><br>
-HTTP response headers:
-<PRE>
-<%
-		out.flush ();
-		while (hi.hasNext ())
-		{
-			out.println (hi.next ());
-			out.flush ();
-		}
-%></PRE>
-HTTP response body:
-<PRE>
-<%
-		HttpEntity ent = hr.getEntity ();
-		// a ByteArrayOutputStream will grow anyway, so we can cast the length to int
-		int len = (int)ent.getContentLength ();
-		if ( len <= 0 ) len = 1024;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream (len);
-		ent.writeTo (baos);
-
-		String encoding = null;
+		String resp = ol.getResponseBody ();
 		try
 		{
-			HeaderElement headers[] = ent.getContentType ().getElements ();
-			for ( HeaderElement he : headers )
+			SOAPInterpreter si = new SOAPInterpreter ();
+			si.parseResponse (resp);
+%>
+			SOAP Fault found in the response:
+<%
+			if ( si.wasFault () )
 			{
-				if ( he.getParameterByName (charsetParamName) != null )
+%>
+				<span id="<%= RequestUtilities.respFieldIDHasFault %>"
+					class="soapfault">YES</span><br>
+<%
+			}
+			else
+			{
+%>
+				<span id="<%= RequestUtilities.respFieldIDHasFault %>"
+					class="nosoapfault">NO</span><br>
+<%
+			}
+%>
+			SOAP response type (elements): <span
+				id="<%= RequestUtilities.respFieldIDBodyElements %>">
+<%
+			List<String> respTypes = si.getBodyElements ();
+			if ( respTypes != null )
+			{
+				int respTypeSize = respTypes.size ();
+				for ( int i = 0; i < respTypeSize; i++ )
 				{
-					encoding = he.getParameterByName (charsetParamName).getValue ();
+%>
+					<code><%= respTypes.get (i) %></code>
+<%
+					if ( i < respTypeSize - 1 )
+					{
+%>
+						,
+<%
+					}
 				}
 			}
+%>
+			</span>
+<%
+		}
+		catch (NoClassDefFoundError ncdfe)
+		{
+%>
+			Unable to get reponse SOAP status and type - axiom.jar or axis2-saaj.jar not installed.
+<%
 		}
 		catch (Exception ex)
 		{
-			encoding = HTTP.UTF_8;
+%>
+			Unable to get reponse SOAP status and type.
+<%
 		}
-		if ( encoding == null )
+%>
+<br>
+HTTP response headers:
+<%
+		out.flush ();
+		Iterator hi = ol.getRespHeaders ();
+		if ( hi != null )
 		{
-			encoding = HTTP.UTF_8;
+%>
+<PRE id="<%= RequestUtilities.respFieldIDHeaders %>">
+<%
+			while (hi.hasNext ())
+			{
+				out.println (hi.next ());
+				out.flush ();
+			}
+%></PRE>
+<%
 		}
-		String responseBody;
-		String replacement = rightAngBrEnt;
-		if ( request.getParameter ("SOAPTester_splitResp") != null )
-		{
-			replacement += newLineLF;
-		}
-		try
-		{
-			responseBody = baos.toString (encoding);
-		}
-		catch (Exception ex)
-		{
-			responseBody = baos.toString ();
-		}
-		out.println (responseBody.replaceAll (leftAngBr, leftAngBrEnt)
-				.replaceAll (rightAngBr, replacement));
+%>
+HTTP response body:
+<PRE id="<%= RequestUtilities.respFieldIDBody %>">
+<%
+		out.println (RequestUtilities.makeHTMLSafe (resp));
+%></PRE>
+<%
 	}
 	catch (Exception ex)
 	{
-%>Exception occurred:<%
+%><br><pre>Exception occurred while displaying output data:
+<%
+		StringWriter sw = new StringWriter ();
+		ex.printStackTrace (new PrintWriter (sw));
 		out.println (ex);
-	}
+%>
+
+<%
+		out.println (sw.toString ());
 %></pre>
+<%
+	}
+%>
 
 
 <%@ include file="footer.html" %>

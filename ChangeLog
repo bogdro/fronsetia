@@ -1,3 +1,39 @@
+2011-12-15	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* SOAPServiceTester version 0.2
+	  Support for: authentication, proxy servers, protocol name and
+	  version. More control over the headers sent. Moved more operations
+	  to dedicated classes from JSP pages. Interpreting the SOAP response.
+	  Verified working with the jetty server.
+	* RequestUtilities.java: a new class with things related to requests
+	  passed to SOAPServiceTester (to the JSP pages) and data display.
+	  The names of the forms' elements are now in a separate place.
+	* OperationLauncher.java: a new class that prepares the data for
+	  calling the operation, calls it and processes response data.
+	* footer.html, resources/img: added the valid HTML/CSS icons.
+	* show_operations.jsp, perform_operation.jsp: added the Cache-Control
+	  and Pragma HTTP-equiv META elements.
+	* SOAPInterpreter.java: a new class for reading SOAP responses,
+	  checking if there was a SOAP Fault and getting the responses' types
+	  (names of the XML elements in the SOAP Body).
+	* show_operations.jsp: allow choosing the protocol type, version and
+	  method. Allow disabling and overriding the default headers. Allow
+	  using a proxy (with optional proxy authentication). Catching WSDL
+	  processing errors. Allow using HTTP authentication.
+	* perform_operation.jsp: added IDs for the request and response fields,
+	  displaying the operation's name in the page title, fixed exception
+	  display, added interpreting the SOAP response. Moved calling the
+	  operation and reading the response to new classes. Displaying the
+	  protocol type, version and method used to send the request.
+	  corrected behaviour when connection was refused. Displaying the
+	  proxy and proxy authentication data that was used. Displaying the
+	  authentication data that was used. Better exception display. Using
+	  scrollbars in PRE elements to fit the data on the screen.
+	* Makefile: added axis2-saaj.jar and axiom.jar to class path, added
+	  classes to compile: RequestUtilities.java, OperationLauncher.java
+	  and SOAPInterpreter.java. Corrected creating the distribution and
+	  other Makefile targets.
+
 2011-07-17	Bogdan Drozdowski <bogdandr@op.pl>
 
 	* First release of SOAP Service Tester, version 0.1.

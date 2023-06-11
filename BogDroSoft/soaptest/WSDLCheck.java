@@ -61,6 +61,10 @@ import org.apache.xmlbeans.impl.xsd2inst.SampleXmlUtil;
 
 import org.w3c.dom.Element;
 
+/**
+ * WSDLCheck - a class that checks WSDL files.
+ * @author Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+ */
 public class WSDLCheck
 {
 	private static final String empty = "";

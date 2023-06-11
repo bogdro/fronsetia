@@ -30,6 +30,7 @@ pre		{
 /* 			font-family: monospace, "courier new", courier; */
 			background-color: #D0FFFF;
 			color: black;
+			overflow: scroll;
 		}
 
 pre a:link	{
@@ -139,6 +140,42 @@ td		{
 .footerlink	{
 			padding-left: 5%;
 			padding-right: 5%;
+		}
+
+.httpdatablock	{
+			border-style: solid;
+			border-width: 4px;
+			border-color: yellow;
+			padding: 10px 10px 10px 10px;
+		}
+
+.soapdatablock	{
+			border-style: solid;
+			border-width: 4px;
+			border-color: blue blue blue blue;
+			padding: 10px 10px 10px 10px;
+		}
+
+.httpdatablock input, .soapdatablock input,
+.httpdatablock textarea, .soapdatablock textarea,
+.inputblock
+		{
+			margin-left: 50px;
+		}
+
+input.noindent, textarea.noindent
+		{
+			margin-left: 0px;
+		}
+
+.soapfault	{
+			color: black;
+			background-color: red;
+		}
+
+.nosoapfault	{
+			color: black;
+			background-color: #40FF40;
 		}
 
 /* =============================================================== */

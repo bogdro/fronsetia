@@ -1,4 +1,5 @@
 <%@ page language="java" session="false" %>
+<%@ page import="BogDroSoft.soaptest.RequestUtilities" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -37,7 +38,7 @@
 
 </HEAD><BODY>
 
-<h1 class="c">SOAP Service Tester 0.1</h1>
+<h1 class="c">SOAP Service Tester 0.2</h1>
 <hr>
 
 <p>
@@ -57,7 +58,7 @@ the SOAP body field will be filled with the operation's name tags.
 
 <form method="GET" action="show_operations.jsp" class="c">
 
-WSDL location: <input type="text" size="60" name="SOAPTester_WSDL"><br>
+WSDL location: <input type="text" size="60" name="<%= RequestUtilities.reqParNameWSDL %>"><br>
 <br>
 <input type="reset" value="Clear">
 <input type="submit" value="Find services">
@@ -78,6 +79,7 @@ WSDL location: <input type="text" size="60" name="SOAPTester_WSDL"><br>
  <li><a href="http://hc.apache.org/" hreflang="en">Apache HttpComponents</a></li>
  <li><a href="http://xmlbeans.apache.org/" hreflang="en">Apache XMLBeans</a></li>
  <li><a href="http://axis.apache.org/" hreflang="en">Apache Axis</a></li>
+ <li><a href="http://ws.apache.org/axiom/" hreflang="en">Apache Axiom</a></li>
  <li><a href="http://wsdl4j.sourceforge.net/" hreflang="en">WSDL4J</a></li>
  <li><a href="http://wscep.sourceforge.net/" hreflang="en">Web Service Console Eclipse Plugin</a></li>
 </ul>
