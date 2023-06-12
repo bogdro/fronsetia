@@ -8,17 +8,4 @@ How to install:
 Deploy the application on your server with the following JAR files
 (and their dependencies) on the server's CLASSPATH (unless you've built
 a self-contained package with all the required libraries inside - see
-the README file):
-
-- wsdl4j.jar (1.6.2 is OK) - the WSDL4J project (http://wsdl4j.sf.net/),
-- xbean.jar (2.5.0 is OK) - the Apache XmlBeans (https://xmlbeans.apache.org/),
-- httpclient.jar (4.1.1 is OK) - the Apache HttpComponents
-  (https://hc.apache.org/),
-- httpcore.jar (4.1 is OK) - the Apache HttpComponents,
-- commons-logging.jar (1.1.1 is OK) - the Apache HttpComponents
-- servlet-api.jar - from your JavaEE servlet container/server
-- axiom.jar (1.2.12 is OK) - Apache Axiom (https://ws.apache.org/axiom/)
-- axis2-saaj.jar (1.6.1 is OK) - Apache Axis2
-  (https://axis.apache.org/axis2/java/core/)
-- commons-codec.jar (1.5 is OK) - Apache Commons Codec
-  (https://commons.apache.org/proper/commons-codec/)
+the README file).
