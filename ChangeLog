@@ -1,6 +1,31 @@
-2012-06-05	Bogdan Drozdowski <bogdandr@op.pl>
+2023-06-12	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
 
-	* SOAPServiceTester version 0.3
+	* Fronsetia version 0.5
+	  Fronsetia is now built using Apache Maven. Updated the build system.
+	  Updated the copyright information. Updated the documentation.
+	  Deleted the in-application changelog (the one in the package is
+	  still kept). Other small changes.
+	* pom.xml, src: Mavenized the application.
+	* Makefile: Updated the build system.
+	* README: Update the application's name, compiling, running and usage.
+	* AUTHORS: Updated.
+	* INSTALL-Fronsetia.txt: Added a separate installation procedure.
+	* NEWS: Added a standard package file.
+	* src/main/java/BogDroSoft/soaptest/*.java: Updated license blocks.
+	  Small code changes.
+	* src/main/webapp/index.jsp: Updated link list, added acronym tags.
+	* src/main/webapp/resources/install.html: Updated the installation
+	  procedure with installing the required libraries.
+	* src/main/webapp/resources/readme.html: Updated compiling and links
+	  to the required libraries.
+	* src/main/webapp/resources/changelog.html: Deleted.
+	* src/main/webapp/footer.html: Deleted the link to the changelog.html.
+	* src/main/webapp/*, src/main/webapp/resources/*.html: Updated license
+	  blocks. Changed the application's name. Other small changes
+
+2012-06-05	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
+
+	* Fronsetia (then - SOAPServiceTester) version 0.3
 	  Allow changing the character set used for parsing the server's
 	  replies, if can't be detected automatically. Fixed problems
 	  reported by the "findbugs" and "jlint" programs. Allow all SSL
@@ -22,9 +47,9 @@
 	* OperationLauncher.java (getRespHeaders): checking the response
 	  for null (may happen in case of exceptions)
 
-2011-12-15	Bogdan Drozdowski <bogdandr@op.pl>
+2011-12-15	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
 
-	* SOAPServiceTester version 0.2
+	* Fronsetia (then - SOAPServiceTester) version 0.2
 	  Support for: authentication, proxy servers, protocol name and
 	  version. More control over the headers sent. Moved more operations
 	  to dedicated classes from JSP pages. Interpreting the SOAP response.
@@ -58,12 +83,11 @@
 	  and SOAPInterpreter.java. Corrected creating the distribution and
 	  other Makefile targets.
 
-2011-07-17	Bogdan Drozdowski <bogdandr@op.pl>
+2011-07-17	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
 
-	* First release of SOAP Service Tester, version 0.1.
+	* First release of Fronsetia (then - SOAPServiceTester), version 0.1.
 	  Parses WSDL files, prepares XML templates from external and
-	  internal schema definitions, displayes the list of operations,
+	  internal schema definitions, displays the list of operations,
 	  allows adding HTTP headers, changing SOAP envelope tags, SOAP
 	  header and SOAP body data. Displays the data sent, response code,
 	  line and body.
-
