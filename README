@@ -10,7 +10,7 @@ License: AGPLv3+
 
 Requirements for compiling the application:
 
-- development kit for the Java language,
+- the development kit for the Java language (JDK),
 
 - Apache Maven (https://maven.apache.org).
 
@@ -18,12 +18,20 @@ Type 'mvn package' to compile the application.
 Alternatively, you can use a 'make' utility and run just 'make' (which
  calls Maven now anyway).
 
+You can also build a self-contained package with all the required libraries
+inside by removing all
+
+	<scope>provided</scope>
+
+tags from pom.xml and re-building the application.
+
 ================================================================
 
 How to run:
 
-Deploy the application on your server with the following JAR files on
-the server's CLASSPATH:
+Deploy the application on your server with the following JAR files
+(and their dependencies) on the server's CLASSPATH (unless you've built
+a self-contained package with all the required libraries inside):
 
 - wsdl4j.jar (1.6.2 is OK) - the WSDL4J project (http://wsdl4j.sf.net/),
 - xbean.jar (2.5.0 is OK) - the Apache XmlBeans (https://xmlbeans.apache.org/),
