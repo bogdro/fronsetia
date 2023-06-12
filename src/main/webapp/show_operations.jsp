@@ -11,46 +11,45 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
-
 <!--
-    SOAP Service Tester - an application for low-level testing of SOAP Services.
-    Copyright (C) 2011-2012 Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+Copyright (C) 2011-2023 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
+This file is part of Fronsetia (Free Online Service Testing Application),
+ a web application that allows testing webservices.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as
+ published by the Free Software Foundation, either version 3 of the
+ License, or (at your option) any later version.
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see http://www.gnu.org/licenses/.
+This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see http://www.gnu.org/licenses/.
 -->
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="en">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, private">
+<meta http-equiv="Pragma" content="no-cache">
+<link rel="stylesheet" href="resources/soaptester.css" type="text/css">
 
-<HTML lang="en">
-<HEAD>
-<META HTTP-EQUIV="Content-Type"       CONTENT="text/html; charset=UTF-8">
-<META HTTP-EQUIV="Content-Language"   CONTENT="en">
-<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
-<meta HTTP-EQUIV="Cache-Control"      CONTENT="no-cache, no-store, private">
-<META HTTP-EQUIV="Pragma"	      CONTENT="no-cache">
-<%--<META HTTP-EQUIV="Expires"            CONTENT="">--%>
-<LINK rel="stylesheet" href="resources/soaptester.css" type="text/css">
+<title> Fronsetia: <%= wsdlLocation %> </title>
 
-<TITLE> SOAP Service Tester - <%= wsdlLocation %> </TITLE>
+<meta name="Author" content="Bogdan D.">
+<meta name="Description" content="Fronsetia - Free Online Service Testing Application">
+<meta name="Keywords" content="SOAP, WSDL, service tester">
+<meta name="Language" content="en">
+<meta name="Generator" content="KWrite/Kate; www.kate-editor.org">
 
-<META NAME="Author" CONTENT="Bogdan D.">
-<META NAME="Description" CONTENT="SOAP Service Tester">
-<META NAME="Keywords" CONTENT="SOAP, WSDL, service tester">
-<META NAME="Language" CONTENT="en">
-<META NAME="Generator" CONTENT="KWrite/Kate; www.kate-editor.org">
+</head><body>
 
-</HEAD><BODY>
-
-<h1 class="c">SOAP Service Tester - operations available at<br>
+<h1 class="c">Fronsetia - operations available at<br>
 	<a href="<%= wsdlLocation %>"><%= wsdlLocation %></a></h1>
 
 <br>
@@ -106,7 +105,7 @@
 	{
 %>
 		<hr>
-		<h2 class="c">SOAP Service Tester /
+		<h2 class="c">Fronsetia /
 		WSDL4J could not find any operations in the given WSDL file.</h2>
 		<br><br>
 <%
@@ -312,5 +311,5 @@ SOAPAction:</textarea>
 
 <%@ include file="footer.html" %>
 
-</BODY>
-</HTML>
+</body>
+</html>

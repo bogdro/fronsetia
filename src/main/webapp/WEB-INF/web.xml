@@ -25,11 +25,8 @@
 
     <!-- General description of your web application -->
 
-    <display-name>SOAP Service Tester</display-name>
-    <description>
-	This application allows testing SOAP services specified by a WSDL
-	file by sending raw XML data to the service.
-    </description>
+    <display-name>Fronsetia</display-name>
+    <description>Fronsetia (Free Online Service Testing Application), a web application that allows testing webservices.</description>
 
 
     <!-- Context initialization parameters that define shared
