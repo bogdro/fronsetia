@@ -37,7 +37,7 @@ You should have received a copy of the GNU Affero General Public License
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, private">
 <meta http-equiv="Pragma" content="no-cache">
-<link rel="stylesheet" href="resources/soaptester.css" type="text/css">
+<link rel="stylesheet" href="resources/fronsetia.css" type="text/css">
 
 <title> Fronsetia: <%= wsdlLocation %> </title>
 
