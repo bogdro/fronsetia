@@ -42,13 +42,13 @@ You should have received a copy of the GNU Affero General Public License
 		<dependency>
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
-			<version>1.6.2</version>
+			<version>1.6.3</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>xmlbeans</groupId>
+			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
-			<version>2.3.0</version>
+			<version>5.1.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -66,7 +66,7 @@ You should have received a copy of the GNU Affero General Public License
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
+			<version>1.2</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -78,7 +78,7 @@ You should have received a copy of the GNU Affero General Public License
 		<dependency>
 			<groupId>org.apache.ws.commons.axiom</groupId>
 			<artifactId>axiom-api</artifactId>
-			<version>1.2.12</version>
+			<version>1.2.15</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -90,7 +90,7 @@ You should have received a copy of the GNU Affero General Public License
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.5</version>
+			<version>1.15</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
