@@ -65,48 +65,70 @@ Alternatively, you can use a <code>make</code> utility and run just <code>make</
 calls Maven now anyway).
 </p>
 <p>
+By default, a minimal package, without all the required libraries inside, is built.
+</p>
+<p>
 You can also build a self-contained package with all the required libraries
 inside by removing all
 </p>
 <pre>	&lt;scope&gt;provided&lt;/scope&gt;</pre>
 <p>
-tags from <code>pom.xml</code> and re-building the application.
+tags from <code>pom.xml</code> and re-building the application (running <code>mvn package</code>).
 </p>
 
 <hr>
 <p>
 How to run:
 </p>
-<p>Deploy the application on your server with the following JAR files
-(and their dependencies) on your server's CLASSPATH (unless you've built a
-self-contained package with all the required libraries inside):
+<ul>
+ <li>If you've built a self-contained package with all the required libraries
+  inside, simply deploy the application on your server.<br><br></li>
+ <li>If you've built a minimal package without all the required libraries inside:<br><br>
+  <ol>
+   <li>Add the JAR files listed in pom.xml in the versions given there (and
+     their dependencies) to your server's CLASSPATH.</li>
+   <li>Re-start your server if necessary.<br></li>
+   <li>Deploy the application on your server.</li>
+  </ol></li>
+</ul>
+<p>
+You can get all the JAR libraries from <a href="https://central.sonatype.com/"
+hreflang="en">Maven Central</a> (as for all Maven libraries) or the respective projects' pages:
 </p>
 <ul>
-	<li> wsdl4j.jar (1.6.2 is OK) - the <a href="http://wsdl4j.sf.net/"
-		hreflang="en">WSDL4J project</a></li>
-	<li> xbean.jar (2.5.0 is OK) - the <a href="https://xmlbeans.apache.org/"
-		hreflang="en">Apache XmlBeans</a></li>
-	<li> httpclient.jar (4.1.1 is OK) - the <a href="https://hc.apache.org/"
-		hreflang="en">Apache HttpComponents</a></li>
-	<li> httpcore.jar (4.1 is OK) - the Apache HttpComponents</li>
-	<li> commons-logging.jar (1.1.1 is OK) - the Apache HttpComponents</li>
-	<li> servlet-api.jar - from your JavaEE servlet container/server</li>
-	<li> axiom.jar (1.2.12 is OK) - <a href="https://ws.apache.org/axiom/"
-		hreflang="en">Apache Axiom</a></li>
-	<li> axis2-saaj.jar (1.6.1 is OK) - <a
-		href="https://axis.apache.org/axis2/java/core/"
-		hreflang="en">Apache Axis2</a></li>
-	<li> commons-codec.jar (1.5 is OK) - <a href="https://commons.apache.org/proper/commons-codec/"
-		hreflang="en">Apache Commons Codec</a></li>
+ <li>wsdl4j.jar - the <a href="http://wsdl4j.sf.net/"
+	hreflang="en">WSDL4J project</a>,</li>
+ <li>xbean.jar - <a href="https://xmlbeans.apache.org/"
+	hreflang="en">Apache XmlBeans</a>,</li>
+ <li>httpclient.jar - <a href="https://hc.apache.org/"
+	hreflang="en">Apache HttpComponents</a>,</li>
+ <li>httpcore.jar - Apache HttpComponents,</li>
+ <li>commons-logging.jar - Apache HttpComponents,</li>
+ <li>commons-codec.jar -
+	<a href="https://commons.apache.org/proper/commons-codec/"
+	hreflang="en">Apache Commons Codec</a>,</li>
+ <li>axiom.jar - <a href="https://ws.apache.org/axiom/"
+	hreflang="en">Apache Axiom</a>,</li>
+ <li>axis2-saaj.jar - <a href="https://axis.apache.org/axis2/java/core/"
+	hreflang="en">Apache Axis2</a>.</li>
 </ul>
+<p>
+The servlet-api.jar should be provided by your JavaEE servlet container/server.
+</p>
+<p>
+The junit.jar dependency (and all other with <code>&lt;scope&gt;test&lt;/scope&gt;</code>)
+are not required to build or run the application.
+</p>
+
 
 <hr>
 <p>
 How to run:
 </p>
 <ol>
- <li>Access the application on the server from a browser</li>
- <li>Type the WSDL address and proceed</li>
+ <li>Access the application on the server from a browser. The exact URL depends
+   on your server and the name you gave the application.</li>
+ <li>Type the WSDL address on the application's main page and proceed.</li>
  <li>Choose the operation to run, fill the data and press the button with
    the operation's name.</li>
 </ol>

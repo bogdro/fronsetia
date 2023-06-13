@@ -5,7 +5,9 @@ This is the INSTALL file for Fronsetia (Free Online Service Testing
 
 How to install:
 
-Deploy the application on your server with the following JAR files
-(and their dependencies) on the server's CLASSPATH (unless you've built
-a self-contained package with all the required libraries inside - see
-the README file).
+Install the required JAR files (and their dependencies) on your server's
+CLASSPATH (unless you've built a self-contained package with all the required
+libraries inside) - see the README file.
+
+Installation of Fronsetia:
+- deploy the WAR file on your application server.
