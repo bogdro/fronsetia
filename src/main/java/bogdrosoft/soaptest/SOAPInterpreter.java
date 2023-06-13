@@ -20,7 +20,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 
-package BogDroSoft.soaptest;
+package bogdrosoft.soaptest;
 
 import java.io.IOException;
 import java.io.StringReader;
