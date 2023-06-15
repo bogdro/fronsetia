@@ -267,24 +267,16 @@ SOAPAction:</textarea>
 
 			<br><br>
 			SOAP body (put your XML data here):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_BODY %>" rows="20" cols="80"
-				<%
-					String operXML = operationsAndXMLs.get (opName);
-					if ( operXML != null
-						&& ! operXML.isEmpty () )
-					{
-				%>
-><%= operXML %></textarea>
-				<%
-					}
-					else
-					{
-				%>
->&lt;<%= opName %>&gt;&lt;/<%= opName %>&gt;</textarea>
-				<%
-					}
-				%>
-
+			<%
+				String operXML = operationsAndXMLs.get (opName);
+				if ( operXML == null
+					|| operXML.isEmpty () )
+				{
+					operXML = "&lt;" + opName + "&gt;&lt;/" + opName + "&gt;";
+				}
+			%>
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_BODY %>"
+				rows="20" cols="80"><%= operXML %></textarea>
 			<br><br>
 			SOAP epilogue (don't modify unless you know what you're doing):<br>
 			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE %>" rows="2" cols="80">
