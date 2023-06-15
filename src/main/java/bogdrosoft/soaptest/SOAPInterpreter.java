@@ -45,7 +45,7 @@ import org.xml.sax.SAXException;
 
 /**
  * SOAPInterpreter - a class for parsing SOAP responses.
- * @author Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+ * @author Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  */
 public class SOAPInterpreter
 {
@@ -75,7 +75,7 @@ public class SOAPInterpreter
 			while (i.hasNext ())
 			{
 				Object o = i.next ();
-				if ( o != null && o instanceof OMElement )
+				if ( o != null && (o instanceof OMElement) )
 				{
 					bodyElements.add ( ((OMElement)o).getLocalName () );
 				}

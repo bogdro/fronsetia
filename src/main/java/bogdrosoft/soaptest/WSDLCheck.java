@@ -62,12 +62,10 @@ import org.w3c.dom.Element;
 
 /**
  * WSDLCheck - a class that checks WSDL files.
- * @author Bogdan 'bogdro' Drozdowski, bogdandr <at> op . pl
+ * @author Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  */
 public class WSDLCheck
 {
-	private static final String empty = "";
-
 	private WSDLReader wsdlReader = null;
 	private SchemaType[] globalElems = null;
 	private String wsdlLocation = null;
@@ -84,7 +82,7 @@ public class WSDLCheck
 	}
 
 	/**
-	 * Gets the oprations from the given WSDL file.
+	 * Gets the operations from the given WSDL file.
 	 * @return a Map of the operations. Operation names are the keys,
 	 * 	skeleton XML strings are the values.
 	 */
@@ -102,7 +100,7 @@ public class WSDLCheck
 	}
 
 	/**
-	 * Gets the oprations' URLs from the given WSDL file.
+	 * Gets the operations' URLs from the given WSDL file.
 	 * @return a Map of the operations. Operation names are the keys,
 	 * 	operation URLs are the values.
 	 */
@@ -117,7 +115,7 @@ public class WSDLCheck
 	}
 
 	/**
-	 * Processes the WSDL file and returns the oprations from the file.
+	 * Processes the WSDL file and returns the operations from the file.
 	 * @return a Map of the operations. Operation names are the keys,
 	 * 	skeleton XML strings are the values.
 	 */
@@ -210,19 +208,28 @@ public class WSDLCheck
 					if ( p != null && (p instanceof Port) )
 					{
 						Port currPort = (Port) p;
-						Binding b = ((Port) p).getBinding();
-						if ( b == null ) continue;
+						Binding b = currPort.getBinding();
+						if ( b == null )
+						{
+							continue;
+						}
 						PortType pt = b.getPortType();
-						if ( pt == null ) continue;
+						if ( pt == null )
+						{
+							continue;
+						}
 						List<?> operations = pt.getOperations ();
-						if ( operations == null ) continue;
+						if ( operations == null )
+						{
+							continue;
+						}
 						List<?> portExtElems = currPort.getExtensibilityElements ();
 						for ( Object op : operations )
 						{
 							if ( op != null && (op instanceof Operation) )
 							{
 								Operation oper = (Operation) op;
-								// first put just the operation names
+								// first, put just the operation names
 								// and root elements
 								String opName = oper.getName ();
 								Input opInput = oper.getInput ();
@@ -232,23 +239,34 @@ public class WSDLCheck
 									continue;
 								}
 								Message mess = opInput.getMessage ();
-								if ( mess == null ) continue;
+								if ( mess == null )
+								{
+									continue;
+								}
 								QName messName = mess.getQName ();
-								if ( messName == null ) continue;
+								if ( messName == null )
+								{
+									continue;
+								}
 								String messLocalName = messName.getLocalPart ();
-								if ( messLocalName == null ) continue;
+								if ( messLocalName == null )
+								{
+									continue;
+								}
 								ret.put (opName, messLocalName);
 								if ( portExtElems != null )
 								{
 									for ( Object extel : currPort.getExtensibilityElements () )
 									{
-										if ( extel != null && (extel instanceof SOAPAddress) )
+										if ( extel != null
+												&& (extel instanceof SOAPAddress) )
 										{
 											operationsAndURLs.put (
 												opName,
 												((SOAPAddress) extel).getLocationURI ());
 										}
-										else if ( extel != null && (extel instanceof SOAP12Address) )
+										else if ( extel != null
+												&& (extel instanceof SOAP12Address) )
 										{
 											operationsAndURLs.put (
 												opName,
@@ -277,7 +295,8 @@ public class WSDLCheck
 	 * @param rootElem The name of the root element in the generated XML template.
 	 * @return the generated XML template.
 	 */
-	private String processXSD (Set<String> schemaLocations, String rootElem, Set<Element> schemaElements)
+	private String processXSD (Set<String> schemaLocations,
+			String rootElem, Set<Element> schemaElements)
 	{
 		if ( globalElems == null )
 		{
@@ -290,11 +309,15 @@ public class WSDLCheck
 			{
 				for ( String schemaFile : schemaLocations )
 				{
-					if ( schemaFile == null ) continue;
+					if ( schemaFile == null )
+					{
+						continue;
+					}
 					try
 					{
-						sdocs.add (XmlObject.Factory.parse (new File (schemaFile),
-							parseOptions));
+						sdocs.add (XmlObject.Factory.parse (
+								new File (schemaFile),
+								parseOptions));
 					}
 					catch (Exception e)
 					{
@@ -306,11 +329,15 @@ public class WSDLCheck
 			{
 				for ( Element schemaElement : schemaElements )
 				{
-					if ( schemaElement == null ) continue;
+					if ( schemaElement == null )
+					{
+						continue;
+					}
 					try
 					{
-						sdocs.add (SchemaDocument.Factory.parse(schemaElement,
-							parseOptions));
+						sdocs.add (SchemaDocument.Factory.parse(
+								schemaElement,
+								parseOptions));
 					}
 					catch (Exception e)
 					{
@@ -329,7 +356,8 @@ public class WSDLCheck
 				try
 				{
 					sts = XmlBeans.compileXsd (schemas,
-						XmlBeans.getBuiltinTypeSystem (), compileOptions);
+						XmlBeans.getBuiltinTypeSystem (),
+						compileOptions);
 				}
 				catch (Exception e)
 				{
@@ -338,7 +366,7 @@ public class WSDLCheck
 
 			if ( sts == null )
 			{
-				return empty;
+				return RequestUtilities.EMPTY_STR;
 			}
 			globalElems = sts.documentTypes();
 		}
@@ -349,6 +377,6 @@ public class WSDLCheck
 				return SampleXmlUtil.createSampleForType (st);
 			}
 		}
-		return empty;
+		return RequestUtilities.EMPTY_STR;
 	}
 }
