@@ -7,15 +7,15 @@
 <%@ page import="bogdrosoft.soaptest.OperationLauncher" %>
 <%@ page import="bogdrosoft.soaptest.SOAPInterpreter" %>
 <%
-String wsdlLocation = request.getParameter (RequestUtilities.reqParNameWSDL);
-String opName = RequestUtilities.getParameter (request, RequestUtilities.reqParNameOpName);
-String soapPrologue = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPPrologue);
-String soapHeader = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPHeader);
-String soapMiddle = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPMiddle);
-String soapXML = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPBody);
-String soapEpilogue = RequestUtilities.getParameter (request, RequestUtilities.reqParNameSOAPEpilogue);
-String soapCType = RequestUtilities.getParameter (request, RequestUtilities.reqParNameCType);
-String proxyPort = RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyPort);
+String wsdlLocation = request.getParameter (RequestUtilities.REQ_PARAM_NAME_WSDL);
+String opName = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_OP_NAME);
+String soapPrologue = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE);
+String soapHeader = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER);
+String soapMiddle = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE);
+String soapXML = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_BODY);
+String soapEpilogue = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE);
+String soapCType = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
+String proxyPort = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_PORT);
 
 OperationLauncher ol = new OperationLauncher ();
 %>
@@ -62,25 +62,25 @@ You should have received a copy of the GNU Affero General Public License
 <h1 class="c">Fronsetia - result of operation</h1>
 <hr>
 WSDL location: <a href="<%= wsdlLocation %>"
-	id="<%= RequestUtilities.reqParNameWSDL %>"><%= wsdlLocation %></a><br>
-Operation name: <code id="<%= RequestUtilities.reqParNameOpName %>"><%= opName %></code><br>
-Protocol name and version: <code id="<%= RequestUtilities.reqParNameProtoName %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProtoName)
-	%>/<%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProtoMajor)
-	%>.<%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProtoMinor) %></code><br>
-Protocol method: <code id="<%= RequestUtilities.reqParNameProtoMethod %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProtoMethod) %></code><br>
-Protocol authentication: user=<code id="<%= RequestUtilities.reqParNameHTTPUser %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameHTTPUser) %></code>,
-	password=<code id="<%= RequestUtilities.reqParNameHTTPPass %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameHTTPPass) %></code>,
-	NT workstation=<code id="<%= RequestUtilities.reqParNameHTTPNTworkstation %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameHTTPNTworkstation) %></code>,
-	NT domain=<code id="<%= RequestUtilities.reqParNameHTTPNTdomain %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameHTTPNTdomain) %></code>
+	id="<%= RequestUtilities.REQ_PARAM_NAME_WSDL %>"><%= wsdlLocation %></a><br>
+Operation name: <code id="<%= RequestUtilities.REQ_PARAM_NAME_OP_NAME %>"><%= opName %></code><br>
+Protocol name and version: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_NAME %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROTO_NAME)
+	%>/<%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR)
+	%>.<%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR) %></code><br>
+Protocol method: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD) %></code><br>
+Protocol authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_HTTP_USER) %></code>,
+	password=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD) %></code>,
+	NT workstation=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION) %></code>,
+	NT domain=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN) %></code>
 	<br>
-Proxy: <code id="<%= RequestUtilities.reqParNameProxyHost %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyHost) %>
+Proxy: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_HOST) %>
 <%
 	if ( ! proxyPort.isEmpty () )
 	{
@@ -90,17 +90,17 @@ Proxy: <code id="<%= RequestUtilities.reqParNameProxyHost %>"
 	}
 %>
 </code><br>
-Proxy authentication: user=<code id="<%= RequestUtilities.reqParNameProxyUser %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyUser) %></code>,
-	password=<code id="<%= RequestUtilities.reqParNameProxyPass %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyPass) %></code>,
-	NT workstation=<code id="<%= RequestUtilities.reqParNameProxyNTworkstation %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyNTworkstation) %></code>,
-	NT domain=<code id="<%= RequestUtilities.reqParNameProxyNTdomain %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameProxyNTdomain) %></code>
+Proxy authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_USER %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_USER) %></code>,
+	password=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD) %></code>,
+	NT workstation=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION) %></code>,
+	NT domain=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN) %></code>
 	<br>
 User-defined request headers:
-<pre id="<%= RequestUtilities.reqParNameHTTPHdrs %>">
+<pre id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>">
 <%
 	try
 	{
@@ -125,7 +125,7 @@ User-defined request headers:
 	}
 %></pre>
 Operation input (HTTP body):
-<pre id="<%= RequestUtilities.reqParNameSOAPBody %>">
+<pre id="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_BODY %>">
 <%= RequestUtilities.makeHTMLSafe (soapPrologue) +
 RequestUtilities.makeHTMLSafe (soapHeader) +
 RequestUtilities.makeHTMLSafe (soapMiddle) +
@@ -133,8 +133,8 @@ RequestUtilities.makeHTMLSafe (soapXML) +
 RequestUtilities.makeHTMLSafe (soapEpilogue) %></pre>
 
 Expected output encoding (used only if can't be detected automatically):
- <code id="<%= RequestUtilities.reqParNameCharset %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.reqParNameCharset) %></code>
+ <code id="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
+	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_CHARSET) %></code>
 
 
 
@@ -145,9 +145,9 @@ Expected output encoding (used only if can't be detected automatically):
 <h2 class="c">Operation result:</h2>
 
 
-HTTP response code: <code id="<%= RequestUtilities.respFieldIDCode %>"
+HTTP response code: <code id="<%= RequestUtilities.RESP_FIELD_ID_CODE %>"
 	><%= (ol.getStatusCode () >= 0)? ol.getStatusCode () : "" %></code><br>
-HTTP response line: <code id="<%= RequestUtilities.respFieldIDStatusLine %>"
+HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 	><%= ol.getStatusLine () %></code><br>
 <%
 	// flush the current page output to the user:
@@ -165,20 +165,20 @@ HTTP response line: <code id="<%= RequestUtilities.respFieldIDStatusLine %>"
 			if ( si.wasFault () )
 			{
 %>
-				<span id="<%= RequestUtilities.respFieldIDHasFault %>"
+				<span id="<%= RequestUtilities.RESP_FIELD_ID_HAS_FAULT %>"
 					class="soapfault">YES</span><br>
 <%
 			}
 			else
 			{
 %>
-				<span id="<%= RequestUtilities.respFieldIDHasFault %>"
+				<span id="<%= RequestUtilities.RESP_FIELD_ID_HAS_FAULT %>"
 					class="nosoapfault">NO</span><br>
 <%
 			}
 %>
 			SOAP response type (elements): <span
-				id="<%= RequestUtilities.respFieldIDBodyElements %>">
+				id="<%= RequestUtilities.RESP_FIELD_ID_BODY_ELEMENTS %>">
 <%
 			List<String> respTypes = si.getBodyElements ();
 			if ( respTypes != null )
@@ -222,7 +222,7 @@ HTTP response headers:
 		if ( hi != null )
 		{
 %>
-<pre id="<%= RequestUtilities.respFieldIDHeaders %>">
+<pre id="<%= RequestUtilities.RESP_FIELD_ID_HEADERS %>">
 <%
 			while (hi.hasNext ())
 			{
@@ -235,7 +235,7 @@ HTTP response headers:
 %>
 <br>
 HTTP response body:
-<pre id="<%= RequestUtilities.respFieldIDBody %>">
+<pre id="<%= RequestUtilities.RESP_FIELD_ID_BODY %>">
 <%
 		out.println (RequestUtilities.makeHTMLSafe (resp));
 %></pre>

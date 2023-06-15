@@ -7,7 +7,7 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="bogdrosoft.soaptest.WSDLCheck" %>
 <%@ page import="bogdrosoft.soaptest.RequestUtilities" %>
-<% String wsdlLocation = request.getParameter (RequestUtilities.reqParNameWSDL); %>
+<% String wsdlLocation = request.getParameter (RequestUtilities.REQ_PARAM_NAME_WSDL); %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
@@ -121,11 +121,11 @@ You should have received a copy of the GNU Affero General Public License
 			<div class="httpdatablock">
 			<h3 class="important c">HTTP / HTTPS</h3>
 
-			<input type="hidden" name="<%= RequestUtilities.reqParNameOpName %>"
+			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_OP_NAME %>"
 				value="<%= opName %>">
-			<input type="hidden" name="<%= RequestUtilities.reqParNameWSDL %>"
+			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_WSDL %>"
 				value="<%= wsdlLocation %>">
-			<input type="hidden" name="<%= RequestUtilities.reqParNameOpURL %>"
+			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_OP_URL %>"
 				value="<%= operationsAndURLs.get (opName) %>">
 
 			The following headers are sent by default. To change them, unselect them
@@ -134,27 +134,27 @@ You should have received a copy of the GNU Affero General Public License
 			<q>Additional headers</q>, you will get an error.
 			<ul>
 				<li><input type="checkbox"
-					name="<%= RequestUtilities.reqParNameSendHdrContentLength %>"
+					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH %>"
 					class="noindent"
 					checked="checked"> Send default <code>Content-Length</code> header</li>
 				<li><input type="checkbox"
-					name="<%= RequestUtilities.reqParNameSendHdrHost %>"
+					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST %>"
 					class="noindent"
 					checked="checked"> Send default <code>Host</code> header</li>
 				<li><input type="checkbox"
-					name="<%= RequestUtilities.reqParNameSendHdrConnection %>"
+					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION %>"
 					class="noindent"
 					checked="checked"> Send default <code>Connection</code> header</li>
 				<li><input type="checkbox"
-					name="<%= RequestUtilities.reqParNameSendHdrUserAgent %>"
+					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT %>"
 					class="noindent"
 					checked="checked"> Send default <code>User-Agent</code> header</li>
 				<li><input type="checkbox"
-					name="<%= RequestUtilities.reqParNameSendHdrContentType %>"
+					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE %>"
 					class="noindent"
 					checked="checked"> Send default <code>Content-Type</code> header</li>
 			</ul>
-			<input type="checkbox" name="<%= RequestUtilities.reqParNameSendNoHdr %>"
+			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS %>"
 				class="noindent"> Remove all default headers (overrides the above list)
 
 			<br><br>
@@ -162,16 +162,16 @@ You should have received a copy of the GNU Affero General Public License
 			as <code>NAME/MAJOR.MINOR</code>, like <code>HTTP/1.1</code>):<br>
 			<div class="inputblock">
 			Protocol name: <input type="text"
-				name="<%= RequestUtilities.reqParNameProtoName %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_NAME %>"
 				value="HTTP" size="60" class="noindent"><br>
 			Protocol major version: <input type="text"
-				name="<%= RequestUtilities.reqParNameProtoMajor %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR %>"
 				value="1" size="60" class="noindent"><br>
 			Protocol minor version: <input type="text"
-				name="<%= RequestUtilities.reqParNameProtoMinor %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR %>"
 				value="1" size="60" class="noindent"><br>
 			Protocol method:
-				<select name="<%= RequestUtilities.reqParNameProtoMethod %>">
+				<select name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>">
 					<option value="DELETE">DELETE</option>
 					<option value="GET">GET</option>
 					<option value="HEAD">HEAD</option>
@@ -184,29 +184,29 @@ You should have received a copy of the GNU Affero General Public License
 
 			<br>
 			Content-Type (without the charset):
-			<input type="text" name="<%= RequestUtilities.reqParNameCType %>"
-				value="<%= RequestUtilities.defContentType %>" size="60">
+			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE %>"
+				value="<%= RequestUtilities.DEFAULT_CONTENT_TYPE %>" size="60">
 			<br><br>
 
 			Additional headers (one per line, example: <code>SOAPAction: "/someaction"</code>):
 			<br>
-			<textarea name="<%= RequestUtilities.reqParNameHTTPHdrs %>" rows="5" cols="80">
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>" rows="5" cols="80">
 SOAPAction:</textarea>
 
 			<br><br>
 			Authentication for the service:<br>
 			<div class="inputblock">
 			Username: <input type="text"
-				name="<%= RequestUtilities.reqParNameHTTPUser %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>"
 				value="" size="60" class="noindent"><br>
 			Password: <input type="text"
-				name="<%= RequestUtilities.reqParNameHTTPPass %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD %>"
 				value="" size="60" class="noindent"><br>
 			Workstation name (NT logins only): <input type="text"
-				name="<%= RequestUtilities.reqParNameHTTPNTworkstation %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION %>"
 				value="" size="60" class="noindent"><br>
 			Domain name (NT logins only): <input type="text"
-				name="<%= RequestUtilities.reqParNameHTTPNTdomain %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN %>"
 				value="" size="60" class="noindent"><br>
 			</div>
 			<br>
@@ -214,30 +214,30 @@ SOAPAction:</textarea>
 			not your browser, should use to connect to the given service):
 			<div class="inputblock">
 			Host: <input type="text"
-				name="<%= RequestUtilities.reqParNameProxyHost %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
 				value="" size="60" class="noindent"><br>
 			Port: <input type="text"
-				name="<%= RequestUtilities.reqParNameProxyPort %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PORT %>"
 				value="" size="60" class="noindent"><br>
 			</div>
 			<br>
 			Proxy authentication:
 			<div class="inputblock">
 			Username: <input type="text"
-				name="<%= RequestUtilities.reqParNameProxyUser %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_USER %>"
 				value="" size="60" class="noindent"><br>
 			Password: <input type="text"
-				name="<%= RequestUtilities.reqParNameProxyPass %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD %>"
 				value="" size="60" class="noindent"><br>
 			Workstation name (NT logins only): <input type="text"
-				name="<%= RequestUtilities.reqParNameProxyNTworkstation %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION %>"
 				value="" size="60" class="noindent"><br>
 			Domain name (NT logins only): <input type="text"
-				name="<%= RequestUtilities.reqParNameProxyNTdomain %>"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN %>"
 				value="" size="60" class="noindent"><br>
 			</div>
 
-			<input type="checkbox" name="<%= RequestUtilities.reqParNameAcceptAllSSL %>"
+			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL %>"
 				checked="checked" class="noindent">Accept all SSL certificates
 				and authentication (applies both to the service and to the proxy)
 			<br><br>
@@ -250,24 +250,24 @@ SOAPAction:</textarea>
 
 			<br><br>
 			SOAP prologue (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.reqParNameSOAPPrologue %>" rows="2" cols="80">
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE %>" rows="2" cols="80">
 &lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"&gt;
 &lt;soapenv:Header&gt;</textarea>
 
 			<br><br>
 			SOAP header (usually you don't need to put anything here):<br>
-			<textarea name="<%= RequestUtilities.reqParNameSOAPHeader %>" rows="5"
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER %>" rows="5"
 				cols="80"></textarea>
 
 			<br><br>
 			Middle (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.reqParNameSOAPMiddle %>" rows="2" cols="80">
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE %>" rows="2" cols="80">
 &lt;/soapenv:Header&gt;
 &lt;soapenv:Body&gt;</textarea>
 
 			<br><br>
 			SOAP body (put your XML data here):<br>
-			<textarea name="<%= RequestUtilities.reqParNameSOAPBody %>" rows="20" cols="80"
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_BODY %>" rows="20" cols="80"
 				<%
 					String operXML = operationsAndXMLs.get (opName);
 					if ( operXML != null
@@ -287,7 +287,7 @@ SOAPAction:</textarea>
 
 			<br><br>
 			SOAP epilogue (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.reqParNameSOAPEpilogue %>" rows="2" cols="80">
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE %>" rows="2" cols="80">
 &lt;/soapenv:Body&gt;
 &lt;/soapenv:Envelope&gt;</textarea>
 
@@ -295,10 +295,10 @@ SOAPAction:</textarea>
 
 			<br><br>
 			Reply character set (if can't be detected automatically):
-			<input type="text" name="<%= RequestUtilities.reqParNameCharset %>"
-				value="<%= RequestUtilities.defaultCharset %>" size="60">
+			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
+				value="<%= RequestUtilities.DEFAULT_CHARSET %>" size="60">
 			<br><br>
-			<input type="checkbox" name="<%= RequestUtilities.reqParNameSOAPRespSplit %>"
+			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_SPLIT_RESP %>"
 				checked="checked">Split response into lines
 
 			<br><br>

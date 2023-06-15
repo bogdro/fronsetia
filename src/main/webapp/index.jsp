@@ -61,7 +61,7 @@ the SOAP body field will be filled with the operation's name tags.
 
 <form method="GET" action="show_operations.jsp" class="c">
 
-WSDL location: <input type="text" size="60" name="<%= RequestUtilities.reqParNameWSDL %>"><br>
+WSDL location: <input type="text" size="60" name="<%= RequestUtilities.REQ_PARAM_NAME_WSDL %>"><br>
 <br>
 <input type="reset" value="Clear">
 <input type="submit" value="Find services">
