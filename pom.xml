@@ -27,7 +27,7 @@ You should have received a copy of the GNU Affero General Public License
 
 	<groupId>bogdrosoft.fronsetia</groupId>
 	<artifactId>fronsetia-web</artifactId>
-	<version>0.5</version> <!-- FRONSETIA_VERSION -->
+	<version>0.6</version> <!-- FRONSETIA_VERSION -->
 	<packaging>war</packaging>
 
 	<name>Fronsetia Webapp</name>

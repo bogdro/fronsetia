@@ -1,3 +1,27 @@
+2023-06-15	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
+
+	* Fronsetia version 0.6
+	  Code readibility updates and programming style fixes. Fixed Eclipse
+	  warnings. Renamed the remaining elements. Documentation fixes. Other
+	  cleanup and small changes.
+	* pom.xml: Updated some dependencies' versions.
+	* src/main/java/bogdrosoft: Renamed the package.
+	* bogdrosoft/soaptest/*.java: Code style and readability fixes, naming
+	  updated to match Java coding style, javadoc fixes.
+	* bogdrosoft/soaptest/*.java, webapp/*.jsp: Renamed the parameters.
+	* perform_operation.jsp, WSDLCheck.java: Fixed type parameters.
+	* perform_operation.jsp: Typo fixes.
+	* show_operations.jsp: Simplified generating the SOAP body <textarea>.
+	* web.xml: Cleaned the file.
+	* webapp/resources/fronsetia.css: Renamed the CSS.
+	* INSTALL-Fronsetia.txt: Removed duplicate information and made the
+	  contents same as on the webpage.
+	* README, src/main/webapp/resources/readme.html: Clarified building
+	  and running the application. Removed the library version numbers
+	  and clarified the dependencies. Clarified using the application.
+	* webapp/resources/install.html: Fixed the installation procedure.
+	* webapp/resources/readme.html: Updated compiling and links.
+
 2023-06-12	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
 
 	* Fronsetia version 0.5
