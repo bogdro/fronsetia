@@ -6,6 +6,7 @@
 <%@ page import="bogdrosoft.soaptest.RequestUtilities" %>
 <%@ page import="bogdrosoft.soaptest.OperationLauncher" %>
 <%@ page import="bogdrosoft.soaptest.SOAPInterpreter" %>
+<%@ page import="org.apache.http.HeaderIterator" %>
 <%
 String wsdlLocation = request.getParameter (RequestUtilities.REQ_PARAM_NAME_WSDL);
 String opName = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_OP_NAME);
@@ -106,7 +107,7 @@ User-defined request headers:
 	{
 		ol.prepare (request);
 		ol.perform (request);
-		Iterator reqhi = ol.getReqHeaders ();
+		HeaderIterator reqhi = ol.getReqHeaders ();
 		out.flush ();
 		while (reqhi.hasNext ())
 		{
@@ -218,7 +219,7 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 HTTP response headers:
 <%
 		out.flush ();
-		Iterator hi = ol.getRespHeaders ();
+		HeaderIterator hi = ol.getRespHeaders ();
 		if ( hi != null )
 		{
 %>

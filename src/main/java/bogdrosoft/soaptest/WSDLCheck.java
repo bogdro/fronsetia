@@ -168,7 +168,7 @@ public class WSDLCheck
 								{
 									if ( el != null && (el instanceof List) )
 									{
-										for ( Object lel : (List)el )
+										for ( Object lel : (List<?>)el )
 										{
 											if ( lel != null &&
 												(lel instanceof SchemaReference) )
