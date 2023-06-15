@@ -205,13 +205,13 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 		catch (NoClassDefFoundError ncdfe)
 		{
 %>
-			Unable to get reponse SOAP status and type - axiom.jar or axis2-saaj.jar not installed.
+			Unable to get response SOAP status and type - axiom.jar or axis2-saaj.jar not installed or not usable.
 <%
 		}
 		catch (Exception ex)
 		{
 %>
-			Unable to get reponse SOAP status and type.
+			Unable to get response SOAP status and type.
 <%
 		}
 %>
