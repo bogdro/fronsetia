@@ -29,14 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletRequest;
 
 import org.apache.http.Header;
@@ -67,11 +60,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.client.params.AuthPolicy;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -105,27 +94,6 @@ public class OperationLauncher
 	private String soapCType;
 	private String responseBody;
 	private String respCharset;
-
-	private static final X509TrustManager ACCEPT_ALL_TM = new X509TrustManager()
-	{
-		@Override
-		public void checkClientTrusted (X509Certificate[] xcs, String string)
-			throws CertificateException
-		{
-		}
-
-		@Override
-		public void checkServerTrusted (X509Certificate[] xcs, String string)
-			throws CertificateException
-		{
-		}
-
-		@Override
-		public X509Certificate[] getAcceptedIssuers ()
-		{
-			return null;
-		}
-	};
 
 	/**
 	 * Prepare data for the operation specified by the request.
@@ -250,7 +218,7 @@ public class OperationLauncher
 		if ( RequestUtilities.hasParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL) )
 		{
-			hc = wrapClientForSSL (hc, new int[] {servicePortNumber, proxyPortNumber});
+			hc = HttpsWrapper.wrapClientForSSL (hc, new int[] {servicePortNumber, proxyPortNumber});
 		}
 		String method = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD).toUpperCase ();
@@ -586,54 +554,4 @@ public class OperationLauncher
 		return responseBody;
 	}
 
-	/**
-	 * Creates an 'accept all SSL' HttpClient.
-	 * See http://tech.chitgoks.com/2011/04/24/how-to-avoid-javax-net-ssl-sslpeerunverifiedexception-peer-not-authenticated-problem-using-apache-httpclient/
-	 * @param base the instance to base on.
-	 * @return a HttpClient that accepts all SSL connections.
-	 */
-	private static HttpClient wrapClientForSSL (HttpClient base, int[] ports)
-	{
-		if ( base == null )
-		{
-			base = new DefaultHttpClient ();
-		}
-		try
-		{
-			SSLContext ctx = SSLContext.getInstance ("TLS");
-			ctx.init (null, new TrustManager[]{ACCEPT_ALL_TM}, null);
-			SSLSocketFactory ssf = new SSLSocketFactory (ctx,
-				SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-			ClientConnectionManager ccm = base.getConnectionManager ();
-			SchemeRegistry sr = ccm.getSchemeRegistry ();
-			// always include the default port, because the WSDL can provide
-			// just the "https" scheme without the port:
-			sr.register (new Scheme ("https", 443, ssf));
-			// add any additional provided ports:
-			for ( int port : ports )
-			{
-				if ( port != -1 && port != 443 )
-				{
-					sr.register (new Scheme ("https", port, ssf));
-				}
-			}
-			HttpClient ret = new DefaultHttpClient (ccm);
-			// copy the already-set fields:
-			((AbstractHttpClient)ret).setParams (base.getParams());
-			if ( base instanceof AbstractHttpClient )
-			{
-				((AbstractHttpClient)ret).setCredentialsProvider (
-					((AbstractHttpClient)base).getCredentialsProvider ());
-			}
-			return ret;
-		}
-		catch (NoSuchAlgorithmException nsaex)
-		{
-			return null;
-		}
-		catch (KeyManagementException kmex)
-		{
-			return null;
-		}
-	}
 }
