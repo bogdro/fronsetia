@@ -1,6 +1,32 @@
+/*
+ * Fronsetia - the CSS style sheet.
+ *
+ * Copyright (C) 2011-2023 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
+ *
+ * This file is part of Fronsetia (Free Online Service Testing Application),
+ *  a web application that allows testing webservices.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see http://www.gnu.org/licenses/.
+ */
+
+/* A winter-blue theme */
+
+/* CSS 1 (most) */
+
 body		{
 			/*font-family: sans-serif, serif, arial;*/
-			background-color: #87CEEB;
+			background-color: #87ceeb;
 			color: black;
 			text-align: justify;
 		}
@@ -28,7 +54,7 @@ a:active	{
 
 pre		{
 /* 			font-family: monospace, "courier new", courier; */
-			background-color: #D0FFFF;
+			background-color: #d0ffff;
 			color: black;
 			overflow: scroll;
 		}
@@ -56,7 +82,7 @@ pre a:active	{
 
 code, kbd	{
 /* 			font-family: monospace, "courier new", courier; */
-			background-color: #A0EEEE;
+			background-color: #a0eeee;
 			color: black;
 		}
 
@@ -156,14 +182,17 @@ td		{
 			padding: 10px 10px 10px 10px;
 		}
 
-.httpdatablock input, .soapdatablock input,
-.httpdatablock textarea, .soapdatablock textarea,
+.httpdatablock input,
+.soapdatablock input,
+.httpdatablock textarea,
+.soapdatablock textarea,
 .inputblock
 		{
 			margin-left: 50px;
 		}
 
-input.noindent, textarea.noindent
+input.noindent,
+textarea.noindent
 		{
 			margin-left: 0px;
 		}
@@ -182,6 +211,7 @@ input.noindent, textarea.noindent
 /* CSS 2 */
 @media print {
 
+/* Print only in black & white, just in case */
   body		{
 			text-align: justify;
 			background-color: white;
@@ -209,7 +239,6 @@ input.noindent, textarea.noindent
 			color: black;
 		}
 
-
   .noprint	{	display: none;			}
 
   acronym, abbr	{	border-bottom: none;		}
@@ -221,11 +250,11 @@ input.noindent, textarea.noindent
   td		{	page-break-inside: avoid;	}
   hr		{	display: none;			}
   img		{	display: none;			}
-
 }
 
 @media aural {
 
+/* Assign some defaults: */
   body		{
   			pitch-range: 50;
   			volume: soft;
@@ -256,7 +285,4 @@ input.noindent, textarea.noindent
   		}
 
   pre,code,kbd	{	speak-punctuation: code;	}
-
-
 }
-
