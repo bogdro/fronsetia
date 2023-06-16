@@ -1,8 +1,6 @@
 <%@ page language="java" session="false" %>
 <%@ page import="bogdrosoft.fronsetia.WSDLCheck" %>
 <%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="java.io.StringWriter" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page import="java.util.Map" %>
@@ -81,17 +79,9 @@ You should have received a copy of the GNU Affero General Public License
 	{
 %>
 		Exception caught while parsing the WSDL:
-		<pre>
-<%
-		StringWriter sw = new StringWriter ();
-		ex.printStackTrace (new PrintWriter (sw));
-		out.println (ex);
-%>
-
-<%
-		out.println (sw.toString ());
-%>
-		</pre>
+		<pre><%
+		RequestUtilities.printException(ex, out);
+%></pre>
 <%
 	}
 
@@ -129,7 +119,7 @@ You should have received a copy of the GNU Affero General Public License
 				value="<%= operationsAndURLs.get (opName) %>">
 
 			The following headers are sent by default. To change them, unselect them
-			here and put your vesrions in the <q>Additional headers</q>
+			here and put your versions in the <q>Additional headers</q>
 			area below. If you put any of the selected headers in the
 			<q>Additional headers</q>, you will get an error.
 			<ul>

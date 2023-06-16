@@ -22,7 +22,12 @@
 
 package bogdrosoft.fronsetia;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import javax.servlet.ServletRequest;
+import javax.servlet.jsp.JspWriter;
 
 /**
  * RequestUtilities - a utility class for HTTP requests.
@@ -218,5 +223,25 @@ public class RequestUtilities
 			return false;
 		}
 		return req.getParameter (name) != null;
+	}
+
+	/**
+	 * Prints the given exception on a JSP page.
+	 * @param ex the exception to print.
+	 * @param out the writer associated with the JSP page to display the exception on.
+	 */
+	public static void printException (Exception ex, JspWriter out)
+	{
+		StringWriter sw = new StringWriter ();
+		ex.printStackTrace (new PrintWriter (sw));
+		try
+		{
+			out.println (ex);
+			out.println (sw.toString ());
+		}
+		catch (IOException e)
+		{
+			// don't display exceptions about displaying exceptions
+		}
 	}
 }

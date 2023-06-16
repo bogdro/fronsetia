@@ -2,9 +2,6 @@
 <%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
 <%@ page import="bogdrosoft.fronsetia.OperationLauncher" %>
 <%@ page import="bogdrosoft.fronsetia.SOAPInterpreter" %>
-<%@ page import="java.io.PrintWriter" %>
-<%@ page import="java.io.StringWriter" %>
-<%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.http.HeaderIterator" %>
 <%
@@ -119,10 +116,7 @@ User-defined request headers:
 	{
 %>Exception occurred while performing the operation or displaying input parameters:
 <%
-		StringWriter sw = new StringWriter ();
-		ex.printStackTrace (new PrintWriter (sw));
-		out.println (ex);
-		out.println (sw.toString ());
+		RequestUtilities.printException(ex, out);
 	}
 %></pre>
 Operation input (HTTP body):
@@ -147,7 +141,7 @@ Expected output encoding (used only if can't be detected automatically):
 
 
 HTTP response code: <code id="<%= RequestUtilities.RESP_FIELD_ID_CODE %>"
-	><%= (ol.getStatusCode () >= 0)? ol.getStatusCode () : "" %></code><br>
+	><%= (ol.getStatusCode () >= 0)? String.valueOf(ol.getStatusCode ()) : "" %></code><br>
 HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 	><%= ol.getStatusLine () %></code><br>
 <%
@@ -246,10 +240,7 @@ HTTP response body:
 	{
 %><br><pre>Exception occurred while displaying output data:
 <%
-		StringWriter sw = new StringWriter ();
-		ex.printStackTrace (new PrintWriter (sw));
-		out.println (ex);
-		out.println (sw.toString ());
+		RequestUtilities.printException(ex, out);
 %></pre>
 <%
 	}
