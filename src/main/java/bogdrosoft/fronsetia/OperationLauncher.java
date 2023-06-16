@@ -296,87 +296,27 @@ public class OperationLauncher
 					if ( ! RequestUtilities.hasParameter (request,
 						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH) )
 					{
-						for ( int i = 0; i < ahe.size (); i++ )
-						{
-							Header h = ahe.get (i);
-							if ( h == null )
-							{
-								continue;
-							}
-							if ( h.getName ().equals (HTTP.CONTENT_LEN) )
-							{
-								httpRequest.removeHeader (ahe.get (i));
-								break;
-							}
-						}
+						removeHeader (httpRequest, ahe, HTTP.CONTENT_LEN);
 					}
 					if ( ! RequestUtilities.hasParameter (request,
 						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST) )
 					{
-						for ( int i = 0; i < ahe.size (); i++ )
-						{
-							Header h = ahe.get (i);
-							if ( h == null )
-							{
-								continue;
-							}
-							if ( h.getName ().equals (HTTP.TARGET_HOST) )
-							{
-								httpRequest.removeHeader (ahe.get (i));
-								break;
-							}
-						}
+						removeHeader (httpRequest, ahe, HTTP.TARGET_HOST);
 					}
 					if ( ! RequestUtilities.hasParameter (request,
 						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION) )
 					{
-						for ( int i = 0; i < ahe.size (); i++ )
-						{
-							Header h = ahe.get (i);
-							if ( h == null )
-							{
-								continue;
-							}
-							if ( h.getName ().equals (HTTP.CONN_DIRECTIVE) )
-							{
-								httpRequest.removeHeader (ahe.get (i));
-								break;
-							}
-						}
+						removeHeader (httpRequest, ahe, HTTP.CONN_DIRECTIVE);
 					}
 					if ( ! RequestUtilities.hasParameter (request,
 						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT) )
 					{
-						for ( int i = 0; i < ahe.size (); i++ )
-						{
-							Header h = ahe.get (i);
-							if ( h == null )
-							{
-								continue;
-							}
-							if ( h.getName ().equals (HTTP.USER_AGENT) )
-							{
-								httpRequest.removeHeader (ahe.get (i));
-								break;
-							}
-						}
+						removeHeader (httpRequest, ahe, HTTP.USER_AGENT);
 					}
 					if ( ! RequestUtilities.hasParameter (request,
 						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE) )
 					{
-						for ( int i = 0; i < ahe.size (); i++ )
-						{
-							Header h = ahe.get (i);
-							if ( h == null )
-							{
-								continue;
-							}
-							if ( h.getName ().equals (HTTP.CONTENT_TYPE) )
-							{
-								httpRequest.removeHeader (ahe.get (i));
-								break;
-							}
-						}
+						removeHeader (httpRequest, ahe, HTTP.CONTENT_TYPE);
 					}
 				}
 				// now add the user-provided headers, like >SOAPAction: "Some-URI"<
@@ -554,4 +494,32 @@ public class OperationLauncher
 		return responseBody;
 	}
 
+	/**
+	 * Removes the given header from the request.
+	 * @param httpRequest the request to remove the header from.
+	 * @param ahe the current list of headers.
+	 * @param header the header to remove.
+	 */
+	private static void removeHeader(HttpRequest httpRequest,
+			List<Header> ahe, String header)
+	{
+		if (httpRequest == null || ahe == null || header == null)
+		{
+			return;
+		}
+		int size = ahe.size();
+		for ( int i = 0; i < size; i++ )
+		{
+			Header h = ahe.get (i);
+			if ( h == null )
+			{
+				continue;
+			}
+			if ( header.equals(h.getName()) )
+			{
+				httpRequest.removeHeader(h);
+				break;
+			}
+		}
+	}
 }
