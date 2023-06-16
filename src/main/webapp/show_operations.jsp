@@ -5,8 +5,8 @@
 <%@ page import="java.util.HashSet" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
-<%@ page import="bogdrosoft.soaptest.WSDLCheck" %>
-<%@ page import="bogdrosoft.soaptest.RequestUtilities" %>
+<%@ page import="bogdrosoft.fronsetia.WSDLCheck" %>
+<%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
 <% String wsdlLocation = request.getParameter (RequestUtilities.REQ_PARAM_NAME_WSDL); %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"

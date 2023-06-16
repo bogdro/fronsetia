@@ -3,9 +3,9 @@
 <%@ page import="java.io.StringWriter" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="java.util.List" %>
-<%@ page import="bogdrosoft.soaptest.RequestUtilities" %>
-<%@ page import="bogdrosoft.soaptest.OperationLauncher" %>
-<%@ page import="bogdrosoft.soaptest.SOAPInterpreter" %>
+<%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
+<%@ page import="bogdrosoft.fronsetia.OperationLauncher" %>
+<%@ page import="bogdrosoft.fronsetia.SOAPInterpreter" %>
 <%@ page import="org.apache.http.HeaderIterator" %>
 <%
 String wsdlLocation = request.getParameter (RequestUtilities.REQ_PARAM_NAME_WSDL);

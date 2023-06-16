@@ -20,7 +20,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 
-package bogdrosoft.soaptest;
+package bogdrosoft.fronsetia;
 
 import javax.servlet.ServletRequest;
 
