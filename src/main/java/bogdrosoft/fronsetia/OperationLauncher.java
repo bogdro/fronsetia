@@ -449,19 +449,12 @@ public class OperationLauncher
 	 */
 	public String getStatusLine ()
 	{
-		if ( respStatus == null && hr == null )
+		StatusLine sl = getResponseStatusLine();
+		if (sl == null)
 		{
 			return RequestUtilities.EMPTY_STR;
 		}
-		if ( respStatus == null )
-		{
-			respStatus = hr.getStatusLine ();
-			if ( respStatus == null )
-			{
-				return RequestUtilities.EMPTY_STR;
-			}
-		}
-		return respStatus.toString ();
+		return sl.toString ();
 	}
 
 	/**
@@ -470,17 +463,10 @@ public class OperationLauncher
 	 */
 	public int getStatusCode ()
 	{
-		if ( respStatus == null && hr == null )
+		StatusLine sl = getResponseStatusLine();
+		if (sl == null)
 		{
 			return -1;
-		}
-		if ( respStatus == null )
-		{
-			respStatus = hr.getStatusLine ();
-			if ( respStatus == null )
-			{
-				return -1;
-			}
 		}
 		return respStatus.getStatusCode ();
 	}
@@ -492,6 +478,23 @@ public class OperationLauncher
 	public String getResponseBody ()
 	{
 		return responseBody;
+	}
+
+	/**
+	 * Returns the current HTTP response status line.
+	 * @return the current HTTP response status line.
+	 */
+	private StatusLine getResponseStatusLine()
+	{
+		if ( respStatus == null && hr == null )
+		{
+			return null;
+		}
+		if ( respStatus == null )
+		{
+			respStatus = hr.getStatusLine ();
+		}
+		return respStatus;
 	}
 
 	/**
