@@ -31,13 +31,14 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 /**
  * HttpsWrapper - a class for providing TLS/SSL to HttpClients.
@@ -45,8 +46,49 @@ import org.apache.http.impl.client.DefaultHttpClient;
  */
 public class HttpsWrapper
 {
-	private static final X509TrustManager ACCEPT_ALL_TM = new X509TrustManager()
+	/**
+	 * Creates an 'accept all TLS/SSL' HttpClient.
+	 * See http://tech.chitgoks.com/2011/04/24/how-to-avoid-javax-net-ssl-sslpeerunverifiedexception-peer-not-authenticated-problem-using-apache-httpclient/
+	 * @param base the instance to base on.
+	 * @param ports the ports to apply the connection scheme to.
+	 * @return a HttpClientConnectionManager that accepts all TLS/SSL connections, or NULL in case of errors.
+	 */
+	public static HttpClientConnectionManager createSecureConnManager()
 	{
+		try
+		{
+			PlainConnectionSocketFactory plainsf =
+					PlainConnectionSocketFactory.getSocketFactory();
+			SSLContext ctx = SSLContext.getInstance ("TLS");
+			ctx.init (null, new TrustManager[]{AcceptAllTrustManager.INSTANCE}, null);
+			SSLConnectionSocketFactory ssf = new SSLConnectionSocketFactory
+					(ctx, NoopHostnameVerifier.INSTANCE);
+			Registry<ConnectionSocketFactory> r =
+					RegistryBuilder.<ConnectionSocketFactory>create()
+			        .register("http", plainsf)
+			        .register("https", ssf)
+			        .build();
+			HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(r);
+			return cm;
+		}
+		catch (NoSuchAlgorithmException nsaex)
+		{
+			return null;
+		}
+		catch (KeyManagementException kmex)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * An "accept all TLS/SSL certificates" trust manager.
+	 */
+	private static class AcceptAllTrustManager implements X509TrustManager
+	{
+		public static final AcceptAllTrustManager INSTANCE = new AcceptAllTrustManager();
+		private AcceptAllTrustManager() {}
+
 		@Override
 		public void checkClientTrusted (X509Certificate[] xcs, String string)
 			throws CertificateException
@@ -61,58 +103,6 @@ public class HttpsWrapper
 
 		@Override
 		public X509Certificate[] getAcceptedIssuers ()
-		{
-			return null;
-		}
-	};
-
-	/**
-	 * Creates an 'accept all TLS/SSL' HttpClient.
-	 * See http://tech.chitgoks.com/2011/04/24/how-to-avoid-javax-net-ssl-sslpeerunverifiedexception-peer-not-authenticated-problem-using-apache-httpclient/
-	 * @param base the instance to base on.
-	 * @param ports the ports to apply the connection scheme to.
-	 * @return a HttpClient that accepts all TLS/SSL connections, or NULL in case of errors.
-	 */
-	public static HttpClient wrapClientForSSL (HttpClient base, int[] ports)
-	{
-		if ( base == null )
-		{
-			base = new DefaultHttpClient ();
-		}
-		try
-		{
-			SSLContext ctx = SSLContext.getInstance ("TLS");
-			ctx.init (null, new TrustManager[]{ACCEPT_ALL_TM}, null);
-			SSLSocketFactory ssf = new SSLSocketFactory (ctx,
-				SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-			ClientConnectionManager ccm = base.getConnectionManager ();
-			SchemeRegistry sr = ccm.getSchemeRegistry ();
-			// always include the default port, because the WSDL can provide
-			// just the "https" scheme without the port:
-			sr.register (new Scheme ("https", 443, ssf));
-			// add any additional provided ports:
-			for ( int i = 0; i < ports.length; i++ )
-			{
-				if ( ports[i] != -1 && ports[i] != 443 )
-				{
-					sr.register (new Scheme ("https", ports[i], ssf));
-				}
-			}
-			HttpClient ret = new DefaultHttpClient (ccm);
-			// copy the already-set fields:
-			((AbstractHttpClient)ret).setParams (base.getParams());
-			if ( base instanceof AbstractHttpClient )
-			{
-				((AbstractHttpClient)ret).setCredentialsProvider (
-					((AbstractHttpClient)base).getCredentialsProvider ());
-			}
-			return ret;
-		}
-		catch (NoSuchAlgorithmException nsaex)
-		{
-			return null;
-		}
-		catch (KeyManagementException kmex)
 		{
 			return null;
 		}

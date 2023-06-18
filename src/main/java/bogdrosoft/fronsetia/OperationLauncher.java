@@ -24,22 +24,16 @@ package bogdrosoft.fronsetia;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletRequest;
 
-import org.apache.http.Header;
+import org.apache.http.Consts;
 import org.apache.http.HeaderElement;
 import org.apache.http.HeaderIterator;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
@@ -47,29 +41,16 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.NTCredentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.auth.params.AuthPNames;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.client.methods.HttpOptions;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.methods.HttpTrace;
-import org.apache.http.client.params.AuthPolicy;
-import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 
 /**
  * OperationLauncher - a class that calls SOAP operations.
@@ -77,21 +58,15 @@ import org.apache.http.protocol.HttpContext;
  */
 public class OperationLauncher
 {
-	private static final String LF_PLUS = RequestUtilities.NEWLINE_LF + "+";
 	private static final String PARAM_NAME_CHARSET = "charset";
 
-	private HttpRequestBase hreq;
+	private BasicHttpEntityEnclosingRequest hreq;
 	private HttpResponse hr;
-	private HttpParams par;
 	private HeaderIterator reqHeaders;
+	private ReqInterceptor interceptor;
 	private StatusLine respStatus;
 	private HttpClient hc;
-	private String soapPrologue;
-	private String soapHeader;
-	private String soapMiddle;
-	private String soapXML;
-	private String soapEpilogue;
-	private String soapCType;
+	private HttpHost host;
 	private String responseBody;
 	private String respCharset;
 
@@ -100,43 +75,30 @@ public class OperationLauncher
 	 * @param request the request to get the parameters from.
 	 */
 	public void prepare (ServletRequest request)
-		throws URISyntaxException, UnsupportedEncodingException
+		throws URISyntaxException
 	{
 		if ( request == null )
 		{
 			return;
 		}
 		//prepare data
-		soapPrologue = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE);
-		soapHeader = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER);
-		soapMiddle = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE);
-		soapXML = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_BODY);
-		soapEpilogue = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE);
-		soapCType = request.getParameter (RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
-		if ( soapCType == null )
-		{
-			soapCType = RequestUtilities.DEFAULT_CONTENT_TYPE;
-		}
-		if ( soapCType.isEmpty () )
+		String soapPrologue = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE);
+		String soapHeader = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER);
+		String soapMiddle = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE);
+		String soapXML = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_BODY);
+		String soapEpilogue = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE);
+		String soapCType = request.getParameter (RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
+		if ( soapCType == null || soapCType.isEmpty () )
 		{
 			soapCType = RequestUtilities.DEFAULT_CONTENT_TYPE;
 		}
 		respCharset = request.getParameter (RequestUtilities.REQ_PARAM_NAME_CHARSET);
-		par = new BasicHttpParams ();
 		String protoName = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROTO_NAME);
 		String protoMajorVer = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR);
 		String protoMinorVer = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR);
-		if ( (! protoName.isEmpty ()) && (! protoMajorVer.isEmpty ())
-			&& (! protoMinorVer.isEmpty ()) )
-		{
-			par.setParameter (CoreProtocolPNames.PROTOCOL_VERSION,
-				new ProtocolVersion (protoName,
-					Integer.parseInt (protoMajorVer),
-					Integer.parseInt (protoMinorVer)));
-		}
 		String httpAuthUser = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_HTTP_USER);
 		String httpAuthPass = RequestUtilities.getParameter (request,
@@ -145,15 +107,10 @@ public class OperationLauncher
 			RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION);
 		String httpAuthNTdomain = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN);
-		List<String> listOfAuth = new ArrayList<String> ();
-		listOfAuth.add (AuthPolicy.DIGEST);
-		listOfAuth.add (AuthPolicy.SPNEGO);
-		listOfAuth.add (AuthPolicy.BASIC);
-		listOfAuth.add (AuthPolicy.NTLM);
 		CredentialsProvider cp = new BasicCredentialsProvider ();
 		String opURL = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_OP_URL);
-		int servicePortNumber = -1;
+		URI operUri = new URI(opURL);
 		if ( (! httpAuthUser.isEmpty ()) && (! httpAuthPass.isEmpty ()) )
 		{
 			Credentials cred;
@@ -168,21 +125,13 @@ public class OperationLauncher
 				// NT credentials NOT provided - use basic credentials
 				cred = new UsernamePasswordCredentials (httpAuthUser, httpAuthPass);
 			}
-			URI opURI = new URI (opURL);
-			servicePortNumber = opURI.getPort ();
-			AuthScope as = new AuthScope (opURI.getHost (), servicePortNumber);
+			AuthScope as = new AuthScope (operUri.getHost (), operUri.getPort());
 			cp.setCredentials (as, cred);
-			par.setParameter (AuthPNames.TARGET_AUTH_PREF, listOfAuth);
 		}
 		String httpProxy = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_HOST);
 		String httpProxyPort = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_PORT);
-		if ( (! httpProxy.isEmpty ()) && (! httpProxyPort.isEmpty ()) )
-		{
-			par.setParameter (ConnRoutePNames.DEFAULT_PROXY,
-				new HttpHost (httpProxy, Integer.parseInt (httpProxyPort)));
-		}
 		String proxyAuthUser = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_USER);
 		String proxyAuthPass = RequestUtilities.getParameter (request,
@@ -191,7 +140,6 @@ public class OperationLauncher
 			RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION);
 		String proxyAuthNTdomain = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN);
-		int proxyPortNumber = -1;
 		if ( (! httpProxy.isEmpty ()) && (! httpProxyPort.isEmpty ())
 			&& (! proxyAuthUser.isEmpty ()) && (! proxyAuthPass.isEmpty ()) )
 		{
@@ -207,57 +155,53 @@ public class OperationLauncher
 				// NT credentials NOT provided - use basic credentials
 				cred = new UsernamePasswordCredentials (proxyAuthUser, proxyAuthPass);
 			}
-			proxyPortNumber = Integer.parseInt (httpProxyPort);
-			AuthScope as = new AuthScope (httpProxy, proxyPortNumber);
+			AuthScope as = new AuthScope (httpProxy, Integer.parseInt (httpProxyPort));
 			cp.setCredentials (as, cred);
-			par.setParameter (AuthPNames.PROXY_AUTH_PREF, listOfAuth);
 		}
-		hc = new DefaultHttpClient ();
-		((AbstractHttpClient)hc).setParams (par);
-		((AbstractHttpClient)hc).setCredentialsProvider (cp);
+		HttpClientContext context = HttpClientContext.create();
+		context.setCredentialsProvider(cp);
+		interceptor = new ReqInterceptor(request);
+		HttpClientBuilder b = HttpClients.custom();
+		b.addInterceptorFirst(interceptor);
+		if ( (! httpProxy.isEmpty ()) && (! httpProxyPort.isEmpty ()) )
+		{
+			DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(
+					new HttpHost (httpProxy, Integer.parseInt (httpProxyPort)));
+			b.setRoutePlanner(routePlanner);
+		}
 		if ( RequestUtilities.hasParameter (request,
-			RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL) )
+				RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL) )
 		{
-			hc = HttpsWrapper.wrapClientForSSL (hc, new int[] {servicePortNumber, proxyPortNumber});
+			b.setConnectionManager(HttpsWrapper.createSecureConnManager());
 		}
+		hc = b.build();
+
 		String method = RequestUtilities.getParameter (request,
-			RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD).toUpperCase ();
-		if ( method.equals (RequestUtilities.PROTO_METHOD_DELETE) )
+			RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
+		if (method == null)
 		{
-			hreq = new HttpDelete (opURL);
-		}
-		else if ( method.equals (RequestUtilities.PROTO_METHOD_GET) )
-		{
-			hreq = new HttpGet (opURL);
-		}
-		else if ( method.equals (RequestUtilities.PROTO_METHOD_HEAD) )
-		{
-			hreq = new HttpHead (opURL);
-		}
-		else if ( method.equals (RequestUtilities.PROTO_METHOD_OPTIONS) )
-		{
-			hreq = new HttpOptions (opURL);
-		}
-		else if ( method.equals (RequestUtilities.PROTO_METHOD_PUT) )
-		{
-			hreq = new HttpPut (opURL);
-		}
-		else if ( method.equals (RequestUtilities.PROTO_METHOD_TRACE) )
-		{
-			hreq = new HttpTrace (opURL);
+			method = "POST";
 		}
 		else
 		{
-			// "POST" and anything unknown defaults to "POST" - the default SOAP method
-			hreq = new HttpPost (opURL);
+			method = method.toUpperCase();
 		}
-		if ( hreq instanceof HttpEntityEnclosingRequestBase )
+		if ( (! protoName.isEmpty ()) && (! protoMajorVer.isEmpty ())
+				&& (! protoMinorVer.isEmpty ()) )
 		{
-			StringEntity se = new StringEntity (
-				soapPrologue + soapHeader + soapMiddle + soapXML + soapEpilogue,
-				soapCType, HTTP.UTF_8);
-			((HttpEntityEnclosingRequestBase)hreq).setEntity (se);
+			hreq = new BasicHttpEntityEnclosingRequest(method, opURL,
+				new ProtocolVersion (protoName,
+					Integer.parseInt (protoMajorVer),
+					Integer.parseInt (protoMinorVer)));
 		}
+		else
+		{
+			hreq = new BasicHttpEntityEnclosingRequest(method, opURL);
+		}
+		host = new HttpHost(operUri.getHost(), operUri.getPort(), operUri.getScheme());
+		hreq.setEntity(new StringEntity (
+			soapPrologue + soapHeader + soapMiddle + soapXML + soapEpilogue,
+			ContentType.create(soapCType, Consts.UTF_8)));
 	}
 
 	/**
@@ -267,113 +211,8 @@ public class OperationLauncher
 	public void perform (final ServletRequest request)
 		throws IOException
 	{
-		((AbstractHttpClient)hc).addRequestInterceptor (new HttpRequestInterceptor ()
-		{
-			@Override
-			public void process (HttpRequest httpRequest,
-				HttpContext context)
-				throws HttpException, IOException
-			{
-				HeaderIterator he = httpRequest.headerIterator ();
-				ArrayList<Header> ahe = new ArrayList<Header> (10);
-				while (he.hasNext ())
-				{
-					ahe.add (he.nextHeader ());
-				}
-				if ( RequestUtilities.hasParameter (request,
-					RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS) )
-				{
-					// no default headers should be sent - delete them all
-					while (! ahe.isEmpty ())
-					{
-						httpRequest.removeHeader (ahe.get (0));
-						ahe.remove (0);
-					}
-				}
-				else
-				{
-					// remove not all default headers - check which, if any
-					if ( ! RequestUtilities.hasParameter (request,
-						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH) )
-					{
-						removeHeader (httpRequest, ahe, HTTP.CONTENT_LEN);
-					}
-					if ( ! RequestUtilities.hasParameter (request,
-						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST) )
-					{
-						removeHeader (httpRequest, ahe, HTTP.TARGET_HOST);
-					}
-					if ( ! RequestUtilities.hasParameter (request,
-						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION) )
-					{
-						removeHeader (httpRequest, ahe, HTTP.CONN_DIRECTIVE);
-					}
-					if ( ! RequestUtilities.hasParameter (request,
-						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT) )
-					{
-						removeHeader (httpRequest, ahe, HTTP.USER_AGENT);
-					}
-					if ( ! RequestUtilities.hasParameter (request,
-						RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE) )
-					{
-						removeHeader (httpRequest, ahe, HTTP.CONTENT_TYPE);
-					}
-				}
-				// now add the user-provided headers, like >SOAPAction: "Some-URI"<
-				String soapHttpHeaders = request.getParameter
-					(RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS);
-				if ( soapHttpHeaders != null )
-				{
-					String[] soapHttpHdrs = soapHttpHeaders
-						.replaceAll (RequestUtilities.NEWLINE_CR,
-							RequestUtilities.NEWLINE_LF)
-						.replaceAll (LF_PLUS, RequestUtilities.NEWLINE_LF)
-						.split (RequestUtilities.NEWLINE_LF);
-					if ( soapHttpHdrs != null )
-					{
-						for ( int i = 0; i < soapHttpHdrs.length; i++ )
-						{
-							if ( soapHttpHdrs[i] == null )
-							{
-								continue;
-							}
-							soapHttpHdrs[i] = soapHttpHdrs[i].trim ();
-							if ( soapHttpHdrs[i].isEmpty () )
-							{
-								continue;
-							}
-							int colonIndex = soapHttpHdrs[i].indexOf (':');
-							if ( colonIndex == -1 )
-							{
-								// no colon - just the header name
-								httpRequest.addHeader (soapHttpHdrs[i],
-									RequestUtilities.EMPTY_STR);
-							}
-							else
-							{
-								String headerName = soapHttpHdrs[i]
-									.substring (0, colonIndex);
-								if ( soapHttpHdrs[i].length () > colonIndex+1 )
-								{
-									// header content present
-									httpRequest.addHeader (headerName, // header name
-										soapHttpHdrs[i]
-										.substring (colonIndex+1)); // header value
-								}
-								else
-								{
-									// just "HeaderName:" provided
-									httpRequest.addHeader (headerName, // header name
-										RequestUtilities.EMPTY_STR);
-								}
-							}
-						}
-					}
-				}
-				reqHeaders = httpRequest.headerIterator ();
-			}
-		});
-		hr = hc.execute (hreq);
+		hr = hc.execute (host, hreq);
+		reqHeaders = interceptor.getFinalRequestHeaders();
 		HttpEntity ent = hr.getEntity ();
 		// a ByteArrayOutputStream will grow anyway, so we can cast the length to int
 		int len = (int)ent.getContentLength ();
@@ -384,22 +223,6 @@ public class OperationLauncher
 		ByteArrayOutputStream baos = new ByteArrayOutputStream (len);
 		ent.writeTo (baos);
 
-		String encoding = HTTP.UTF_8;
-		try
-		{
-			HeaderElement headers[] = ent.getContentType ().getElements ();
-			for ( HeaderElement he : headers )
-			{
-				if ( he.getParameterByName (PARAM_NAME_CHARSET) != null )
-				{
-					encoding = he.getParameterByName (PARAM_NAME_CHARSET).getValue ();
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			encoding = HTTP.UTF_8;
-		}
 		try
 		{
 			if ( respCharset != null && ! respCharset.isEmpty () )
@@ -408,6 +231,22 @@ public class OperationLauncher
 			}
 			else
 			{
+				String encoding = RequestUtilities.DEFAULT_CHARSET;
+				try
+				{
+					HeaderElement headers[] = ent.getContentType ().getElements ();
+					for ( HeaderElement he : headers )
+					{
+						if ( he.getParameterByName (PARAM_NAME_CHARSET) != null )
+						{
+							encoding = he.getParameterByName (PARAM_NAME_CHARSET).getValue ();
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					encoding = RequestUtilities.DEFAULT_CHARSET;
+				}
 				responseBody = baos.toString (encoding);
 			}
 		}
@@ -495,34 +334,5 @@ public class OperationLauncher
 			respStatus = hr.getStatusLine ();
 		}
 		return respStatus;
-	}
-
-	/**
-	 * Removes the given header from the request.
-	 * @param httpRequest the request to remove the header from.
-	 * @param ahe the current list of headers.
-	 * @param header the header to remove.
-	 */
-	private static void removeHeader(HttpRequest httpRequest,
-			List<Header> ahe, String header)
-	{
-		if (httpRequest == null || ahe == null || header == null)
-		{
-			return;
-		}
-		int size = ahe.size();
-		for ( int i = 0; i < size; i++ )
-		{
-			Header h = ahe.get (i);
-			if ( h == null )
-			{
-				continue;
-			}
-			if ( header.equals(h.getName()) )
-			{
-				httpRequest.removeHeader(h);
-				break;
-			}
-		}
 	}
 }

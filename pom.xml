@@ -59,13 +59,13 @@ You should have received a copy of the GNU Affero General Public License
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.1.1</version>
+			<version>4.5.14</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
-			<version>4.1</version>
+			<version>4.4.16</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
