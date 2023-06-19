@@ -230,7 +230,7 @@ public class RequestUtilities
 	 * @param ex the exception to print.
 	 * @param out the writer associated with the JSP page to display the exception on.
 	 */
-	public static void printException (Exception ex, JspWriter out)
+	public static void printException (Throwable ex, JspWriter out)
 	{
 		StringWriter sw = new StringWriter ();
 		ex.printStackTrace (new PrintWriter (sw));

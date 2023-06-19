@@ -6,7 +6,6 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
 <% String wsdlLocation = request.getParameter (RequestUtilities.REQ_PARAM_NAME_WSDL); %>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <!--
@@ -75,7 +74,7 @@ You should have received a copy of the GNU Affero General Public License
 		operationsAndURLs = w.getOperationURLs ();
 		operationNames = operationsAndXMLs.keySet ();
 	}
-	catch (Exception ex)
+	catch (Throwable ex)
 	{
 %>
 		Exception caught while parsing the WSDL:

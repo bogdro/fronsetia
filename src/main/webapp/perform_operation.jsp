@@ -112,7 +112,7 @@ User-defined request headers:
 			out.flush ();
 		}
 	}
-	catch (Exception ex)
+	catch (Throwable ex)
 	{
 %>Exception occurred while performing the operation or displaying input parameters:
 <%
@@ -202,7 +202,7 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 			Unable to get response SOAP status and type - axiom.jar or axis2-saaj.jar not installed or not usable.
 <%
 		}
-		catch (Exception ex)
+		catch (Throwable ex)
 		{
 %>
 			Unable to get response SOAP status and type.
@@ -236,7 +236,7 @@ HTTP response body:
 %></pre>
 <%
 	}
-	catch (Exception ex)
+	catch (Throwable ex)
 	{
 %><br><pre>Exception occurred while displaying output data:
 <%
