@@ -33,13 +33,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.impl.dom.jaxp.DOOMDocumentBuilderFactory;
+import org.apache.axiom.om.impl.dom.factory.DOOMDocumentBuilderFactory;
+import org.apache.axiom.om.impl.dom.factory.DOOMNodeFactoryImpl;
 import org.apache.axiom.soap.SOAPEnvelope;
-
 import org.apache.axis2.saaj.util.SAAJUtil;
-
 import org.w3c.dom.Document;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -63,7 +61,7 @@ public class SOAPInterpreter
 		{
 			return;
 		}
-		DocumentBuilderFactory dbf = new DOOMDocumentBuilderFactory ();
+		DocumentBuilderFactory dbf = new DOOMDocumentBuilderFactory(DOOMNodeFactoryImpl.INSTANCE);
 		DocumentBuilder db = dbf.newDocumentBuilder ();
 		Document d = db.parse (new InputSource (new StringReader (resp)));
 		SOAPEnvelope e = SAAJUtil.toOMSOAPEnvelope (d.getDocumentElement ());
