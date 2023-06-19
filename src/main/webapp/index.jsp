@@ -44,14 +44,16 @@ You should have received a copy of the GNU Affero General Public License
 <p>
 This application allows the user to view the operations of the Web service specified by the
 <acronym title="Web Services Description Language" lang="en">WSDL</acronym>
-document located at the given URL and to call them using user-provided data (
-<acronym title="Hypertext Transfer Protocol" lang="en">HTTP</acronym> headers,
-<acronym title="Simple Object Access Protocol" lang="en">SOAP</acronym> envelope tags, SOAP header and SOAP body data).
+document located at the given URL and to call them using user-provided data
+(<acronym title="Hypertext Transfer Protocol" lang="en">HTTP</acronym> headers,
+<acronym title="Simple Object Access Protocol" lang="en">SOAP</acronym> envelope tags,
+SOAP header and SOAP body data).
 </p>
 <p>
-The user-provided data is not validated - this allows many tests to performed, including tests
-with invalid or non-standard HTTP headers, invalid
-<acronym title="Extensible Markup Language" lang="en">XML</acronym> data and even invalid SOAP envelope tags.
+The user-provided data is not validated - this allows many tests to performed,
+including tests with invalid or non-standard HTTP headers, invalid
+<acronym title="Extensible Markup Language" lang="en">XML</acronym> data
+and even invalid SOAP envelope tags.
 </p>
 <p>
 If the document specifies any XML Schema definitions, this application will try to provide
@@ -66,8 +68,6 @@ WSDL location: <input type="text" size="60" name="<%= RequestUtilities.REQ_PARAM
 <input type="reset" value="Clear">
 <input type="submit" value="Find services">
 </form>
-
-
 
 <br><br>
 <hr>
