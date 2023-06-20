@@ -39,13 +39,14 @@ You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see http://www.gnu.org/licenses/.
 -->
 <html lang="en">
-<head>
+<head profile="http://www.w3.org/2005/10/profile">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Language" content="en">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, private">
 <meta http-equiv="Pragma" content="no-cache">
 <link rel="stylesheet" href="resources/fronsetia.css" type="text/css">
+<link rel="icon" type="image/png" href="resources/img/fronsetia-icon.png">
 
 <title> Fronsetia: <%= opName %>: <%= wsdlLocation %> </title>
 

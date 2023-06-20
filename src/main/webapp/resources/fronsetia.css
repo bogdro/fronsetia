@@ -163,6 +163,8 @@ td		{
 .left		{	float: left;			}
 .right		{	float: right;			}
 
+.vert_mid	{	vertical-align: middle;	}
+
 .footerlink	{
 			padding-left: 5%;
 			padding-right: 5%;
