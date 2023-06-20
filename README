@@ -56,7 +56,7 @@ all Maven libraries) or the respective projects' pages:
 - axiom.jar - Apache Axiom (https://ws.apache.org/axiom/)
 - axis2-saaj.jar - Apache Axis2 (https://axis.apache.org/axis2/java/core/)
 
-The servlet-api.jar and javaee-api dependencies should be provided by your
+The servlet-api and javaee-api dependencies should be provided by your
  JavaEE servlet container/server.
 
 The junit.jar dependency (and all other with <scope>test</scope>) are not
