@@ -180,7 +180,7 @@ You should have received a copy of the GNU Affero General Public License
 			Additional headers (one per line, example: <code>SOAPAction: "/someaction"</code>):
 			<br>
 			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>" rows="5" cols="80">
-SOAPAction:</textarea>
+SOAPAction: "/<%= opName %>"</textarea>
 
 			<br><br>
 			Authentication for the service:<br>
