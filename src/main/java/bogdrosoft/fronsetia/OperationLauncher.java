@@ -213,51 +213,7 @@ public class OperationLauncher
 	{
 		hr = hc.execute (host, hreq);
 		reqHeaders = interceptor.getFinalRequestHeaders();
-		HttpEntity ent = hr.getEntity ();
-		// a ByteArrayOutputStream will grow anyway, so we can cast the length to int
-		int len = (int)ent.getContentLength ();
-		if ( len <= 0 )
-		{
-			len = 1024;
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream (len);
-		ent.writeTo (baos);
-
-		try
-		{
-			if ( respCharset != null && ! respCharset.isEmpty () )
-			{
-				responseBody = baos.toString (respCharset);
-			}
-			else
-			{
-				String encoding = RequestUtilities.DEFAULT_CHARSET;
-				try
-				{
-					HeaderElement headers[] = ent.getContentType ().getElements ();
-					for ( HeaderElement he : headers )
-					{
-						if ( he.getParameterByName (PARAM_NAME_CHARSET) != null )
-						{
-							encoding = he.getParameterByName (PARAM_NAME_CHARSET).getValue ();
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					encoding = RequestUtilities.DEFAULT_CHARSET;
-				}
-				responseBody = baos.toString (encoding);
-			}
-		}
-		catch (Exception ex)
-		{
-			responseBody = baos.toString (RequestUtilities.DEFAULT_CHARSET);
-		}
-		if ( RequestUtilities.hasParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_SPLIT_RESP) )
-		{
-			responseBody = RequestUtilities.splitByTags (responseBody);
-		}
+		processEntity(hr.getEntity(), request);
 	}
 
 	/**
@@ -334,5 +290,54 @@ public class OperationLauncher
 			respStatus = hr.getStatusLine ();
 		}
 		return respStatus;
+	}
+
+	// separate method just for unit tests
+	void processEntity(HttpEntity ent, ServletRequest request)
+		throws IOException
+	{
+		// a ByteArrayOutputStream will grow anyway, so we can cast the length to int
+		int len = (int)ent.getContentLength ();
+		if ( len <= 0 )
+		{
+			len = 1024;
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream (len);
+		ent.writeTo (baos);
+		try
+		{
+			if ( respCharset != null && ! respCharset.isEmpty () )
+			{
+				responseBody = baos.toString (respCharset);
+			}
+			else
+			{
+				String encoding = RequestUtilities.DEFAULT_CHARSET;
+				try
+				{
+					HeaderElement headers[] = ent.getContentType ().getElements ();
+					for ( HeaderElement he : headers )
+					{
+						if ( he.getParameterByName (PARAM_NAME_CHARSET) != null )
+						{
+							encoding = he.getParameterByName (PARAM_NAME_CHARSET).getValue ();
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					encoding = RequestUtilities.DEFAULT_CHARSET;
+				}
+				responseBody = baos.toString (encoding);
+			}
+		}
+		catch (Exception ex)
+		{
+			responseBody = baos.toString (RequestUtilities.DEFAULT_CHARSET);
+		}
+		if ( RequestUtilities.hasParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_SPLIT_RESP) )
+		{
+			responseBody = RequestUtilities.splitByTags (responseBody);
+		}
 	}
 }
