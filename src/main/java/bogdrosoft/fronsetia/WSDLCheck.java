@@ -146,7 +146,7 @@ public class WSDLCheck
 			List<?> extElems = t.getExtensibilityElements ();
 			if ( extElems != null )
 			{
-				for ( Object o : t.getExtensibilityElements ())
+				for ( Object o : extElems )
 				{
 					if ( o != null && (o instanceof SchemaReference) )
 					{
@@ -256,7 +256,7 @@ public class WSDLCheck
 								ret.put (opName, messLocalName);
 								if ( portExtElems != null )
 								{
-									for ( Object extel : currPort.getExtensibilityElements () )
+									for ( Object extel : portExtElems )
 									{
 										if ( extel != null
 												&& (extel instanceof SOAPAddress) )
