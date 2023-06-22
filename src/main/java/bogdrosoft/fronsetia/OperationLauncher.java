@@ -178,7 +178,7 @@ public class OperationLauncher
 
 		String method = RequestUtilities.getParameter (request,
 			RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
-		if (method == null)
+		if (method.isEmpty())
 		{
 			method = "POST";
 		}
