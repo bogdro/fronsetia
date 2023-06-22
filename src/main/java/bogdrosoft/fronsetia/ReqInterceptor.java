@@ -122,7 +122,8 @@ public class ReqInterceptor implements HttpRequestInterceptor
 							// header content present
 							httpRequest.addHeader (headerName, // header name
 								soapHttpHdrs[i]
-								.substring (colonIndex+1)); // header value
+								.substring (colonIndex+1) // header value
+								.trim());
 						}
 						else
 						{
