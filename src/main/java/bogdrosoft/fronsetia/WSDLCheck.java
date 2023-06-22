@@ -148,11 +148,15 @@ public class WSDLCheck
 			{
 				for ( Object o : extElems )
 				{
-					if ( o != null && (o instanceof SchemaReference) )
+					if ( o == null )
+					{
+						continue;
+					}
+					if ( o instanceof SchemaReference )
 					{
 						schemaLocations.add (((SchemaReference) o).getSchemaLocationURI ());
 					}
-					else if ( o != null && (o instanceof Schema) )
+					else if ( o instanceof Schema )
 					{
 						Schema si = ((Schema) o);
 						schemaElements.add (si.getElement ());
@@ -258,15 +262,17 @@ public class WSDLCheck
 								{
 									for ( Object extel : portExtElems )
 									{
-										if ( extel != null
-												&& (extel instanceof SOAPAddress) )
+										if ( extel == null )
+										{
+											continue;
+										}
+										if ( extel instanceof SOAPAddress )
 										{
 											operationsAndURLs.put (
 												opName,
 												((SOAPAddress) extel).getLocationURI ());
 										}
-										else if ( extel != null
-												&& (extel instanceof SOAP12Address) )
+										else if ( extel instanceof SOAP12Address )
 										{
 											operationsAndURLs.put (
 												opName,
