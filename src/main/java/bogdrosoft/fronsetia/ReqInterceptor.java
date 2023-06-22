@@ -17,8 +17,8 @@ import org.apache.http.protocol.HttpContext;
 public class ReqInterceptor implements HttpRequestInterceptor
 {
 	private static final String LF_PLUS = RequestUtilities.NEWLINE_LF + "+";
-	private ServletRequest request;
-	private HeaderIterator reqHeaders;
+	private ServletRequest confRequest;
+	private HttpRequest requestToSend;
 
 	/**
 	 * Constructs a ReqInterceptor.
@@ -26,7 +26,7 @@ public class ReqInterceptor implements HttpRequestInterceptor
 	 */
 	public ReqInterceptor(ServletRequest origRequest)
 	{
-		request = origRequest;
+		confRequest = origRequest;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class ReqInterceptor implements HttpRequestInterceptor
 		{
 			ahe.add (he.nextHeader ());
 		}
-		if ( RequestUtilities.hasParameter (request,
+		if ( RequestUtilities.hasParameter (confRequest,
 			RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS) )
 		{
 			// no default headers should be sent - delete them all
@@ -57,34 +57,34 @@ public class ReqInterceptor implements HttpRequestInterceptor
 		else
 		{
 			// remove not all default headers - check which, if any
-			if ( ! RequestUtilities.hasParameter (request,
+			if ( ! RequestUtilities.hasParameter (confRequest,
 				RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH) )
 			{
 				removeHeader (httpRequest, ahe, HTTP.CONTENT_LEN);
 			}
-			if ( ! RequestUtilities.hasParameter (request,
+			if ( ! RequestUtilities.hasParameter (confRequest,
 				RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST) )
 			{
 				removeHeader (httpRequest, ahe, HTTP.TARGET_HOST);
 			}
-			if ( ! RequestUtilities.hasParameter (request,
+			if ( ! RequestUtilities.hasParameter (confRequest,
 				RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION) )
 			{
 				removeHeader (httpRequest, ahe, HTTP.CONN_DIRECTIVE);
 			}
-			if ( ! RequestUtilities.hasParameter (request,
+			if ( ! RequestUtilities.hasParameter (confRequest,
 				RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT) )
 			{
 				removeHeader (httpRequest, ahe, HTTP.USER_AGENT);
 			}
-			if ( ! RequestUtilities.hasParameter (request,
+			if ( ! RequestUtilities.hasParameter (confRequest,
 				RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE) )
 			{
 				removeHeader (httpRequest, ahe, HTTP.CONTENT_TYPE);
 			}
 		}
 		// now add the user-provided headers, like >SOAPAction: "Some-URI"<
-		String soapHttpHeaders = request.getParameter
+		String soapHttpHeaders = confRequest.getParameter
 			(RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS);
 		if ( soapHttpHeaders != null )
 		{
@@ -134,12 +134,12 @@ public class ReqInterceptor implements HttpRequestInterceptor
 				}
 			}
 		}
-		reqHeaders = httpRequest.headerIterator ();
+		requestToSend = httpRequest;
 	}
 
 	public HeaderIterator getFinalRequestHeaders()
 	{
-		return reqHeaders;
+		return requestToSend.headerIterator();
 	}
 
 	/**
