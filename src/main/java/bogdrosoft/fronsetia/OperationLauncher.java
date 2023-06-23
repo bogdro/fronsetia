@@ -293,6 +293,12 @@ public class OperationLauncher
 	}
 
 	// separate method just for unit tests
+	/**
+	 * Processes the given entity into a response body.
+	 * @param ent the entity to process.
+	 * @param request the configuration request.
+	 * @throws IOException
+	 */
 	void processEntity(HttpEntity ent, ServletRequest request)
 		throws IOException
 	{
