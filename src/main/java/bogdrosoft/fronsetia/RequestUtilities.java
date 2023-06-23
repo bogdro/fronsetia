@@ -25,9 +25,9 @@ package bogdrosoft.fronsetia;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.jsp.JspWriter;
 
 /**
  * RequestUtilities - a utility class for HTTP requests.
@@ -230,14 +230,20 @@ public class RequestUtilities
 	 * @param ex the exception to print.
 	 * @param out the writer associated with the JSP page to display the exception on.
 	 */
-	public static void printException (Throwable ex, JspWriter out)
+	public static void printException (Throwable ex, Writer out)
 	{
-		StringWriter sw = new StringWriter ();
-		ex.printStackTrace (new PrintWriter (sw));
+		if (ex == null || out == null)
+		{
+			return;
+		}
+		StringWriter sw = new StringWriter();
+		ex.printStackTrace(new PrintWriter(sw));
 		try
 		{
-			out.println (ex);
-			out.println (sw.toString ());
+			out.write(ex.toString());
+			out.write("\n");
+			out.write(sw.toString());
+			out.write("\n");
 		}
 		catch (IOException e)
 		{
