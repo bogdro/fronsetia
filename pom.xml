@@ -37,7 +37,6 @@ You should have received a copy of the GNU Affero General Public License
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<test.rsrc.dir>${project.build.testOutputDirectory}</test.rsrc.dir>
 		<!-- Version numbers: -->
-		<javaee-api.version>5</javaee-api.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<wsdl4j.version>1.6.3</wsdl4j.version>
 		<xmlbeans.version>5.1.1</xmlbeans.version>
@@ -52,12 +51,6 @@ You should have received a copy of the GNU Affero General Public License
 
 	<dependencies>
 		<dependency>
-			<groupId>javaee</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>${javaee-api.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>${servlet-api.version}</version>
@@ -67,61 +60,51 @@ You should have received a copy of the GNU Affero General Public License
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
 			<version>${wsdl4j.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
 			<version>${xmlbeans.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>${httpclient.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpcore</artifactId>
 			<version>${httpcore.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ws.commons.axiom</groupId>
 			<artifactId>axiom-api</artifactId>
 			<version>${axiom.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ws.commons.axiom</groupId>
 			<artifactId>axiom-dom</artifactId>
 			<version>${axiom.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.ws.commons.axiom</groupId>
 			<artifactId>axiom-impl</artifactId>
 			<version>${axiom.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-saaj</artifactId>
 			<version>${axis2-saaj.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>${commons-codec.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>${commons-logging.version}</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
