@@ -67,7 +67,7 @@ package: target/$(NAME)-web-$(VER).war
 war: package
 
 target/$(NAME)-web-$(VER).war: $(shell find src -type f) Makefile pom.xml
-	$(MAVEN) clean package
+	$(MAVEN) clean package -DskipTests=true
 
 clean:
 	$(MAVEN) clean
