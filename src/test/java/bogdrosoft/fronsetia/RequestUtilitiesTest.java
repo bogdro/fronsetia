@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +48,7 @@ public class RequestUtilitiesTest
 	private static ServletRequest m;
 	private static final String PARAM_NAME = "p_name";
 	private static final String PARAM_VALUE = "p_value";
+	private static final String EXCEPTION_MSG = "some-exception-message";
 
 	@SuppressWarnings("deprecation")
 	@BeforeAll
@@ -160,13 +163,33 @@ public class RequestUtilitiesTest
 		assertFalse(RequestUtilities.hasParameter(m, PARAM_NAME + "2"));
 	}
 
-	/*
-	// Neither Mockito nor an own class work...
 	@Test
 	public void testPrintException() throws IOException
 	{
-		Exception ex = new Exception("aaa");
+		Exception ex = new Exception(EXCEPTION_MSG);
+		StringWriter sw = new StringWriter();
+		RequestUtilities.printException(ex, sw);
+		assertTrue(sw.toString().contains(EXCEPTION_MSG));
+	}
+
+	@Test
+	public void testPrintExceptionNullEx() throws IOException
+	{
+		StringWriter sw = new StringWriter();
+		RequestUtilities.printException(null, sw);
+		assertFalse(sw.toString().contains(EXCEPTION_MSG));
+	}
+
+	@Test
+	public void testPrintExceptionNullWriter() throws IOException
+	{
+		Exception ex = new Exception(EXCEPTION_MSG);
 		RequestUtilities.printException(ex, null);
 	}
-	*/
+
+	@Test
+	public void testPrintExceptionNullWriterNullEx() throws IOException
+	{
+		RequestUtilities.printException(null, null);
+	}
 }
