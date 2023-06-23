@@ -18,15 +18,16 @@ Type 'mvn package' to compile the application.
 Alternatively, you can use a 'make' utility and run just 'make' (which
  calls Maven now anyway).
 
-By default, a minimal package, without all the required libraries inside,
+By default, a self-contained package, with all the required libraries inside,
  is built.
 
-You can also build a self-contained package with all the required libraries
-inside by removing all
+You can also build a minimal package without all the required libraries
+inside by adding
 
 	<scope>provided</scope>
 
-tags from pom.xml and re-building the application (running 'mvn package').
+tags to each <dependency> in "pom.xml" (expect where already present and has
+ a different value) and re-building the application (running 'mvn package').
 
 ================================================================
 
@@ -56,8 +57,8 @@ all Maven libraries) or the respective projects' pages:
 - axiom.jar - Apache Axiom (https://ws.apache.org/axiom/)
 - axis2-saaj.jar - Apache Axis2 (https://axis.apache.org/axis2/java/core/)
 
-The servlet-api and javaee-api dependencies should be provided by your
- JavaEE servlet container/server.
+The servlet-api dependency should be provided by your JavaEE servlet
+ container/server.
 
 The junit.jar dependency (and all other with <scope>test</scope>) are not
  required to build or run the application.

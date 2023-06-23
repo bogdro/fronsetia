@@ -66,15 +66,16 @@ Alternatively, you can use a <code>make</code> utility and run just <code>make</
 calls Maven now anyway).
 </p>
 <p>
-By default, a minimal package, without all the required libraries inside, is built.
+By default, a self-contained package, with all the required libraries inside, is built.
 </p>
 <p>
-You can also build a self-contained package with all the required libraries
-inside by removing all
+You can also build a minimal package without all the required libraries
+inside by adding
 </p>
 <pre>	&lt;scope&gt;provided&lt;/scope&gt;</pre>
 <p>
-tags from <code>pom.xml</code> and re-building the application (running <code>mvn package</code>).
+tags to each <code>&lt;dependency&gt;</code> in <code>pom.xml</code> (expect where already
+present and has a different value) and re-building the application (running <code>mvn package</code>).
 </p>
 
 <hr>
@@ -114,8 +115,7 @@ hreflang="en">Maven Central</a> (as for all Maven libraries) or the respective p
 	hreflang="en">Apache Axis2</a>.</li>
 </ul>
 <p>
-The servlet-api and javaee-api dependencies should be provided by your
-JavaEE servlet container/server.
+The servlet-api dependency should be provided by your JavaEE servlet container/server.
 </p>
 <p>
 The junit.jar dependency (and all other with <code>&lt;scope&gt;test&lt;/scope&gt;</code>)
