@@ -14,6 +14,8 @@ Copyright (C) 2011-2023 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourcefo
 This file is part of Fronsetia (Free Online Service Testing Application),
  a web application that allows testing webservices.
 
+Project homepage: https://fronsetia.sourceforge.io/
+
 This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero General Public License as
  published by the Free Software Foundation, either version 3 of the

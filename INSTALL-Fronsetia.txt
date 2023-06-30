@@ -1,6 +1,8 @@
 This is the INSTALL file for Fronsetia (Free Online Service Testing
  Application), a web application that allows testing webservices.
 
+Project homepage: https://fronsetia.sourceforge.io/
+
 ================================================================
 
 How to install:
