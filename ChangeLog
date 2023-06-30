@@ -1,7 +1,60 @@
+2023-06-23	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
+
+	* Fronsetia version 1.0
+	  Updated the dependencies and adjusted the code with substantial
+	  refactoring. Fixes in parameter checking. Fixes in HTTP header
+	  handling. A full, self-contained WAR is now built by default. Added
+	  unit tests. Added project homepage in all files. Added a project
+	  icon. Other small fixes and code updates.
+	* src/main/java/bogdrosoft/fronsetia: Renamed the package.
+	* pom.xml: Updated some dependencies' versions. Version numbers are
+	  now in parameters. A self-contained WAR is now built by default.
+	* bogdrosoft/fronsetia/HttpsWrapper.java: A new helper class to
+	  provide TLS/SSL to an HttpClient.
+	* bogdrosoft/fronsetia/OperationLauncher.java (prepare): Use the new
+	  class HttpsWrapper. Adjust code to new Apache httpcomponents. Change
+	  some class fields to method variables. Check for non-empty method
+	  name instead of null. Refactorings and clean-up.
+	* bogdrosoft/fronsetia/OperationLauncher.java (perform): Adjust code
+	  to new Apache httpcomponents. Refactorings and simplifications.
+	* bogdrosoft/fronsetia/OperationLauncher.java (removeHeader, perform):
+	  Use a new method for duplicated code for removing headers.
+	* bogdrosoft/fronsetia/OperationLauncher.java (getResponseStatusLine,
+	  getStatusLine, getStatusCode): Use a new method for duplicated code
+	  getting the current HTTP response line.
+	* bogdrosoft/fronsetia/RequestUtilities.jsp (printException): A new
+	  method for displaying exceptions on JSP pages.
+	* bogdrosoft/fronsetia/ReqInterceptor.java: A new class to intercept
+	  HTTP requests and modify their headers.
+	* bogdrosoft/fronsetia/ReqInterceptor.java (process): Trim the header
+	  values when adding to the request.
+	* bogdrosoft/fronsetia/SOAPInterpreter.java: Adjust code to new Apache
+	  Axiom and Axis2.
+	* bogdrosoft/fronsetia/WSDLCheck.java (processWSDL): Call getters
+	  just once. Separate null checks where they were duplicated.
+	* bogdrosoft/fronsetia/OperationLauncher.java (processEntity): A new
+	  method to process the response entity (for unit tests).
+	* webapp/{perform_operation.jsp,show_operations.jsp}: Updated imports.
+	  Use the new method for displaying exceptions and change the caught
+	  types to Throwable.
+	* webapp/index.jsp: Small layout fixes.
+	* webapp/show_operations.jsp: Added a default value for SOAPAction.
+	* src/test: Added unit tests. Current coverage: src/main: 91.1%,
+	  src/test: 99.4%, total: 96.1%.
+	* webapp/footer.html: Added a link to the start page.
+	* webapp/resources/fronsetia.css: Added a license block and updated a
+	  bit according to quality standards.
+	* webapp/resources/img/fronsetia-icon.png, webapp/*.jsp,
+	  webapp/resources/{authors,install,readme}.html: Added an icon.
+	* README, webapp/resources/readme.html: Updated package building.
+	* *.java, *.jsp, README, pom.xml, Makefile, INSTALL-Fronsetia.txt:
+	  Added project homepage.
+	* Makefile: Added skipping tests on build.
+
 2023-06-15	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
 
 	* Fronsetia version 0.6
-	  Code readibility updates and programming style fixes. Fixed Eclipse
+	  Code readability updates and programming style fixes. Fixed Eclipse
 	  warnings. Renamed the remaining elements. Documentation fixes. Other
 	  cleanup and small changes.
 	* pom.xml: Updated some dependencies' versions.
@@ -51,7 +104,7 @@
 
 	* Fronsetia (then - SOAPServiceTester) version 0.3
 	  Allow changing the character set used for parsing the server's
-	  replies, if can't be detected automatically. Fixed problems
+	  replies, if it can't be detected automatically. Fixed problems
 	  reported by the "findbugs" and "jlint" programs. Allow all SSL
 	  certificates (as an option).
 	* resources/soaptester.css: bakground on anchors is now inherited
