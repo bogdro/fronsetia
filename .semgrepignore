@@ -3,6 +3,8 @@
 .github/
 .gitlab*
 
+src/main/webapp/resources/copying.html
+
 :include .gitignore
 
 # Semgrep rules folder
