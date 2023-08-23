@@ -24,8 +24,6 @@
 
 package bogdrosoft.fronsetia;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -74,11 +72,7 @@ public class HttpsWrapper
 			        .build();
 			return new PoolingHttpClientConnectionManager(r);
 		}
-		catch (NoSuchAlgorithmException nsaex)
-		{
-			return null;
-		}
-		catch (KeyManagementException kmex)
+		catch (Exception e)
 		{
 			return null;
 		}
