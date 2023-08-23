@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.servlet.ServletRequest;
-
 import org.apache.http.Consts;
 import org.apache.http.HeaderElement;
 import org.apache.http.HeaderIterator;
@@ -53,6 +51,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
+
+import jakarta.servlet.ServletRequest;
 
 /**
  * OperationLauncher - a class that calls SOAP operations.

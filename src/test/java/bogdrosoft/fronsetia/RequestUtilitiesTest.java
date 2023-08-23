@@ -33,12 +33,11 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import bogdrosoft.fronsetia.helpers.MockServletRequest;
+import jakarta.servlet.ServletRequest;
 
 /**
  * RequestUtilitiesTest - a test for RequestUtilities.
@@ -52,7 +51,6 @@ public class RequestUtilitiesTest
 	private static final String PARAM_VALUE = "p_value";
 	private static final String EXCEPTION_MSG = "some-exception-message";
 
-	@SuppressWarnings("deprecation")
 	@BeforeAll
 	public static void setUp() throws Exception
 	{
@@ -77,7 +75,7 @@ public class RequestUtilitiesTest
 		m.getParameterValues(PARAM_NAME);
 		m.getProtocol();
 		m.getReader();
-		m.getRealPath("");
+		((MockServletRequest)m).getRealPath(""); // Removed in Jakarta EE 10
 		m.getRemoteAddr();
 		m.getRemoteHost();
 		m.getRemotePort();
@@ -89,6 +87,17 @@ public class RequestUtilitiesTest
 		m.removeAttribute("");
 		m.setAttribute(PARAM_VALUE, PARAM_NAME);
 		m.setCharacterEncoding("");
+		m.getContentLengthLong();
+		m.getServletContext();
+		m.startAsync();
+		m.startAsync(m, null);
+		m.isAsyncStarted();
+		m.isAsyncSupported();
+		m.getAsyncContext();
+		m.getDispatcherType();
+		m.getRequestId();
+		m.getProtocolRequestId();
+		m.getServletConnection();
 	}
 
 	@Test

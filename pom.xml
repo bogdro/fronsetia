@@ -29,7 +29,7 @@ You should have received a copy of the GNU Affero General Public License
 
 	<groupId>bogdrosoft.fronsetia</groupId>
 	<artifactId>fronsetia-web</artifactId>
-	<version>1.0</version> <!-- FRONSETIA_VERSION -->
+	<version>1.1</version> <!-- FRONSETIA_VERSION -->
 	<packaging>war</packaging>
 
 	<name>Fronsetia Webapp</name>
@@ -41,7 +41,8 @@ You should have received a copy of the GNU Affero General Public License
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<test.rsrc.dir>${project.build.testOutputDirectory}</test.rsrc.dir>
 		<!-- Version numbers: -->
-		<servlet-api.version>2.5</servlet-api.version>
+		<jakarta-api.version>10.0.0</jakarta-api.version>
+		<javax-activation.version>1.2.0</javax-activation.version>
 		<wsdl4j.version>1.6.3</wsdl4j.version>
 		<xmlbeans.version>5.1.1</xmlbeans.version>
 		<httpclient.version>4.5.14</httpclient.version>
@@ -55,10 +56,16 @@ You should have received a copy of the GNU Affero General Public License
 
 	<dependencies>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>${servlet-api.version}</version>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>${jakarta-api.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<!-- Required by Axiom: -->
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>javax.activation-api</artifactId>
+			<version>${javax-activation.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>wsdl4j</groupId>

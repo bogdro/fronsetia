@@ -31,13 +31,12 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
-
 import org.apache.http.entity.StringEntity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import bogdrosoft.fronsetia.helpers.MockServletRequest;
+import jakarta.servlet.ServletRequest;
 
 /**
  * OperationLauncherTest - a test for OperationLauncher.

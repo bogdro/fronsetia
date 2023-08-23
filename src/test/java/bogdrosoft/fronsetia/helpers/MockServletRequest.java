@@ -28,12 +28,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 
 /**
  * MockServletRequest - a mock ServletRequest for tests.
@@ -41,11 +47,11 @@ import javax.servlet.ServletRequest;
  */
 public class MockServletRequest implements ServletRequest
 {
-	private Map<String, String> params;
+	private Hashtable<String, String> params;
 
 	public MockServletRequest(Map<String, String> p)
 	{
-		params = p;
+		params = new Hashtable<String, String>(p);
 	}
 
 	@Override
@@ -54,7 +60,7 @@ public class MockServletRequest implements ServletRequest
 		return null;
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Enumeration getAttributeNames()
 	{
@@ -109,7 +115,7 @@ public class MockServletRequest implements ServletRequest
 		return null;
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Enumeration getLocales()
 	{
@@ -122,18 +128,18 @@ public class MockServletRequest implements ServletRequest
 		return params.get(arg0);
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Map getParameterMap()
 	{
 		return params;
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Enumeration getParameterNames()
 	{
-		return null;
+		return params.keys();
 	}
 
 	@Override
@@ -154,7 +160,7 @@ public class MockServletRequest implements ServletRequest
 		return null;
 	}
 
-	@Override
+	//@Override // Removed in Jakarta EE 10
 	public String getRealPath(String arg0)
 	{
 		return null;
@@ -223,7 +229,6 @@ public class MockServletRequest implements ServletRequest
 	{
 	}
 
-	/*
 	@Override
 	public long getContentLengthLong()
 	{
@@ -231,19 +236,19 @@ public class MockServletRequest implements ServletRequest
 	}
 
 	@Override
-	public javax.servlet.ServletContext getServletContext()
+	public ServletContext getServletContext()
 	{
 		return null;
 	}
 
 	@Override
-	public javax.servlet.AsyncContext startAsync() throws IllegalStateException
+	public AsyncContext startAsync() throws IllegalStateException
 	{
 		return null;
 	}
 
 	@Override
-	public javax.servlet.AsyncContext startAsync(ServletRequest servletRequest, javax.servlet.ServletResponse servletResponse)
+	public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
 			throws IllegalStateException
 	{
 		return null;
@@ -262,15 +267,32 @@ public class MockServletRequest implements ServletRequest
 	}
 
 	@Override
-	public javax.servlet.AsyncContext getAsyncContext()
+	public AsyncContext getAsyncContext()
 	{
 		return null;
 	}
 
 	@Override
-	public javax.servlet.DispatcherType getDispatcherType()
+	public DispatcherType getDispatcherType()
 	{
 		return null;
 	}
-	// */
+
+	@Override
+	public String getRequestId()
+	{
+		return null;
+	}
+
+	@Override
+	public String getProtocolRequestId()
+	{
+		return null;
+	}
+
+	@Override
+	public ServletConnection getServletConnection()
+	{
+		return null;
+	}
 }
