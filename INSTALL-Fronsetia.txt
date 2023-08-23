@@ -5,6 +5,28 @@ Project homepage: https://fronsetia.sourceforge.io/
 
 ================================================================
 
+JavaEE server configuration
+
+Consult your JavaEE server manual about how to configure your particular
+server for deployment of applications, like creating a domain (if needed),
+creating managed servers (if needed), etc.
+
+For Eclipse Jetty, you need to create a base directory you will be deploying
+the application to. To do that (in bash syntax):
+
+- unpack the Jetty distribution
+- run 'cd jetty-home-x.y.z'
+- run 'export JETTY_HOME=`pwd`'
+- run 'mkdir base-dir' (or use your chosen name)
+- run 'cd base-dir'
+- run 'export JETTY_BASE=`pwd`'
+- run
+  java -jar $JETTY_HOME/start.jar --add-module=server,http,deploy,webapp,jsp
+  to create the server configuration
+- run 'java -jar $JETTY_HOME/start.jar' to start the server
+
+================================================================
+
 How to install:
 
 Install the required JAR files (and their dependencies) on your server's
@@ -13,3 +35,8 @@ libraries inside) - see the README file.
 
 Installation of Fronsetia:
 - deploy the WAR file on your application server.
+
+The exact method depends on your server. Examples:
+- Apache Tomcat: copy the WAR file to 'apache-tomcat-x.y.z/webapps',
+- Eclipse Jetty: copy the WAR file to '$JETTY_BASE/webapps',
+- WildFly: copy the WAR file to 'wildfly-x.y.z/standalone/deployments'
