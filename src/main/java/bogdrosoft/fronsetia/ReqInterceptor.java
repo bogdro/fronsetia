@@ -177,7 +177,7 @@ public class ReqInterceptor implements HttpRequestInterceptor
 	 * @param ahe the current list of headers.
 	 * @param header the header to remove.
 	 */
-	private static void removeHeader(HttpRequest httpRequest,
+	static void removeHeader(HttpRequest httpRequest,
 			List<Header> ahe, String header)
 	{
 		if (httpRequest == null || ahe == null || header == null)

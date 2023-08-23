@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -213,30 +214,96 @@ public class ReqInterceptorTest
 		boolean gotHeader1 = false;
 		boolean gotHeader2 = false;
 		boolean gotHeader3 = false;
-		if ( hi != null )
+		while (hi.hasNext ())
 		{
-			while (hi.hasNext ())
+			Header h = hi.nextHeader();
+			if (header1Name.equals(h.getName()))
 			{
-				Header h = hi.nextHeader();
-				if (header1Name.equals(h.getName()))
-				{
-					gotHeader1 = true;
-					assertEquals(header1Value, h.getValue());
-				}
-				if (header2Name.equals(h.getName()))
-				{
-					gotHeader2 = true;
-					assertEquals("", h.getValue());
-				}
-				if (header3Name.equals(h.getName()))
-				{
-					gotHeader3 = true;
-					assertEquals("", h.getValue());
-				}
+				gotHeader1 = true;
+				assertEquals(header1Value, h.getValue());
+			}
+			if (header2Name.equals(h.getName()))
+			{
+				gotHeader2 = true;
+				assertEquals("", h.getValue());
+			}
+			if (header3Name.equals(h.getName()))
+			{
+				gotHeader3 = true;
+				assertEquals("", h.getValue());
 			}
 		}
 		assertTrue(gotHeader1);
 		assertTrue(gotHeader2);
 		assertTrue(gotHeader3);
+	}
+
+	@Test
+	public void testRemoveHeaderAllNull()
+	{
+		ReqInterceptor.removeHeader(null, null, null);
+	}
+
+	@Test
+	public void testRemoveHeaderWithReq()
+	{
+		ReqInterceptor.removeHeader(
+			new BasicHttpEntityEnclosingRequest("POST",
+					"http://localhost:1234/test"),
+			null, null);
+	}
+
+	@Test
+	public void testRemoveHeaderWithList()
+	{
+		ReqInterceptor.removeHeader(null, new ArrayList<Header>(), null);
+	}
+
+	@Test
+	public void testRemoveHeaderWithHeaderName()
+	{
+		ReqInterceptor.removeHeader(null, null, "Content-Type");
+	}
+
+	@Test
+	public void testRemoveHeaderWithReqAndList()
+	{
+		ReqInterceptor.removeHeader(
+			new BasicHttpEntityEnclosingRequest("POST",
+					"http://localhost:1234/test"),
+			new ArrayList<Header>(), null);
+	}
+
+	@Test
+	public void testRemoveHeaderWithReqAndHeaderName()
+	{
+		ReqInterceptor.removeHeader(
+			new BasicHttpEntityEnclosingRequest("POST",
+					"http://localhost:1234/test"),
+			null, "Content-Type");
+	}
+
+	@Test
+	public void testRemoveHeaderWithListAndHeaderName()
+	{
+		ReqInterceptor.removeHeader(null, new ArrayList<Header>(), "Content-Type");
+	}
+
+	@Test
+	public void testRemoveHeaderWithNullInList() throws Exception
+	{
+		Map<String, String> p = prepareRequestParams();
+		ReqInterceptor ri = new ReqInterceptor(new MockServletRequest(p));
+		BasicHttpEntityEnclosingRequest req =
+			new BasicHttpEntityEnclosingRequest(
+				p.get(RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD),
+				p.get(RequestUtilities.REQ_PARAM_NAME_OP_URL));
+		ri.process(req, null);
+		ArrayList<Header> ahe = new ArrayList<Header> (10);
+		ahe.add(null);
+		ReqInterceptor.removeHeader(req,
+			ahe, "Content-Type");
+		assertFalse(checkHeader(ri.getFinalRequestHeaders(),
+			"Content-Type", "application/soap+xml"));
 	}
 }
