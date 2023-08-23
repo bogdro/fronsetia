@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -177,9 +178,8 @@ public class RequestUtilitiesTest
 	@Test
 	public void testPrintException() throws IOException
 	{
-		Exception ex = new Exception(EXCEPTION_MSG);
 		StringWriter sw = new StringWriter();
-		RequestUtilities.printException(ex, sw);
+		RequestUtilities.printException(new Exception(EXCEPTION_MSG), sw);
 		assertTrue(sw.toString().contains(EXCEPTION_MSG));
 	}
 
@@ -194,13 +194,40 @@ public class RequestUtilitiesTest
 	@Test
 	public void testPrintExceptionNullWriter() throws IOException
 	{
-		Exception ex = new Exception(EXCEPTION_MSG);
-		RequestUtilities.printException(ex, null);
+		RequestUtilities.printException(new Exception(EXCEPTION_MSG), null);
 	}
 
 	@Test
 	public void testPrintExceptionNullWriterNullEx() throws IOException
 	{
 		RequestUtilities.printException(null, null);
+	}
+
+	@Test
+	public void testPrintExceptionFailingWriter() throws IOException
+	{
+		RequestUtilities.printException(new Exception(EXCEPTION_MSG),
+			new FailingWriter());
+	}
+
+	private class FailingWriter extends Writer
+	{
+		@Override
+		public void write(char[] cbuf, int off, int len) throws IOException
+		{
+			throw new IOException("FailingWriter");
+		}
+
+		@Override
+		public void flush() throws IOException
+		{
+			// no need
+		}
+
+		@Override
+		public void close() throws IOException
+		{
+			// no need
+		}
 	}
 }
