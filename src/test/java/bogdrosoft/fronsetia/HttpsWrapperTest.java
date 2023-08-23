@@ -39,4 +39,12 @@ public class HttpsWrapperTest
 	{
 		assertNotNull(HttpsWrapper.createSecureConnManager());
 	}
+
+	@Test
+	public void testTrustManager() throws Exception
+	{
+		HttpsWrapper.AcceptAllTrustManager.INSTANCE.checkClientTrusted(null, null);
+		HttpsWrapper.AcceptAllTrustManager.INSTANCE.checkServerTrusted(null, null);
+		assertNotNull(HttpsWrapper.AcceptAllTrustManager.INSTANCE.getAcceptedIssuers());
+	}
 }

@@ -87,7 +87,7 @@ public class HttpsWrapper
 	/**
 	 * An "accept all TLS/SSL certificates" trust manager.
 	 */
-	private static class AcceptAllTrustManager implements X509TrustManager
+	static class AcceptAllTrustManager implements X509TrustManager
 	{
 		public static final AcceptAllTrustManager INSTANCE = new AcceptAllTrustManager();
 		private static final X509Certificate[] ACCEPTED_ISSUERS = new X509Certificate[0];
