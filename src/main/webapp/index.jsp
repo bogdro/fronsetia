@@ -42,7 +42,7 @@ You should have received a copy of the GNU Affero General Public License
 </head><body>
 
 <h1 class="c">
-<img src="resources/img/fronsetia-icon.png" class="vert_mid">
+<img src="resources/img/fronsetia-icon.png" class="vert_mid" alt="[icon]">
 Fronsetia
 </h1>
 <hr>

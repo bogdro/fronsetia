@@ -58,7 +58,7 @@ public class RequestUtilitiesTest
 		p.put(PARAM_NAME, PARAM_VALUE);
 		// Mockito doesn't work...
 		m = new MockServletRequest(p);
-		// just for coeverage...
+		// just for coverage...
 		m.getAttribute("");
 		m.getAttributeNames();
 		m.getCharacterEncoding();
@@ -103,7 +103,7 @@ public class RequestUtilitiesTest
 	@Test
 	public void testGetParameter()
 	{
-		assertEquals(RequestUtilities.getParameter(m, PARAM_NAME), PARAM_VALUE);
+		assertEquals(PARAM_VALUE, RequestUtilities.getParameter(m, PARAM_NAME));
 	}
 
 	@Test

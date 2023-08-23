@@ -48,6 +48,8 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
  */
 public class HttpsWrapper
 {
+	private HttpsWrapper() {/* utility class */}
+
 	/**
 	 * Creates an 'accept all TLS/SSL' HttpClient.
 	 * See http://tech.chitgoks.com/2011/04/24/how-to-avoid-javax-net-ssl-sslpeerunverifiedexception-peer-not-authenticated-problem-using-apache-httpclient/
@@ -70,8 +72,7 @@ public class HttpsWrapper
 			        .register("http", plainsf)
 			        .register("https", ssf)
 			        .build();
-			HttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(r);
-			return cm;
+			return new PoolingHttpClientConnectionManager(r);
 		}
 		catch (NoSuchAlgorithmException nsaex)
 		{
@@ -89,24 +90,27 @@ public class HttpsWrapper
 	private static class AcceptAllTrustManager implements X509TrustManager
 	{
 		public static final AcceptAllTrustManager INSTANCE = new AcceptAllTrustManager();
+		private static final X509Certificate[] ACCEPTED_ISSUERS = new X509Certificate[0];
 		private AcceptAllTrustManager() {}
 
 		@Override
 		public void checkClientTrusted (X509Certificate[] xcs, String string)
 			throws CertificateException
 		{
+			/* no need */
 		}
 
 		@Override
 		public void checkServerTrusted (X509Certificate[] xcs, String string)
 			throws CertificateException
 		{
+			/* no need */
 		}
 
 		@Override
 		public X509Certificate[] getAcceptedIssuers ()
 		{
-			return null;
+			return ACCEPTED_ISSUERS;
 		}
 	}
 }

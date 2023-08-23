@@ -56,14 +56,19 @@ public class WSDLCheckTest
 		return dir;
 	}
 
-	@Test
-	public void testWSDLCheck() throws Exception
+	private void checkFile(String fileName) throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		WSDLCheck w = new WSDLCheck(getFullPathFor(fileName));
 		Map<String, String> opXmls = w.getOperations();
 		assertTrue(opXmls.containsKey(OPER_NAME));
 		Map<String, String> opUrls = w.getOperationURLs();
 		assertEquals(OPER_URL, opUrls.get(OPER_NAME));
+	}
+
+	@Test
+	public void testWSDLCheck() throws Exception
+	{
+		checkFile("sample.wsdl");
 	}
 
 	@Test
@@ -79,11 +84,7 @@ public class WSDLCheckTest
 	@Test
 	public void testWSDLCheckV12() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-v1.2.wsdl"));
-		Map<String, String> opXmls = w.getOperations();
-		assertTrue(opXmls.containsKey(OPER_NAME));
-		Map<String, String> opUrls = w.getOperationURLs();
-		assertEquals(OPER_URL, opUrls.get(OPER_NAME));
+		checkFile("sample-v1.2.wsdl");
 	}
 
 	@Test
@@ -97,31 +98,19 @@ public class WSDLCheckTest
 	@Test
 	public void testWSDLCheckNoTypes() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-notypes.wsdl"));
-		Map<String, String> opXmls = w.getOperations();
-		assertTrue(opXmls.containsKey(OPER_NAME));
-		Map<String, String> opUrls = w.getOperationURLs();
-		assertEquals(OPER_URL, opUrls.get(OPER_NAME));
+		checkFile("sample-notypes.wsdl");
 	}
 
 	@Test
 	public void testWSDLCheckNoImports() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-noimports.wsdl"));
-		Map<String, String> opXmls = w.getOperations();
-		assertTrue(opXmls.containsKey(OPER_NAME));
-		Map<String, String> opUrls = w.getOperationURLs();
-		assertEquals(OPER_URL, opUrls.get(OPER_NAME));
+		checkFile("sample-noimports.wsdl");
 	}
 
 	@Test
 	public void testWSDLCheckNoIncludes() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-noincludes.wsdl"));
-		Map<String, String> opXmls = w.getOperations();
-		assertTrue(opXmls.containsKey(OPER_NAME));
-		Map<String, String> opUrls = w.getOperationURLs();
-		assertEquals(OPER_URL, opUrls.get(OPER_NAME));
+		checkFile("sample-noincludes.wsdl");
 	}
 
 	@Test

@@ -323,7 +323,7 @@ public class OperationLauncher
 				String encoding = RequestUtilities.DEFAULT_CHARSET;
 				try
 				{
-					HeaderElement headers[] = ent.getContentType ().getElements ();
+					HeaderElement[] headers = ent.getContentType ().getElements ();
 					for ( HeaderElement he : headers )
 					{
 						if ( he.getParameterByName (PARAM_NAME_CHARSET) != null )

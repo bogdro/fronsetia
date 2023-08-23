@@ -317,10 +317,6 @@ public class WSDLCheck
 			{
 				for ( String schemaFile : schemaLocations )
 				{
-					if ( schemaFile == null )
-					{
-						continue;
-					}
 					try
 					{
 						sdocs.add (XmlObject.Factory.parse (
@@ -329,7 +325,7 @@ public class WSDLCheck
 					}
 					catch (Exception e)
 					{
-						continue;
+						/* ignore, proceed with the next one */
 					}
 				}
 			}
@@ -337,10 +333,6 @@ public class WSDLCheck
 			{
 				for ( Element schemaElement : schemaElements )
 				{
-					if ( schemaElement == null )
-					{
-						continue;
-					}
 					try
 					{
 						sdocs.add (SchemaDocument.Factory.parse(
@@ -349,7 +341,7 @@ public class WSDLCheck
 					}
 					catch (Exception e)
 					{
-						continue;
+						/* ignore, proceed with the next one */
 					}
 				}
 			}
@@ -369,6 +361,7 @@ public class WSDLCheck
 				}
 				catch (Exception e)
 				{
+					/* ignore for now, use the default */
 				}
 			}
 
