@@ -28,6 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Locale;
 
 import org.apache.http.Consts;
 import org.apache.http.HeaderElement;
@@ -186,7 +187,7 @@ public class OperationLauncher
 		}
 		else
 		{
-			method = method.toUpperCase();
+			method = method.toUpperCase(Locale.ENGLISH);
 		}
 		if ( (! protoName.isEmpty ()) && (! protoMajorVer.isEmpty ())
 				&& (! protoMinorVer.isEmpty ()) )
