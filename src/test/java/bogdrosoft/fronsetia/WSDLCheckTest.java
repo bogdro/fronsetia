@@ -136,4 +136,84 @@ public class WSDLCheckTest
 		assertNotNull(w.getOperations());
 		assertNotNull(w.getOperationURLs());
 	}
+
+	@Test
+	public void testWSDLCheckNoDefinitions() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-nodef.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckEmptyTypes() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-empty-types.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckPortNoBinding() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-no-bind.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckBindingNoType() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-bind-no-type.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckOperationNoName() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-oper-no-name.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckInputNoMsg() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-in-no-msg.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckMsgNoQName() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-msg-no-qname.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckInMsgNoQName() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-in-msg-no-name.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckInMsgNoLocalName() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-in-msg-no-localname.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testWSDLCheckUnknownSoapVersion() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-v1.3.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
 }
