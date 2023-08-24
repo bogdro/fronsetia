@@ -160,7 +160,7 @@ public class WSDLCheck
 					}
 					else if ( o instanceof Schema )
 					{
-						Schema si = ((Schema) o);
+						Schema si = (Schema) o;
 						schemaElements.add (si.getElement ());
 						Map<?,?> schImports = si.getImports ();
 						if ( schImports != null )
@@ -170,12 +170,11 @@ public class WSDLCheck
 							{
 								for (Object el : schImportsValues)
 								{
-									if ( el != null && (el instanceof List) )
+									if ( el instanceof List )
 									{
 										for ( Object lel : (List<?>)el )
 										{
-											if ( lel != null &&
-												(lel instanceof SchemaReference) )
+											if ( lel instanceof SchemaReference )
 											{
 												schemaLocations.add (
 													((SchemaReference) lel)
@@ -191,7 +190,7 @@ public class WSDLCheck
 						{
 							for (Object el : schIncludes)
 							{
-								if ( el != null && (el instanceof SchemaReference) )
+								if ( el instanceof SchemaReference )
 								{
 									schemaLocations.add (((SchemaReference) el)
 										.getSchemaLocationURI ());
@@ -205,13 +204,13 @@ public class WSDLCheck
 		for ( Map.Entry<?,?> sn : servicesMap.entrySet () )
 		{
 			Object s = sn.getValue ();
-			if ( s != null && (s instanceof Service) )
+			if ( s instanceof Service )
 			{
 				Map<?,?> ports = ((Service) s).getPorts ();
 				for ( Map.Entry<?,?> pn : ports.entrySet () )
 				{
 					Object p = pn.getValue ();
-					if ( p != null && (p instanceof Port) )
+					if ( p instanceof Port )
 					{
 						Port currPort = (Port) p;
 						Binding b = currPort.getBinding();
@@ -232,7 +231,7 @@ public class WSDLCheck
 						List<?> portExtElems = currPort.getExtensibilityElements ();
 						for ( Object op : operations )
 						{
-							if ( op != null && (op instanceof Operation) )
+							if ( op instanceof Operation )
 							{
 								Operation oper = (Operation) op;
 								// first, put just the operation names

@@ -75,7 +75,7 @@ public class SOAPInterpreter
 			while (i.hasNext ())
 			{
 				Object o = i.next ();
-				if ( o != null && (o instanceof OMElement) )
+				if ( o instanceof OMElement )
 				{
 					bodyElements.add ( ((OMElement)o).getLocalName () );
 				}

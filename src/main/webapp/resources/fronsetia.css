@@ -27,7 +27,7 @@
 /* CSS 1 (most) */
 
 body		{
-			/*font-family: sans-serif, serif, arial;*/
+			/* font-family: sans-serif, serif, arial; */
 			background-color: #87ceeb;
 			color: black;
 			text-align: justify;
@@ -102,7 +102,7 @@ acronym, abbr	{
 		}
 
 .important	{
-			/*text-transform: uppercase;*/
+			/* text-transform: uppercase; */
 			text-decoration: underline;
 			font-weight: bold;
 			font-style: normal;
@@ -212,6 +212,7 @@ textarea.noindent
 		}
 
 /* =============================================================== */
+
 /* CSS 2 */
 @media print {
 

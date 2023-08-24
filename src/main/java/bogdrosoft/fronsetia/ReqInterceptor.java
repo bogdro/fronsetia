@@ -67,7 +67,7 @@ public class ReqInterceptor implements HttpRequestInterceptor
 			throws HttpException, IOException
 	{
 		HeaderIterator he = httpRequest.headerIterator ();
-		ArrayList<Header> ahe = new ArrayList<Header> (10);
+		List<Header> ahe = new ArrayList<Header> (10);
 		while (he.hasNext ())
 		{
 			ahe.add (he.nextHeader ());

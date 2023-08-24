@@ -217,16 +217,19 @@ public class MockServletRequest implements ServletRequest
 	@Override
 	public void removeAttribute(String arg0)
 	{
+		/* not needed */
 	}
 
 	@Override
 	public void setAttribute(String arg0, Object arg1)
 	{
+		/* not needed */
 	}
 
 	@Override
 	public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException
 	{
+		/* not needed */
 	}
 
 	@Override

@@ -85,6 +85,7 @@ public class HttpsWrapper
 	{
 		public static final AcceptAllTrustManager INSTANCE = new AcceptAllTrustManager();
 		private static final X509Certificate[] ACCEPTED_ISSUERS = new X509Certificate[0];
+
 		private AcceptAllTrustManager() {}
 
 		@Override
