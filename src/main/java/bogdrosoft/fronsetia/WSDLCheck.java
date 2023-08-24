@@ -302,7 +302,7 @@ public class WSDLCheck
 	 * @param rootElem The name of the root element in the generated XML template.
 	 * @return the generated XML template.
 	 */
-	private String processXSD (Set<String> schemaLocations,
+	String processXSD (Set<String> schemaLocations,
 			String rootElem, Set<Element> schemaElements)
 	{
 		if ( globalElems == null )

@@ -29,9 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Element;
 
 /**
  * WSDLCheckTest - a test for WSDLCheck.
@@ -215,5 +218,72 @@ public class WSDLCheckTest
 		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-v1.3.wsdl"));
 		assertNotNull(w.getOperations());
 		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
+	public void testProcessXSD() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		Set<String> schemaLocations = new HashSet<>();
+		schemaLocations.add(getFullPathFor("shiporder.xsd"));
+		w.processXSD(schemaLocations, "shiporder", null);
+		// second time, to test globalElems
+		String result = w.processXSD(schemaLocations, "shiporder", null);
+		assertEquals("<shiporder orderid=\"string\">\n"
+				+ "  <orderperson>string</orderperson>\n"
+				+ "  <shipto>\n"
+				+ "    <name>string</name>\n"
+				+ "    <address>string</address>\n"
+				+ "    <city>string</city>\n"
+				+ "    <country>string</country>\n"
+				+ "  </shipto>\n"
+				+ "  <!--1 or more repetitions:-->\n"
+				+ "  <item>\n"
+				+ "    <title>string</title>\n"
+				+ "    <!--Optional:-->\n"
+				+ "    <note>string</note>\n"
+				+ "    <quantity>201</quantity>\n"
+				+ "    <price>1000.00</price>\n"
+				+ "  </item>\n"
+				+ "</shiporder>", result);
+	}
+
+	@Test
+	public void testProcessXSDBothNull() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		assertEquals("", w.processXSD(null, "root", null));
+	}
+
+	@Test
+	public void testProcessXSDLocationsNull() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		assertEquals("", w.processXSD(null, "root", new HashSet<>()));
+	}
+
+	@Test
+	public void testProcessXSDElementsNull() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		assertEquals("", w.processXSD(new HashSet<>(), "root", null));
+	}
+
+	@Test
+	public void testProcessXSDNullSchemaElement() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		Set<Element> schemaElements = new HashSet<>();
+		schemaElements.add(null);
+		assertEquals("", w.processXSD(null, "root", schemaElements));
+	}
+
+	@Test
+	public void testProcessXSDWrongRoot() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		Set<String> schemaLocations = new HashSet<>();
+		schemaLocations.add(getFullPathFor("shiporder.xsd"));
+		assertEquals("", w.processXSD(schemaLocations, "testroot", null));
 	}
 }
