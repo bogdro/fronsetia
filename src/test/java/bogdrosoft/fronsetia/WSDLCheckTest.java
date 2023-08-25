@@ -259,14 +259,14 @@ public class WSDLCheckTest
 	public void testProcessXSDLocationsNull() throws Exception
 	{
 		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
-		assertEquals("", w.processXSD(null, "root", new HashSet<>()));
+		assertEquals("", w.processXSD(null, "root", new HashSet<Element>()));
 	}
 
 	@Test
 	public void testProcessXSDElementsNull() throws Exception
 	{
 		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
-		assertEquals("", w.processXSD(new HashSet<>(), "root", null));
+		assertEquals("", w.processXSD(new HashSet<String>(), "root", null));
 	}
 
 	@Test
