@@ -1,26 +1,28 @@
 # Fronsetia #
 
+## Description ##
+
 Fronsetia (Free Online Service Testing Application) is a web application that allows testing webservices.
 
 Fronsetia allows you to:
 
-- read WSDL definitions,
-- send customised requests to the webservice,
-- override or remove the standard HTTP headers from the request to be sent,
-- set any other HTTP header you wish,
-- set the protocol name and version,
-- use protocol methods other than the regular POST,
-- set the sent Content-Type,
-- authenticate to the webservice,
-- use a proxy and authenticate to the proxy,
-- accept any TLS/SSL certificate (useful for test environments),
-- manually set the SOAP content (prologue, headers, body and the XML before them, after them and in between),
-- set the character set of the request,
-- view the SOAP response,
-- view the response's HTTP code and status line,
-- view the response's HTTP headers,
-- verify if there was a SOAP Fault in the response,
-- pretty-print the response by splitting it after closing tags.
+-   read WSDL definitions,
+-   send customised requests to the webservice,
+-   override or remove the standard HTTP headers from the request to be sent,
+-   set any other HTTP header you wish,
+-   set the protocol name and version,
+-   use protocol methods other than the regular POST,
+-   set the sent Content-Type,
+-   authenticate to the webservice,
+-   use a proxy and authenticate to the proxy,
+-   accept any TLS/SSL certificate (useful for test environments),
+-   manually set the SOAP content (prologue, headers, body and the XML before them, after them and in between),
+-   set the character set of the request,
+-   view the SOAP response,
+-   view the response's HTTP code and status line,
+-   view the response's HTTP headers,
+-   verify if there was a SOAP Fault in the response,
+-   pretty-print the response by splitting it after closing tags.
 
 You can think of Fronsetia as a simple version of SoapUI
 (<https://www.soapui.org/>) on the web, or a simple and free and
@@ -30,17 +32,18 @@ separate fields for various parameters).
 
 Features:
 
-- supports Web Services Description Language (WSDL),
-- supports Simple Object Access Protocol (SOAP),
-- supports Hypertext Transfer Protocol (HTTP),
-- supports HTTP Authentication,
-- supports the same versions of Transport Layer Security (TLS) and Secure Sockets Layer (SSL) as the server the application will be running on,
-- supports HTTP Proxying,
-- portable and system-independent.
+-   supports Web Services Description Language (WSDL),
+-   supports Simple Object Access Protocol (SOAP),
+-   supports Hypertext Transfer Protocol (HTTP),
+-   supports HTTP Authentication,
+-   supports the same versions of Transport Layer Security (TLS) and Secure Sockets Layer (SSL) as the server the application will be running on,
+-   supports HTTP Proxying,
+-   portable and system-independent.
 
 Fronsetia was previously called SOAPServiceTester.
 
 Author: Bogdan Drozdowski, bogdro &AT% users . sourceforge . net
+
 License: AGPLv3+
 
 Project homepage: <https://fronsetia.sourceforge.io/>
