@@ -38,6 +38,7 @@ Features:
 -   supports HTTP Authentication,
 -   supports the same versions of Transport Layer Security (TLS) and Secure Sockets Layer (SSL) as the server the application will be running on,
 -   supports HTTP Proxying,
+-   supports the the Jakarta EE platform version 10 (modern Java servers),
 -   portable and system-independent.
 
 Fronsetia was previously called SOAPServiceTester.
