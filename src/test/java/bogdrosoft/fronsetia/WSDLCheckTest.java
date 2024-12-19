@@ -1,7 +1,7 @@
 /*
  * WSDLCheckTest - a test for WSDLCheck.
  *
- * Copyright (C) 2023 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
+ * Copyright (C) 2023-2024 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
  * This file is part of Fronsetia (Free Online Service Testing Application),
  *  a web application that allows testing webservices.
