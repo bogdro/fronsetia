@@ -78,7 +78,7 @@ public class WSDLCheck
 	 * Creates an instance of WSDLCheck.
 	 * @param wsdlAddress the location of the WSDL file to process.
 	 */
-	public WSDLCheck (String wsdlAddress)
+	public WSDLCheck(String wsdlAddress)
 	{
 		wsdlLocation = wsdlAddress;
 	}
@@ -88,15 +88,15 @@ public class WSDLCheck
 	 * @return a Map of the operations. Operation names are the keys,
 	 * 	skeleton XML strings are the values.
 	 */
-	public Map<String, String> getOperations () throws WSDLException
+	public Map<String, String> getOperations() throws WSDLException
 	{
-		if ( operationsAndXMLs == null )
+		if (operationsAndXMLs == null)
 		{
-			if ( operationsAndURLs == null )
+			if (operationsAndURLs == null)
 			{
-				operationsAndURLs = new HashMap<String, String> (10);
+				operationsAndURLs = new HashMap<String, String>(10);
 			}
-			operationsAndXMLs = processWSDL ();
+			operationsAndXMLs = processWSDL();
 		}
 		return operationsAndXMLs;
 	}
@@ -106,12 +106,12 @@ public class WSDLCheck
 	 * @return a Map of the operations. Operation names are the keys,
 	 * 	operation URLs are the values.
 	 */
-	public Map<String, String> getOperationURLs () throws WSDLException
+	public Map<String, String> getOperationURLs() throws WSDLException
 	{
-		if ( operationsAndURLs == null )
+		if (operationsAndURLs == null)
 		{
-			operationsAndURLs = new HashMap<String, String> (10);
-			operationsAndXMLs = processWSDL ();
+			operationsAndURLs = new HashMap<String, String>(10);
+			operationsAndXMLs = processWSDL();
 		}
 		return operationsAndURLs;
 	}
@@ -121,79 +121,79 @@ public class WSDLCheck
 	 * @return a Map of the operations. Operation names are the keys,
 	 * 	skeleton XML strings are the values.
 	 */
-	private Map<String, String> processWSDL () throws WSDLException
+	private Map<String, String> processWSDL() throws WSDLException
 	{
-		Map<String, String> ret = new HashMap<String, String> (10);
-		if ( wsdlReader == null )
+		Map<String, String> ret = new HashMap<String, String>(10);
+		if (wsdlReader == null)
 		{
-			wsdlReader = WSDLFactory.newInstance ().newWSDLReader ();
-			wsdlReader.setFeature ("javax.wsdl.verbose", false);
-			wsdlReader.setFeature ("javax.wsdl.importDocuments", true);
+			wsdlReader = WSDLFactory.newInstance().newWSDLReader();
+			wsdlReader.setFeature("javax.wsdl.verbose", false);
+			wsdlReader.setFeature("javax.wsdl.importDocuments", true);
 		}
-		Definition def = wsdlReader.readWSDL (wsdlLocation);
-		if ( def == null )
+		Definition def = wsdlReader.readWSDL(wsdlLocation);
+		if (def == null)
 		{
 			return ret;
 		}
-		Map<?,?> servicesMap = def.getAllServices ();
-		if ( servicesMap == null )
+		Map<?,?> servicesMap = def.getAllServices();
+		if (servicesMap == null)
 		{
 			return ret;
 		}
-		Types t = def.getTypes ();
-		Set<String> schemaLocations = new HashSet<String> (10);
-		Set<Element> schemaElements = new HashSet<Element> (10);
-		if ( t != null )
+		Types t = def.getTypes();
+		Set<String> schemaLocations = new HashSet<String>(10);
+		Set<Element> schemaElements = new HashSet<Element>(10);
+		if (t != null)
 		{
-			List<?> extElems = t.getExtensibilityElements ();
-			if ( extElems != null )
+			List<?> extElems = t.getExtensibilityElements();
+			if (extElems != null)
 			{
-				for ( Object o : extElems )
+				for (Object o : extElems)
 				{
-					if ( o == null )
+					if (o == null)
 					{
 						continue;
 					}
-					if ( o instanceof SchemaReference )
+					if (o instanceof SchemaReference)
 					{
-						schemaLocations.add (((SchemaReference) o).getSchemaLocationURI ());
+						schemaLocations.add(((SchemaReference) o).getSchemaLocationURI());
 					}
-					else if ( o instanceof Schema )
+					else if (o instanceof Schema)
 					{
 						Schema si = (Schema) o;
-						schemaElements.add (si.getElement ());
-						Map<?,?> schImports = si.getImports ();
-						if ( schImports != null )
+						schemaElements.add(si.getElement());
+						Map<?,?> schImports = si.getImports();
+						if (schImports != null)
 						{
-							Collection<?> schImportsValues = schImports.values ();
-							if ( schImportsValues != null )
+							Collection<?> schImportsValues = schImports.values();
+							if (schImportsValues != null)
 							{
 								for (Object el : schImportsValues)
 								{
-									if ( el instanceof List )
+									if (el instanceof List)
 									{
-										for ( Object lel : (List<?>)el )
+										for (Object lel : (List<?>)el)
 										{
-											if ( lel instanceof SchemaReference )
+											if (lel instanceof SchemaReference)
 											{
-												schemaLocations.add (
+												schemaLocations.add(
 													((SchemaReference) lel)
-													.getSchemaLocationURI ());
+														.getSchemaLocationURI());
 											}
 										}
 									}
 								}
 							}
 						}
-						List<?> schIncludes = si.getIncludes ();
-						if ( schIncludes != null )
+						List<?> schIncludes = si.getIncludes();
+						if (schIncludes != null)
 						{
 							for (Object el : schIncludes)
 							{
-								if ( el instanceof SchemaReference )
+								if (el instanceof SchemaReference)
 								{
-									schemaLocations.add (((SchemaReference) el)
-										.getSchemaLocationURI ());
+									schemaLocations.add(((SchemaReference) el)
+										.getSchemaLocationURI());
 								}
 							}
 						}
@@ -201,83 +201,83 @@ public class WSDLCheck
 				}
 			}
 		}
-		for ( Map.Entry<?,?> sn : servicesMap.entrySet () )
+		for (Map.Entry<?,?> sn : servicesMap.entrySet())
 		{
-			Object s = sn.getValue ();
-			if ( s instanceof Service )
+			Object s = sn.getValue();
+			if (s instanceof Service)
 			{
-				Map<?,?> ports = ((Service) s).getPorts ();
-				for ( Map.Entry<?,?> pn : ports.entrySet () )
+				Map<?,?> ports = ((Service) s).getPorts();
+				for (Map.Entry<?,?> pn : ports.entrySet())
 				{
-					Object p = pn.getValue ();
-					if ( p instanceof Port )
+					Object p = pn.getValue();
+					if (p instanceof Port)
 					{
 						Port currPort = (Port) p;
 						Binding b = currPort.getBinding();
-						if ( b == null )
+						if (b == null)
 						{
 							continue;
 						}
 						PortType pt = b.getPortType();
-						if ( pt == null )
+						if (pt == null)
 						{
 							continue;
 						}
-						List<?> operations = pt.getOperations ();
-						if ( operations == null )
+						List<?> operations = pt.getOperations();
+						if (operations == null)
 						{
 							continue;
 						}
-						List<?> portExtElems = currPort.getExtensibilityElements ();
-						for ( Object op : operations )
+						List<?> portExtElems = currPort.getExtensibilityElements();
+						for (Object op : operations)
 						{
-							if ( op instanceof Operation )
+							if (op instanceof Operation)
 							{
 								Operation oper = (Operation) op;
 								// first, put just the operation names
 								// and root elements
-								String opName = oper.getName ();
-								Input opInput = oper.getInput ();
-								if ( opName == null
-									|| opInput == null )
+								String opName = oper.getName();
+								Input opInput = oper.getInput();
+								if (opName == null
+									|| opInput == null)
 								{
 									continue;
 								}
-								Message mess = opInput.getMessage ();
-								if ( mess == null )
+								Message mess = opInput.getMessage();
+								if (mess == null)
 								{
 									continue;
 								}
-								QName messName = mess.getQName ();
-								if ( messName == null )
+								QName messName = mess.getQName();
+								if (messName == null)
 								{
 									continue;
 								}
-								String messLocalName = messName.getLocalPart ();
-								if ( messLocalName == null )
+								String messLocalName = messName.getLocalPart();
+								if (messLocalName == null)
 								{
 									continue;
 								}
 								ret.put (opName, messLocalName);
-								if ( portExtElems != null )
+								if (portExtElems != null)
 								{
-									for ( Object extel : portExtElems )
+									for (Object extel : portExtElems)
 									{
-										if ( extel == null )
+										if (extel == null)
 										{
 											continue;
 										}
-										if ( extel instanceof SOAPAddress )
+										if (extel instanceof SOAPAddress)
 										{
 											operationsAndURLs.put (
 												opName,
-												((SOAPAddress) extel).getLocationURI ());
+												((SOAPAddress) extel).getLocationURI());
 										}
-										else if ( extel instanceof SOAP12Address )
+										else if (extel instanceof SOAP12Address)
 										{
 											operationsAndURLs.put (
 												opName,
-												((SOAP12Address) extel).getLocationURI ());
+												((SOAP12Address) extel).getLocationURI());
 										}
 									}
 								}
@@ -288,10 +288,12 @@ public class WSDLCheck
 			}
 		}
 		// now change the root elements in the map to XML templates
-		for ( Map.Entry<String, String> opName : ret.entrySet () )
+		for (Map.Entry<String, String> opName : ret.entrySet())
 		{
-			ret.put (opName.getKey (), processXSD (schemaLocations,
-				ret.get (opName.getValue ()), schemaElements));
+			ret.put(
+				opName.getKey(),
+				processXSD(schemaLocations, ret.get(opName.getValue()), schemaElements)
+			);
 		}
 		return ret;
 	}
@@ -302,24 +304,24 @@ public class WSDLCheck
 	 * @param rootElem The name of the root element in the generated XML template.
 	 * @return the generated XML template.
 	 */
-	String processXSD (Set<String> schemaLocations,
+	String processXSD(Set<String> schemaLocations,
 			String rootElem, Set<Element> schemaElements)
 	{
-		if ( globalElems == null )
+		if (globalElems == null)
 		{
-			List<XmlObject> sdocs = new ArrayList<XmlObject> ();
+			List<XmlObject> sdocs = new ArrayList<XmlObject>();
 			XmlOptions parseOptions = new XmlOptions();
 			parseOptions.setLoadLineNumbers();
 			parseOptions.setLoadMessageDigest();
 
-			if ( schemaLocations != null )
+			if (schemaLocations != null)
 			{
-				for ( String schemaFile : schemaLocations )
+				for (String schemaFile : schemaLocations)
 				{
 					try
 					{
-						sdocs.add (XmlObject.Factory.parse (
-								new File (schemaFile),
+						sdocs.add(XmlObject.Factory.parse(
+								new File(schemaFile),
 								parseOptions));
 					}
 					catch (Exception e)
@@ -328,13 +330,13 @@ public class WSDLCheck
 					}
 				}
 			}
-			if ( schemaElements != null )
+			if (schemaElements != null)
 			{
-				for ( Element schemaElement : schemaElements )
+				for (Element schemaElement : schemaElements)
 				{
 					try
 					{
-						sdocs.add (SchemaDocument.Factory.parse(
+						sdocs.add(SchemaDocument.Factory.parse(
 								schemaElement,
 								parseOptions));
 					}
@@ -347,15 +349,15 @@ public class WSDLCheck
 
 			XmlObject[] schemas = sdocs.toArray(new XmlObject[] {});
 			SchemaTypeSystem sts = null;
-			if ( schemas.length != 0 )
+			if (schemas.length != 0)
 			{
-				XmlOptions compileOptions = new XmlOptions ();
-				compileOptions.setCompileDownloadUrls ();
+				XmlOptions compileOptions = new XmlOptions();
+				compileOptions.setCompileDownloadUrls();
 
 				try
 				{
-					sts = XmlBeans.compileXsd (schemas,
-						XmlBeans.getBuiltinTypeSystem (),
+					sts = XmlBeans.compileXsd(schemas,
+						XmlBeans.getBuiltinTypeSystem(),
 						compileOptions);
 				}
 				catch (Exception e)
@@ -364,7 +366,7 @@ public class WSDLCheck
 				}
 			}
 
-			if ( sts == null )
+			if (sts == null)
 			{
 				return RequestUtilities.EMPTY_STR;
 			}
