@@ -370,11 +370,20 @@ public class WSDLCheck
 			}
 			globalElems = sts.documentTypes();
 		}
-		for (SchemaType st : globalElems)
+		if (rootElem != null && globalElems != null)
 		{
-			if ( rootElem.equals (st.getDocumentElementName ().getLocalPart ()) )
+			for (SchemaType st : globalElems)
 			{
-				return SampleXmlUtil.createSampleForType (st);
+				QName elementName = st.getDocumentElementName();
+				if (elementName == null)
+				{
+					continue;
+				}
+				String nameLocalPart = elementName.getLocalPart();
+				if (nameLocalPart != null && rootElem.equals(nameLocalPart))
+				{
+					return SampleXmlUtil.createSampleForType(st);
+				}
 			}
 		}
 		return RequestUtilities.EMPTY_STR;

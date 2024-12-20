@@ -213,6 +213,14 @@ public class WSDLCheckTest
 	}
 
 	@Test
+	public void testWSDLCheckInMsgPartNoType() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-msg-part-no-type.wsdl"));
+		assertNotNull(w.getOperations());
+		assertNotNull(w.getOperationURLs());
+	}
+
+	@Test
 	public void testWSDLCheckUnknownSoapVersion() throws Exception
 	{
 		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-v1.3.wsdl"));
@@ -285,5 +293,14 @@ public class WSDLCheckTest
 		Set<String> schemaLocations = new HashSet<>();
 		schemaLocations.add(getFullPathFor("shiporder.xsd"));
 		assertEquals("", w.processXSD(schemaLocations, "testroot", null));
+	}
+
+	@Test
+	public void testProcessXSDNoRoot() throws Exception
+	{
+		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		Set<String> schemaLocations = new HashSet<>();
+		schemaLocations.add(getFullPathFor("shiporder.xsd"));
+		assertEquals("", w.processXSD(schemaLocations, null, null));
 	}
 }
