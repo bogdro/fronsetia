@@ -278,7 +278,7 @@ SOAPAction: "/<%= opName %>"</textarea>
 			</div>
 
 			<br><br>
-			Reply character set (if can't be detected automatically):
+			Response character set (if can't be detected automatically):
 			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
 				value="<%= RequestUtilities.DEFAULT_CHARSET %>" size="60">
 			<br><br>
