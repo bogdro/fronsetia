@@ -38,5 +38,10 @@ Installation of Fronsetia:
 
 The exact method depends on your server. Examples:
 - Apache Tomcat: copy the WAR file to 'apache-tomcat-x.y.z/webapps',
+  (or deploy manually using the server console)
 - Eclipse Jetty: copy the WAR file to '$JETTY_BASE/webapps',
 - WildFly: copy the WAR file to 'wildfly-x.y.z/standalone/deployments'
+  (or deploy manually using the server console)
+- Eclipse GlassFish: copy the WAR file to
+  'glassfishX/glassfish/domains/<domain name>/autodeploy/'
+  (or deploy manually using the server console)
