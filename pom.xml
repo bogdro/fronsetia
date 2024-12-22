@@ -36,18 +36,13 @@ You should have received a copy of the GNU Affero General Public License
 	<description>Fronsetia (Free Online Service Testing Application), a web application that allows testing webservices</description>
 	<url>https://fronsetia.sourceforge.io/</url>
 
-	<issueManagement>
-		<system>SourceForge</system>
-		<url>https://sourceforge.net/p/fronsetia/defects/</url>
-	</issueManagement>
-
+	<inceptionYear>2011</inceptionYear>
 	<licenses>
 		<license>
 			<name>GNU AFFERO GENERAL PUBLIC LICENSE Version 3</name>
 			<url>https://www.gnu.org/licenses/agpl.html</url>
 		</license>
 	</licenses>
-	<inceptionYear>2011</inceptionYear>
 
 	<developers>
 		<developer>
@@ -60,6 +55,11 @@ You should have received a copy of the GNU Affero General Public License
 			<url>https://sourceforge.net/u/bogdro/profile/</url>
 		</developer>
 	</developers>
+
+	<issueManagement>
+		<system>SourceForge</system>
+		<url>https://sourceforge.net/p/fronsetia/defects/</url>
+	</issueManagement>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
