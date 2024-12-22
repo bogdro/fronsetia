@@ -1,3 +1,17 @@
+2024-12-21	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
+
+	* Fronsetia version 1.1.1
+	* bogdrosoft/fronsetia/WSDLCheck.java (processXSD): Added more null
+	  checks before creating the sample XML. Fixes defect #1.
+	* src/test/java/bogdrosoft/fronsetia/WSDLCheckTest.java: Added one
+	  more test with an invalid WSDL.
+	* src/main/webapp/show_operations.jsp: Changed wording.
+	* src/main/webapp/resources/readme.html: Fixed closing tags.
+	* pom.xml: Reordered elements according to the recommendations.
+	* README*: Added that the application supports Jakarta EE version 10.
+	* INSTALL-Fronsetia.txt: Added Eclipse GlassFish and mentioned manual
+	  installation using the server console.
+
 2023-08-25	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
 
 	* Fronsetia version 1.1
