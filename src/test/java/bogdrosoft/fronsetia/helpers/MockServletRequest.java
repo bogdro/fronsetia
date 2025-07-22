@@ -1,7 +1,7 @@
 /*
  * MockServletRequest - a mock ServletRequest for tests.
  *
- * Copyright (C) 2023-2024 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
+ * Copyright (C) 2023-2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
  * This file is part of Fronsetia (Free Online Service Testing Application),
  *  a web application that allows testing webservices.

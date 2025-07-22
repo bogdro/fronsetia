@@ -1,7 +1,7 @@
 /*
  * RequestUtilities - a utility class for HTTP requests.
  *
- * Copyright (C) 2011-2024 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
+ * Copyright (C) 2011-2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
  * This file is part of Fronsetia (Free Online Service Testing Application),
  *  a web application that allows testing webservices.
