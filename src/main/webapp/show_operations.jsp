@@ -3,9 +3,10 @@
 <%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.HashSet" %>
+<%@ page import="java.util.Locale" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
-<% String wsdlLocation = request.getParameter (RequestUtilities.REQ_PARAM_NAME_WSDL); %>
+<% String wsdlLocation = request.getParameter(RequestUtilities.REQ_PARAM_NAME_WSDL); %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <!--
@@ -66,25 +67,47 @@ You should have received a copy of the GNU Affero General Public License
          * "page" is a java.lang.Object processing the current page.
          */
 
-	WSDLCheck w = new WSDLCheck (wsdlLocation);
-	Map<String, String> operationsAndXMLs = new HashMap<String, String> ();
-	Map<String, String> operationsAndURLs = new HashMap<String, String> ();
-	Set<String> operationNames = new HashSet<String> ();
+	WSDLCheck w = new WSDLCheck(wsdlLocation);
+	Map<String, String> operationsAndXMLs = new HashMap<String, String>();
+	Map<String, String> operationsAndURLs = new HashMap<String, String>();
+	Set<String> operationNames = new HashSet<String>();
 
 	try
 	{
-		operationsAndXMLs = w.getOperations ();
-		operationsAndURLs = w.getOperationURLs ();
-		operationNames = operationsAndXMLs.keySet ();
+		operationsAndXMLs = w.getOperations();
+		operationsAndURLs = w.getOperationURLs();
+		operationNames = operationsAndXMLs.keySet();
 	}
 	catch (Throwable ex)
 	{
+		if (! wsdlLocation.toLowerCase(Locale.ENGLISH).endsWith("wsdl"))
+		{
+			try
+			{
+				w = new WSDLCheck(wsdlLocation + "?WSDL");
+				operationsAndXMLs = w.getOperations();
+				operationsAndURLs = w.getOperationURLs();
+				operationNames = operationsAndXMLs.keySet();
+			}
+			catch (Throwable ex2)
+			{
 %>
-		Exception caught while parsing the WSDL:
-		<pre><%
-		RequestUtilities.printException(ex, out);
+				Exception caught while parsing the WSDL:
+				<pre><%
+				RequestUtilities.printException(ex2, out);
 %></pre>
 <%
+			}
+		}
+		else
+		{
+			%>
+			Exception caught while parsing the WSDL:
+			<pre><%
+			RequestUtilities.printException(ex, out);
+%></pre>
+<%
+		}
 	}
 
 	for ( String opName : operationNames )
@@ -93,7 +116,7 @@ You should have received a copy of the GNU Affero General Public License
 		<a href="#<%= opName %>"><%= opName %></a><br>
 <%
 	}
-	if ( operationNames.isEmpty () )
+	if ( operationNames.isEmpty() )
 	{
 %>
 		<hr>
@@ -118,7 +141,7 @@ You should have received a copy of the GNU Affero General Public License
 			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_WSDL %>"
 				value="<%= wsdlLocation %>">
 			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_OP_URL %>"
-				value="<%= operationsAndURLs.get (opName) %>">
+				value="<%= operationsAndURLs.get(opName) %>">
 
 			The following headers are sent by default. To change them, unselect them
 			here and put your versions in the <q>Additional headers</q>
@@ -260,9 +283,8 @@ SOAPAction: "/<%= opName %>"</textarea>
 			<br><br>
 			SOAP body (put your XML data here):<br>
 			<%
-				String operXML = operationsAndXMLs.get (opName);
-				if ( operXML == null
-					|| operXML.isEmpty () )
+				String operXML = operationsAndXMLs.get(opName);
+				if ( operXML == null || operXML.isEmpty() )
 				{
 					operXML = "&lt;" + opName + "&gt;&lt;/" + opName + "&gt;";
 				}
