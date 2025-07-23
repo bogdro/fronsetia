@@ -179,11 +179,20 @@ public class OperationLauncher
 		}
 		hc = b.build();
 
-		String method = RequestUtilities.getParameter (request,
-			RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
+		String method = RequestUtilities.getParameter(request,
+			RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT);
 		if (method.isEmpty())
 		{
-			method = "POST";
+			method = RequestUtilities.getParameter(request,
+					RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
+			if (method.isEmpty())
+			{
+				method = "POST";
+			}
+			else
+			{
+				method = method.toUpperCase(Locale.ENGLISH);
+			}
 		}
 		else
 		{

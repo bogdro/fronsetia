@@ -5,17 +5,22 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.http.HeaderIterator" %>
 <%
-String wsdlLocation = request.getParameter (RequestUtilities.REQ_PARAM_NAME_WSDL);
-String opName = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_OP_NAME);
-String soapPrologue = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE);
-String soapHeader = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER);
-String soapMiddle = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE);
-String soapXML = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_BODY);
-String soapEpilogue = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE);
-String soapCType = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
-String proxyPort = RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_PORT);
+String wsdlLocation = request.getParameter(RequestUtilities.REQ_PARAM_NAME_WSDL);
+String opName = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_OP_NAME);
+String soapPrologue = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE);
+String soapHeader = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER);
+String soapMiddle = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE);
+String soapXML = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_BODY);
+String soapEpilogue = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE);
+String soapCType = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
+String proxyPort = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_PORT);
+String method = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT);
+if (method.isEmpty())
+{
+	method = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
+}
 
-OperationLauncher ol = new OperationLauncher ();
+OperationLauncher ol = new OperationLauncher();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
@@ -66,24 +71,24 @@ WSDL location: <a href="<%= wsdlLocation %>"
 	id="<%= RequestUtilities.REQ_PARAM_NAME_WSDL %>"><%= wsdlLocation %></a><br>
 Operation name: <code id="<%= RequestUtilities.REQ_PARAM_NAME_OP_NAME %>"><%= opName %></code><br>
 Protocol name and version: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_NAME %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROTO_NAME)
-	%>/<%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR)
-	%>.<%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR) %></code><br>
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_NAME)
+	%>/<%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR)
+	%>.<%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR) %></code><br>
 Protocol method: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD) %></code><br>
+	><%= method %></code><br>
 Protocol authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_HTTP_USER) %></code>,
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_USER) %></code>,
 	password=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD) %></code>,
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD) %></code>,
 	NT workstation=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION) %></code>,
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION) %></code>,
 	NT domain=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN) %></code>
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN) %></code>
 	<br>
 Proxy: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_HOST) %>
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_HOST) %>
 <%
-	if ( ! proxyPort.isEmpty () )
+	if ( ! proxyPort.isEmpty() )
 	{
 %>
 		:<%= proxyPort %>
@@ -92,27 +97,27 @@ Proxy: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
 %>
 </code><br>
 Proxy authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_USER %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_USER) %></code>,
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_USER) %></code>,
 	password=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD) %></code>,
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD) %></code>,
 	NT workstation=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION) %></code>,
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION) %></code>,
 	NT domain=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN) %></code>
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN) %></code>
 	<br>
 User-defined request headers:
 <pre id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>">
 <%
 	try
 	{
-		ol.prepare (request);
-		ol.perform (request);
-		HeaderIterator reqhi = ol.getReqHeaders ();
-		out.flush ();
-		while (reqhi.hasNext ())
+		ol.prepare(request);
+		ol.perform(request);
+		HeaderIterator reqhi = ol.getReqHeaders();
+		out.flush();
+		while (reqhi.hasNext())
 		{
-			out.println (reqhi.next ());
-			out.flush ();
+			out.println(reqhi.next());
+			out.flush();
 		}
 	}
 	catch (Throwable ex)
@@ -124,15 +129,15 @@ User-defined request headers:
 %></pre>
 Operation input (HTTP body):
 <pre id="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_BODY %>">
-<%= RequestUtilities.makeHTMLSafe (soapPrologue) +
-RequestUtilities.makeHTMLSafe (soapHeader) +
-RequestUtilities.makeHTMLSafe (soapMiddle) +
-RequestUtilities.makeHTMLSafe (soapXML) +
-RequestUtilities.makeHTMLSafe (soapEpilogue) %></pre>
+<%= RequestUtilities.makeHTMLSafe(soapPrologue) +
+RequestUtilities.makeHTMLSafe(soapHeader) +
+RequestUtilities.makeHTMLSafe(soapMiddle) +
+RequestUtilities.makeHTMLSafe(soapXML) +
+RequestUtilities.makeHTMLSafe(soapEpilogue) %></pre>
 
 Expected output encoding (used only if can't be detected automatically):
  <code id="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
-	><%= RequestUtilities.getParameter (request, RequestUtilities.REQ_PARAM_NAME_CHARSET) %></code>
+	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_CHARSET) %></code>
 
 
 
@@ -144,23 +149,23 @@ Expected output encoding (used only if can't be detected automatically):
 
 
 HTTP response code: <code id="<%= RequestUtilities.RESP_FIELD_ID_CODE %>"
-	><%= (ol.getStatusCode () >= 0)? String.valueOf(ol.getStatusCode ()) : "" %></code><br>
+	><%= (ol.getStatusCode() >= 0)? String.valueOf(ol.getStatusCode()) : "" %></code><br>
 HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
-	><%= ol.getStatusLine () %></code><br>
+	><%= ol.getStatusLine() %></code><br>
 <%
 	// flush the current page output to the user:
-	out.flush ();
+	out.flush();
 	try
 	{
-		String resp = ol.getResponseBody ();
+		String resp = ol.getResponseBody();
 		try
 		{
-			SOAPInterpreter si = new SOAPInterpreter ();
-			si.parseResponse (resp);
+			SOAPInterpreter si = new SOAPInterpreter();
+			si.parseResponse(resp);
 %>
 			SOAP Fault found in the response:
 <%
-			if ( si.wasFault () )
+			if ( si.wasFault() )
 			{
 %>
 				<span id="<%= RequestUtilities.RESP_FIELD_ID_HAS_FAULT %>"
@@ -178,14 +183,14 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 			SOAP response type (elements): <span
 				id="<%= RequestUtilities.RESP_FIELD_ID_BODY_ELEMENTS %>">
 <%
-			List<String> respTypes = si.getBodyElements ();
+			List<String> respTypes = si.getBodyElements();
 			if ( respTypes != null )
 			{
-				int respTypeSize = respTypes.size ();
+				int respTypeSize = respTypes.size();
 				for ( int i = 0; i < respTypeSize; i++ )
 				{
 %>
-					<code><%= respTypes.get (i) %></code>
+					<code><%= respTypes.get(i) %></code>
 <%
 					if ( i < respTypeSize - 1 )
 					{
@@ -215,17 +220,17 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 <br>
 HTTP response headers:
 <%
-		out.flush ();
-		HeaderIterator hi = ol.getRespHeaders ();
+		out.flush();
+		HeaderIterator hi = ol.getRespHeaders();
 		if ( hi != null )
 		{
 %>
 <pre id="<%= RequestUtilities.RESP_FIELD_ID_HEADERS %>">
 <%
-			while (hi.hasNext ())
+			while (hi.hasNext())
 			{
-				out.println (hi.next ());
-				out.flush ();
+				out.println(hi.next());
+				out.flush();
 			}
 %></pre>
 <%
@@ -235,7 +240,7 @@ HTTP response headers:
 HTTP response body:
 <pre id="<%= RequestUtilities.RESP_FIELD_ID_BODY %>">
 <%
-		out.println (RequestUtilities.makeHTMLSafe (resp));
+		out.println (RequestUtilities.makeHTMLSafe(resp));
 %></pre>
 <%
 	}
@@ -248,7 +253,6 @@ HTTP response body:
 <%
 	}
 %>
-
 
 <%@ include file="footer.html" %>
 

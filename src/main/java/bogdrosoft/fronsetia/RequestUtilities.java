@@ -64,8 +64,11 @@ public class RequestUtilities
 	/** The name of the parameter which holds the protocol minor version. */
 	public static final String REQ_PARAM_NAME_PROTO_MINOR = "Fronsetia_protoMinorVer";
 
-	/** The name of the parameter which holds the protocol method. */
+	/** The name of the parameter which holds the protocol method (predefined list). */
 	public static final String REQ_PARAM_NAME_PROTO_METHOD = "Fronsetia_protoMethod";
+
+	/** The name of the parameter which holds the protocol method (input field). */
+	public static final String REQ_PARAM_NAME_PROTO_METHOD_INPUT = "Fronsetia_protoMethod_input";
 
 	/** The name of the parameter which holds the service authentication user name. */
 	public static final String REQ_PARAM_NAME_HTTP_USER = "Fronsetia_httpUserName";

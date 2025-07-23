@@ -195,6 +195,9 @@ You should have received a copy of the GNU Affero General Public License
 					<option value="PUT">PUT</option>
 					<option value="TRACE">TRACE</option>
 				</select>
+			- or specify manually (overrides the drop-down value): <input type="text"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT %>"
+				value="POST" size="60" class="noindent"><br>
 			</div>
 
 			<br>
