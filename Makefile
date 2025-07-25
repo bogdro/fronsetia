@@ -77,6 +77,9 @@ clean:
 test:
 	$(MAVEN) clean test
 
+coverage:
+	$(MAVEN) -B clean verify -Pcoverage
+
 reinit:
 	$(MAVEN) archetype:generate -B -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-webapp -DgroupId=bogdrosoft.$(NAME) -DartifactId=$(NAME)-web -Dversion=1.0
 
