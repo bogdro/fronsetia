@@ -37,8 +37,8 @@ import jakarta.servlet.ServletRequest;
  */
 public class RequestUtilities
 {
-	/** The name of the parameter which holds the location of the WSDL. */
-	public static final String REQ_PARAM_NAME_WSDL = "Fronsetia_WSDL";
+	/** The name of the parameter which holds the location of the endpoint. */
+	public static final String REQ_PARAM_NAME_ENDPOINT = "Fronsetia_endpoint";
 
 	/** The name of the parameter which holds the name of the operation to call. */
 	public static final String REQ_PARAM_NAME_OP_NAME = "Fronsetia_opName";
@@ -121,23 +121,23 @@ public class RequestUtilities
 	/** The name of the parameter which tells if no default headers should be sent. */
 	public static final String REQ_PARAM_NAME_SEND_NO_HEADERS = "Fronsetia_sendNoDefaultHeader";
 
-	/** The name of the parameter which holds the SOAP prologue. */
-	public static final String REQ_PARAM_NAME_SOAP_PROLOGUE = "Fronsetia_opPrologue";
+	/** The name of the parameter which holds the payload prologue. */
+	public static final String REQ_PARAM_NAME_PAYLOAD_PROLOGUE = "Fronsetia_opPrologue";
 
-	/** The name of the parameter which holds the SOAP header. */
-	public static final String REQ_PARAM_NAME_SOAP_HEADER = "Fronsetia_opSoapHeader";
+	/** The name of the parameter which holds the payload header. */
+	public static final String REQ_PARAM_NAME_PAYLOAD_HEADER = "Fronsetia_opHeader";
 
-	/** The name of the parameter which holds the elements between the SOAP header and body. */
-	public static final String REQ_PARAM_NAME_SOAP_MIDDLE = "Fronsetia_opMiddle";
+	/** The name of the parameter which holds the elements between the payload header and body. */
+	public static final String REQ_PARAM_NAME_PAYLOAD_MIDDLE = "Fronsetia_opMiddle";
 
-	/** The name of the parameter which holds the SOAP XML body. */
-	public static final String REQ_PARAM_NAME_SOAP_BODY = "Fronsetia_opXML";
+	/** The name of the parameter which holds the payload body. */
+	public static final String REQ_PARAM_NAME_PAYLOAD_BODY = "Fronsetia_opPayload";
 
-	/** The name of the parameter which holds the SOAP epilogue. */
-	public static final String REQ_PARAM_NAME_SOAP_EPILOGUE = "Fronsetia_opEpilogue";
+	/** The name of the parameter which holds the payload epilogue. */
+	public static final String REQ_PARAM_NAME_PAYLOAD_EPILOGUE = "Fronsetia_opEpilogue";
 
 	/** The name of the parameter which tells if the response should be split into lines. */
-	public static final String REQ_PARAM_NAME_SOAP_SPLIT_RESP = "Fronsetia_splitResp";
+	public static final String REQ_PARAM_NAME_SPLIT_RESP = "Fronsetia_splitResp";
 
 	/** The ID of the element that contains the response code. */
 	public static final String RESP_FIELD_ID_CODE = "Fronsetia_respCode";
@@ -151,7 +151,7 @@ public class RequestUtilities
 	/** The ID of the element that contains the response body. */
 	public static final String RESP_FIELD_ID_BODY = "Fronsetia_respBody";
 
-	/** The ID of the element that tells if the response contained a SOAP Fault. */
+	/** The ID of the element that tells if the response contained a Fault. */
 	public static final String RESP_FIELD_ID_HAS_FAULT = "Fronsetia_respHasFault";
 
 	/** The ID of the element that contains the response body's top-level elements. */

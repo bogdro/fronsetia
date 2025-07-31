@@ -1,5 +1,5 @@
 /*
- * WSDLCheckTest - a test for WSDLCheck.
+ * SoapEndpointParserTest - a test for SoapEndpointParser.
  *
  * Copyright (C) 2023-2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
@@ -22,7 +22,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 
-package bogdrosoft.fronsetia;
+package bogdrosoft.fronsetia.soap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,17 +30,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 /**
- * WSDLCheckTest - a test for WSDLCheck.
+ * SoapEndpointParserTest - a test for SoapEndpointParser.
  * @author Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  */
-public class WSDLCheckTest
+public class SoapEndpointParserTest
 {
 	private static final String OPER_NAME = "getPriceList";
 	private static final String OPER_URL = "http://localhost:8080/soap/servlet/rpcrouter";
@@ -61,27 +60,17 @@ public class WSDLCheckTest
 
 	private void checkFile(String fileName) throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor(fileName));
-		Map<String, String> opXmls = w.getOperations();
-		assertTrue(opXmls.containsKey(OPER_NAME));
-		Map<String, String> opUrls = w.getOperationURLs();
-		assertEquals(OPER_URL, opUrls.get(OPER_NAME));
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor(fileName));
+		Set<String> operations = p.getListOfOperations();
+		assertTrue(operations.contains(OPER_NAME));
+		assertEquals(OPER_URL, p.getUrlForOperation(OPER_NAME));
 	}
 
 	@Test
 	public void testWSDLCheck() throws Exception
 	{
 		checkFile("sample.wsdl");
-	}
-
-	@Test
-	public void testWSDLCheckReverse() throws Exception
-	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
-		Map<String, String> opUrls = w.getOperationURLs();
-		assertEquals(OPER_URL, opUrls.get(OPER_NAME));
-		Map<String, String> opXmls = w.getOperations();
-		assertTrue(opXmls.containsKey(OPER_NAME));
 	}
 
 	@Test
@@ -93,9 +82,9 @@ public class WSDLCheckTest
 	@Test
 	public void testWSDLCheckNoServices() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-nosrv.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-nosrv.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
@@ -119,124 +108,125 @@ public class WSDLCheckTest
 	@Test
 	public void testWSDLCheckNoPorts() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-noports.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-noports.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckNoOperations() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-nooperations.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-nooperations.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckNoOperInput() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-noinput.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-noinput.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckNoDefinitions() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-nodef.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-nodef.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckEmptyTypes() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-empty-types.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-empty-types.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckPortNoBinding() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-no-bind.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-no-bind.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckBindingNoType() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-bind-no-type.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-bind-no-type.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckOperationNoName() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-oper-no-name.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-oper-no-name.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckInputNoMsg() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-in-no-msg.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-in-no-msg.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckMsgNoQName() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-msg-no-qname.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-msg-no-qname.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckInMsgNoQName() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-in-msg-no-name.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-in-msg-no-name.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckInMsgNoLocalName() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-in-msg-no-localname.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-in-msg-no-localname.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckInMsgPartNoType() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-msg-part-no-type.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-msg-part-no-type.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testWSDLCheckUnknownSoapVersion() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample-v1.3.wsdl"));
-		assertNotNull(w.getOperations());
-		assertNotNull(w.getOperationURLs());
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample-v1.3.wsdl"));
+		assertNotNull(p.getListOfOperations());
 	}
 
 	@Test
 	public void testProcessXSD() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample.wsdl"));
 		Set<String> schemaLocations = new HashSet<>();
 		schemaLocations.add(getFullPathFor("shiporder.xsd"));
-		w.processXSD(schemaLocations, "shiporder", null);
+		p.processXSD(schemaLocations, "shiporder", null);
 		// second time, to test globalElems
-		String result = w.processXSD(schemaLocations, "shiporder", null);
+		String result = p.processXSD(schemaLocations, "shiporder", null);
 		assertEquals("<shiporder orderid=\"string\">\n"
 				+ "  <orderperson>string</orderperson>\n"
 				+ "  <shipto>\n"
@@ -259,48 +249,54 @@ public class WSDLCheckTest
 	@Test
 	public void testProcessXSDBothNull() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
-		assertEquals("", w.processXSD(null, "root", null));
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample.wsdl"));
+		assertEquals("", p.processXSD(null, "root", null));
 	}
 
 	@Test
 	public void testProcessXSDLocationsNull() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
-		assertEquals("", w.processXSD(null, "root", new HashSet<Element>()));
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample.wsdl"));
+		assertEquals("", p.processXSD(null, "root", new HashSet<Element>()));
 	}
 
 	@Test
 	public void testProcessXSDElementsNull() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
-		assertEquals("", w.processXSD(new HashSet<String>(), "root", null));
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample.wsdl"));
+		assertEquals("", p.processXSD(new HashSet<String>(), "root", null));
 	}
 
 	@Test
 	public void testProcessXSDNullSchemaElement() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample.wsdl"));
 		Set<Element> schemaElements = new HashSet<>();
 		schemaElements.add(null);
-		assertEquals("", w.processXSD(null, "root", schemaElements));
+		assertEquals("", p.processXSD(null, "root", schemaElements));
 	}
 
 	@Test
 	public void testProcessXSDWrongRoot() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample.wsdl"));
 		Set<String> schemaLocations = new HashSet<>();
 		schemaLocations.add(getFullPathFor("shiporder.xsd"));
-		assertEquals("", w.processXSD(schemaLocations, "testroot", null));
+		assertEquals("", p.processXSD(schemaLocations, "testroot", null));
 	}
 
 	@Test
 	public void testProcessXSDNoRoot() throws Exception
 	{
-		WSDLCheck w = new WSDLCheck(getFullPathFor("sample.wsdl"));
+		SoapEndpointParser p = new SoapEndpointParser();
+		p.parse(getFullPathFor("sample.wsdl"));
 		Set<String> schemaLocations = new HashSet<>();
 		schemaLocations.add(getFullPathFor("shiporder.xsd"));
-		assertEquals("", w.processXSD(schemaLocations, null, null));
+		assertEquals("", p.processXSD(schemaLocations, null, null));
 	}
 }

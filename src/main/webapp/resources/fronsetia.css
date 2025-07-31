@@ -179,7 +179,7 @@ td		{
 			padding: 10px 10px 10px 10px;
 		}
 
-.soapdatablock	{
+.protodatablock	{
 			border-style: solid;
 			border-width: 4px;
 			border-color: blue blue blue blue;
@@ -187,9 +187,9 @@ td		{
 		}
 
 .httpdatablock input,
-.soapdatablock input,
+.protodatablock input,
 .httpdatablock textarea,
-.soapdatablock textarea,
+.protodatablock textarea,
 .inputblock
 		{
 			margin-left: 50px;
@@ -201,12 +201,12 @@ textarea.noindent
 			margin-left: 0px;
 		}
 
-.soapfault	{
+.fault	{
 			color: black;
 			background-color: red;
 		}
 
-.nosoapfault	{
+.nofault	{
 			color: black;
 			background-color: #40FF40;
 		}

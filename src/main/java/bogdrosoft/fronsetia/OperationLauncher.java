@@ -1,5 +1,5 @@
 /*
- * OperationLauncher - a class that calls SOAP operations.
+ * OperationLauncher - a class that calls endpoint operations.
  *
  * Copyright (C) 2011-2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
@@ -56,7 +56,7 @@ import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import jakarta.servlet.ServletRequest;
 
 /**
- * OperationLauncher - a class that calls SOAP operations.
+ * OperationLauncher - a class that calls endpoint operations.
  * @author Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  */
 public class OperationLauncher
@@ -85,42 +85,42 @@ public class OperationLauncher
 			return;
 		}
 		//prepare data
-		String soapPrologue = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE);
-		String soapHeader = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER);
-		String soapMiddle = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE);
-		String soapXML = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_BODY);
-		String soapEpilogue = request.getParameter (RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE);
-		String soapCType = request.getParameter (RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
-		if ( soapCType == null || soapCType.isEmpty () )
+		String payloadPrologue = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE);
+		String payloadHeader = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER);
+		String payloadMiddle = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE);
+		String payloadXML = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY);
+		String payloadEpilogue = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE);
+		String payloadCType = request.getParameter(RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
+		if ( payloadCType == null || payloadCType.isEmpty() )
 		{
-			soapCType = RequestUtilities.DEFAULT_CONTENT_TYPE;
+			payloadCType = RequestUtilities.DEFAULT_CONTENT_TYPE;
 		}
-		respCharset = request.getParameter (RequestUtilities.REQ_PARAM_NAME_CHARSET);
-		String protoName = RequestUtilities.getParameter (request,
+		respCharset = request.getParameter(RequestUtilities.REQ_PARAM_NAME_CHARSET);
+		String protoName = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROTO_NAME);
-		String protoMajorVer = RequestUtilities.getParameter (request,
+		String protoMajorVer = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR);
-		String protoMinorVer = RequestUtilities.getParameter (request,
+		String protoMinorVer = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR);
-		String httpAuthUser = RequestUtilities.getParameter (request,
+		String httpAuthUser = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_HTTP_USER);
-		String httpAuthPass = RequestUtilities.getParameter (request,
+		String httpAuthPass = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD);
-		String httpAuthNTstation = RequestUtilities.getParameter (request,
+		String httpAuthNTstation = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION);
-		String httpAuthNTdomain = RequestUtilities.getParameter (request,
+		String httpAuthNTdomain = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN);
-		CredentialsProvider cp = new BasicCredentialsProvider ();
-		String opURL = RequestUtilities.getParameter (request,
+		CredentialsProvider cp = new BasicCredentialsProvider();
+		String opURL = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_OP_URL);
 		URI operUri = new URI(opURL);
-		if ( (! httpAuthUser.isEmpty ()) && (! httpAuthPass.isEmpty ()) )
+		if ( (! httpAuthUser.isEmpty()) && (! httpAuthPass.isEmpty()) )
 		{
 			Credentials cred;
-			if ( (! httpAuthNTstation.isEmpty ()) && (! httpAuthNTdomain.isEmpty ()) )
+			if ( (! httpAuthNTstation.isEmpty()) && (! httpAuthNTdomain.isEmpty()) )
 			{
 				// NT credentials provided - use them
-				cred = new NTCredentials (httpAuthUser, httpAuthPass,
+				cred = new NTCredentials(httpAuthUser, httpAuthPass,
 					httpAuthNTstation, httpAuthNTdomain);
 			}
 			else
@@ -128,51 +128,51 @@ public class OperationLauncher
 				// NT credentials NOT provided - use basic credentials
 				cred = new UsernamePasswordCredentials (httpAuthUser, httpAuthPass);
 			}
-			AuthScope as = new AuthScope (operUri.getHost (), operUri.getPort());
-			cp.setCredentials (as, cred);
+			AuthScope as = new AuthScope(operUri.getHost(), operUri.getPort());
+			cp.setCredentials(as, cred);
 		}
-		String httpProxy = RequestUtilities.getParameter (request,
+		String httpProxy = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_HOST);
-		String httpProxyPort = RequestUtilities.getParameter (request,
+		String httpProxyPort = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_PORT);
-		String proxyAuthUser = RequestUtilities.getParameter (request,
+		String proxyAuthUser = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_USER);
-		String proxyAuthPass = RequestUtilities.getParameter (request,
+		String proxyAuthPass = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD);
-		String proxyAuthNTstation = RequestUtilities.getParameter (request,
+		String proxyAuthNTstation = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION);
-		String proxyAuthNTdomain = RequestUtilities.getParameter (request,
+		String proxyAuthNTdomain = RequestUtilities.getParameter(request,
 			RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN);
-		if ( (! httpProxy.isEmpty ()) && (! httpProxyPort.isEmpty ())
-			&& (! proxyAuthUser.isEmpty ()) && (! proxyAuthPass.isEmpty ()) )
+		if ( (! httpProxy.isEmpty()) && (! httpProxyPort.isEmpty())
+			&& (! proxyAuthUser.isEmpty()) && (! proxyAuthPass.isEmpty()) )
 		{
 			Credentials cred;
-			if ( (! proxyAuthNTstation.isEmpty ()) && (! proxyAuthNTdomain.isEmpty ()) )
+			if ( (! proxyAuthNTstation.isEmpty()) && (! proxyAuthNTdomain.isEmpty()) )
 			{
 				// NT credentials provided - use them
-				cred = new NTCredentials (proxyAuthUser, proxyAuthPass,
+				cred = new NTCredentials(proxyAuthUser, proxyAuthPass,
 					proxyAuthNTstation, proxyAuthNTdomain);
 			}
 			else
 			{
 				// NT credentials NOT provided - use basic credentials
-				cred = new UsernamePasswordCredentials (proxyAuthUser, proxyAuthPass);
+				cred = new UsernamePasswordCredentials(proxyAuthUser, proxyAuthPass);
 			}
-			AuthScope as = new AuthScope (httpProxy, Integer.parseInt (httpProxyPort));
-			cp.setCredentials (as, cred);
+			AuthScope as = new AuthScope(httpProxy, Integer.parseInt(httpProxyPort));
+			cp.setCredentials(as, cred);
 		}
 		HttpClientContext context = HttpClientContext.create();
 		context.setCredentialsProvider(cp);
 		interceptor = new ReqInterceptor(request);
 		HttpClientBuilder b = HttpClients.custom();
 		b.addInterceptorFirst(interceptor);
-		if ( (! httpProxy.isEmpty ()) && (! httpProxyPort.isEmpty ()) )
+		if ( (! httpProxy.isEmpty()) && (! httpProxyPort.isEmpty()) )
 		{
 			DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(
-					new HttpHost (httpProxy, Integer.parseInt (httpProxyPort)));
+					new HttpHost(httpProxy, Integer.parseInt(httpProxyPort)));
 			b.setRoutePlanner(routePlanner);
 		}
-		if ( RequestUtilities.hasParameter (request,
+		if ( RequestUtilities.hasParameter(request,
 				RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL) )
 		{
 			b.setConnectionManager(HttpsWrapper.createSecureConnManager());
@@ -198,8 +198,8 @@ public class OperationLauncher
 		{
 			method = method.toUpperCase(Locale.ENGLISH);
 		}
-		if ( (! protoName.isEmpty ()) && (! protoMajorVer.isEmpty ())
-				&& (! protoMinorVer.isEmpty ()) )
+		if ( (! protoName.isEmpty()) && (! protoMajorVer.isEmpty())
+				&& (! protoMinorVer.isEmpty()) )
 		{
 			hreq = new BasicHttpEntityEnclosingRequest(method, opURL,
 				new ProtocolVersion (protoName,
@@ -211,9 +211,9 @@ public class OperationLauncher
 			hreq = new BasicHttpEntityEnclosingRequest(method, opURL);
 		}
 		host = new HttpHost(operUri.getHost(), operUri.getPort(), operUri.getScheme());
-		hreq.setEntity(new StringEntity (
-			soapPrologue + soapHeader + soapMiddle + soapXML + soapEpilogue,
-			ContentType.create(soapCType, Consts.UTF_8)));
+		hreq.setEntity(new StringEntity(
+			payloadPrologue + payloadHeader + payloadMiddle + payloadXML + payloadEpilogue,
+			ContentType.create(payloadCType, Consts.UTF_8)));
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class OperationLauncher
 	public void perform (final ServletRequest request)
 		throws IOException
 	{
-		hr = hc.execute (host, hreq);
+		hr = hc.execute(host, hreq);
 		reqHeaders = interceptor.getFinalRequestHeaders();
 		processEntity(hr.getEntity(), request);
 	}
@@ -245,7 +245,7 @@ public class OperationLauncher
 	{
 		if ( hr != null )
 		{
-			return hr.headerIterator ();
+			return hr.headerIterator();
 		}
 		return null;
 	}
@@ -261,7 +261,7 @@ public class OperationLauncher
 		{
 			return RequestUtilities.EMPTY_STR;
 		}
-		return sl.toString ();
+		return sl.toString();
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class OperationLauncher
 		{
 			return -1;
 		}
-		return respStatus.getStatusCode ();
+		return respStatus.getStatusCode();
 	}
 
 	/**
@@ -299,7 +299,7 @@ public class OperationLauncher
 		}
 		if ( respStatus == null )
 		{
-			respStatus = hr.getStatusLine ();
+			respStatus = hr.getStatusLine();
 		}
 		return respStatus;
 	}
@@ -315,30 +315,30 @@ public class OperationLauncher
 		throws IOException
 	{
 		// a ByteArrayOutputStream will grow anyway, so we can cast the length to int
-		int len = (int)ent.getContentLength ();
+		int len = (int)ent.getContentLength();
 		if ( len <= 0 )
 		{
 			len = 1024;
 		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream (len);
-		ent.writeTo (baos);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(len);
+		ent.writeTo(baos);
 		try
 		{
-			if ( respCharset != null && ! respCharset.isEmpty () )
+			if ( respCharset != null && ! respCharset.isEmpty() )
 			{
-				responseBody = baos.toString (respCharset);
+				responseBody = baos.toString(respCharset);
 			}
 			else
 			{
 				String encoding = RequestUtilities.DEFAULT_CHARSET;
 				try
 				{
-					HeaderElement[] headers = ent.getContentType ().getElements ();
+					HeaderElement[] headers = ent.getContentType().getElements();
 					for ( HeaderElement he : headers )
 					{
-						if ( he.getParameterByName (PARAM_NAME_CHARSET) != null )
+						if ( he.getParameterByName(PARAM_NAME_CHARSET) != null )
 						{
-							encoding = he.getParameterByName (PARAM_NAME_CHARSET).getValue ();
+							encoding = he.getParameterByName(PARAM_NAME_CHARSET).getValue();
 						}
 					}
 				}
@@ -346,16 +346,16 @@ public class OperationLauncher
 				{
 					encoding = RequestUtilities.DEFAULT_CHARSET;
 				}
-				responseBody = baos.toString (encoding);
+				responseBody = baos.toString(encoding);
 			}
 		}
 		catch (Exception ex)
 		{
-			responseBody = baos.toString (RequestUtilities.DEFAULT_CHARSET);
+			responseBody = baos.toString(RequestUtilities.DEFAULT_CHARSET);
 		}
-		if ( RequestUtilities.hasParameter (request, RequestUtilities.REQ_PARAM_NAME_SOAP_SPLIT_RESP) )
+		if ( RequestUtilities.hasParameter(request, RequestUtilities.REQ_PARAM_NAME_SPLIT_RESP) )
 		{
-			responseBody = RequestUtilities.splitByTags (responseBody);
+			responseBody = RequestUtilities.splitByTags(responseBody);
 		}
 	}
 }

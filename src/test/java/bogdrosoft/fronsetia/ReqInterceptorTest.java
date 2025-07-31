@@ -50,16 +50,16 @@ public class ReqInterceptorTest
 	private Map<String, String> prepareRequestParams()
 	{
 		Map<String, String> p = new HashMap<String, String>(1);
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE, "");
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER, "");
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE, "");
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_BODY, "");
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE, "");
-		p.put (RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE,
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE,
 			RequestUtilities.DEFAULT_CONTENT_TYPE);
-		p.put (RequestUtilities.REQ_PARAM_NAME_CHARSET, "UTF-8");
-		p.put (RequestUtilities.REQ_PARAM_NAME_OP_URL, "http://localhost:1234/test");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD, "POST");
+		p.put(RequestUtilities.REQ_PARAM_NAME_CHARSET, "UTF-8");
+		p.put(RequestUtilities.REQ_PARAM_NAME_OP_URL, "http://localhost:1234/test");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD, "POST");
 		return p;
 	}
 
@@ -106,7 +106,7 @@ public class ReqInterceptorTest
 	public void testProcessSendNoHdr() throws HttpException, IOException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS, "1");
 		ReqInterceptor ri = new ReqInterceptor(new MockServletRequest(p));
 		BasicHttpEntityEnclosingRequest req = prepareReqWithParams(p);
 		ri.process(req, null);
@@ -121,7 +121,7 @@ public class ReqInterceptorTest
 	public void testProcessSendContentLen() throws HttpException, IOException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH, "1");
 		ReqInterceptor ri = new ReqInterceptor(new MockServletRequest(p));
 		BasicHttpEntityEnclosingRequest req = prepareReqWithParams(p);
 		ri.process(req, null);
@@ -136,7 +136,7 @@ public class ReqInterceptorTest
 	public void testProcessSendHost() throws HttpException, IOException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST, "1");
 		ReqInterceptor ri = new ReqInterceptor(new MockServletRequest(p));
 		BasicHttpEntityEnclosingRequest req = prepareReqWithParams(p);
 		ri.process(req, null);
@@ -151,7 +151,7 @@ public class ReqInterceptorTest
 	public void testProcessSendConnection() throws HttpException, IOException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION, "1");
 		ReqInterceptor ri = new ReqInterceptor(new MockServletRequest(p));
 		BasicHttpEntityEnclosingRequest req = prepareReqWithParams(p);
 		ri.process(req, null);
@@ -166,7 +166,7 @@ public class ReqInterceptorTest
 	public void testProcessSendUserAgent() throws HttpException, IOException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT, "1");
 		ReqInterceptor ri = new ReqInterceptor(new MockServletRequest(p));
 		BasicHttpEntityEnclosingRequest req = prepareReqWithParams(p);
 		ri.process(req, null);
@@ -181,7 +181,7 @@ public class ReqInterceptorTest
 	public void testProcessSendContentType() throws HttpException, IOException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE, "1");
 		ReqInterceptor ri = new ReqInterceptor(new MockServletRequest(p));
 		BasicHttpEntityEnclosingRequest req = prepareReqWithParams(p);
 		ri.process(req, null);
@@ -200,7 +200,7 @@ public class ReqInterceptorTest
 		String header2Name = "X-Header2";
 		String header3Name = "X-Header3";
 		String header1Value = "value1";
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS,
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS,
 			header1Name + ": " + header1Value + "\n"
 			+ header2Name + ": \n"
 			+ header3Name + "\n\n \n");
@@ -214,7 +214,7 @@ public class ReqInterceptorTest
 		boolean gotHeader1 = false;
 		boolean gotHeader2 = false;
 		boolean gotHeader3 = false;
-		while (hi.hasNext ())
+		while (hi.hasNext())
 		{
 			Header h = hi.nextHeader();
 			if (header1Name.equals(h.getName()))

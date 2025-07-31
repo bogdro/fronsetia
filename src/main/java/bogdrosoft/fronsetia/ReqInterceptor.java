@@ -111,52 +111,52 @@ public class ReqInterceptor implements HttpRequestInterceptor
 				removeHeader (httpRequest, ahe, HTTP.CONTENT_TYPE);
 			}
 		}
-		// now add the user-provided headers, like >SOAPAction: "Some-URI"<
-		String soapHttpHeaders = confRequest.getParameter
-			(RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS);
-		if ( soapHttpHeaders != null )
+		// now add the user-provided headers
+		String userHttpHeaders = confRequest.getParameter(
+			RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS);
+		if ( userHttpHeaders != null )
 		{
-			String[] soapHttpHdrs = soapHttpHeaders
+			String[] userHttpHdrs = userHttpHeaders
 				.replaceAll (RequestUtilities.NEWLINE_CR,
 					RequestUtilities.NEWLINE_LF)
 				.replaceAll (LF_PLUS, RequestUtilities.NEWLINE_LF)
 				.split (RequestUtilities.NEWLINE_LF);
-			if ( soapHttpHdrs != null )
+			if ( userHttpHdrs != null )
 			{
-				for ( int i = 0; i < soapHttpHdrs.length; i++ )
+				for ( int i = 0; i < userHttpHdrs.length; i++ )
 				{
-					if ( soapHttpHdrs[i] == null )
+					if ( userHttpHdrs[i] == null )
 					{
 						continue;
 					}
-					soapHttpHdrs[i] = soapHttpHdrs[i].trim ();
-					if ( soapHttpHdrs[i].isEmpty () )
+					userHttpHdrs[i] = userHttpHdrs[i].trim();
+					if ( userHttpHdrs[i].isEmpty() )
 					{
 						continue;
 					}
-					int colonIndex = soapHttpHdrs[i].indexOf (':');
+					int colonIndex = userHttpHdrs[i].indexOf(':');
 					if ( colonIndex == -1 )
 					{
 						// no colon - just the header name
-						httpRequest.addHeader (soapHttpHdrs[i],
+						httpRequest.addHeader(userHttpHdrs[i],
 							RequestUtilities.EMPTY_STR);
 					}
 					else
 					{
-						String headerName = soapHttpHdrs[i]
+						String headerName = userHttpHdrs[i]
 							.substring (0, colonIndex);
-						if ( soapHttpHdrs[i].length () > colonIndex+1 )
+						if ( userHttpHdrs[i].length() > colonIndex+1 )
 						{
 							// header content present
-							httpRequest.addHeader (headerName, // header name
-								soapHttpHdrs[i]
-								.substring (colonIndex+1) // header value
+							httpRequest.addHeader(headerName, // header name
+								userHttpHdrs[i]
+								.substring(colonIndex+1) // header value
 								.trim());
 						}
 						else
 						{
 							// just "HeaderName:" provided
-							httpRequest.addHeader (headerName, // header name
+							httpRequest.addHeader(headerName, // header name
 								RequestUtilities.EMPTY_STR);
 						}
 					}

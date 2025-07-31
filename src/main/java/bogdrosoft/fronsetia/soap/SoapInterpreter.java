@@ -1,5 +1,5 @@
 /*
- * SOAPInterpreter - a class for parsing SOAP responses.
+ * SoapInterpreter - a class for parsing SOAP responses.
  *
  * Copyright (C) 2011-2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
@@ -22,7 +22,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 
-package bogdrosoft.fronsetia;
+package bogdrosoft.fronsetia.soap;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -43,11 +43,13 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import bogdrosoft.fronsetia.ResponseInterpreter;
+
 /**
- * SOAPInterpreter - a class for parsing SOAP responses.
+ * SoapInterpreter - a class for parsing SOAP responses.
  * @author Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  */
-public class SOAPInterpreter
+public class SoapInterpreter implements ResponseInterpreter
 {
 	private boolean hasFault;
 	private List<String> bodyElements;
@@ -56,28 +58,28 @@ public class SOAPInterpreter
 	 * Parses the given SOAP response and sets private fields.
 	 * @param resp the SOAP response to parse.
 	 */
-	public void parseResponse (String resp)
+	public void parseResponse(String resp)
 		throws SAXException, IOException, ParserConfigurationException
 	{
-		if ( resp == null )
+		if (resp == null)
 		{
 			return;
 		}
 		DocumentBuilderFactory dbf = new DOOMDocumentBuilderFactory(DOOMNodeFactoryImpl.INSTANCE);
-		DocumentBuilder db = dbf.newDocumentBuilder ();
-		Document d = db.parse (new InputSource (new StringReader (resp)));
-		SOAPEnvelope e = SAAJUtil.toOMSOAPEnvelope (d.getDocumentElement ());
-		hasFault = e.hasFault ();
-		Iterator<?> i = e.getBody ().getChildElements ();
-		if ( i != null )
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document d = db.parse(new InputSource(new StringReader(resp)));
+		SOAPEnvelope e = SAAJUtil.toOMSOAPEnvelope(d.getDocumentElement());
+		hasFault = e.hasFault();
+		Iterator<?> i = e.getBody().getChildElements();
+		if (i != null)
 		{
-			bodyElements = new ArrayList<String> (1);
-			while (i.hasNext ())
+			bodyElements = new ArrayList<String>(1);
+			while (i.hasNext())
 			{
-				Object o = i.next ();
-				if ( o instanceof OMElement )
+				Object o = i.next();
+				if (o instanceof OMElement)
 				{
-					bodyElements.add ( ((OMElement)o).getLocalName () );
+					bodyElements.add(((OMElement)o).getLocalName());
 				}
 			}
 		}
@@ -87,7 +89,7 @@ public class SOAPInterpreter
 	 * Tells if there was a SOAP fault in the parsed SOAP response.
 	 * @return TRUE if there was a SOAP fault in the parsed SOAP response.
 	 */
-	public boolean wasFault ()
+	public boolean hasFault()
 	{
 		return hasFault;
 	}
@@ -96,11 +98,11 @@ public class SOAPInterpreter
 	 * Returns a list of names of the top-level elements of the SOAP response.
 	 * @return a list of names of the top-level elements of the SOAP response.
 	 */
-	public List<String> getBodyElements ()
+	public List<String> getBodyElements()
 	{
 		if ( bodyElements != null )
 		{
-			return new ArrayList<String> (bodyElements);
+			return new ArrayList<String>(bodyElements);
 		}
 		return null;
 	}

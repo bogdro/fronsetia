@@ -1,5 +1,5 @@
 /*
- * SOAPInterpreterTest - a test for SOAPInterpreter.
+ * SoapInterpreterTest - a test for SoapInterpreter.
  *
  * Copyright (C) 2023-2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
@@ -22,7 +22,7 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 
-package bogdrosoft.fronsetia;
+package bogdrosoft.fronsetia.soap;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -31,15 +31,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 /**
- * SOAPInterpreterTest - a test for SOAPInterpreter.
+ * SoapInterpreterTest - a test for SoapInterpreter.
  * @author Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  */
-public class SOAPInterpreterTest
+public class SoapInterpreterTest
 {
 	@Test
 	public void testParseResponse() throws Exception
 	{
-		SOAPInterpreter si = new SOAPInterpreter();
+		SoapInterpreter si = new SoapInterpreter();
 		si.parseResponse(
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 			+ "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
@@ -51,14 +51,14 @@ public class SOAPInterpreterTest
 			+ "</getVersionResponse>\n"
 			+ "</soapenv:Body>\n"
 			+ "</soapenv:Envelope>");
-		assertFalse(si.wasFault());
+		assertFalse(si.hasFault());
 		assertTrue(si.getBodyElements().contains("getVersionResponse"));
 	}
 
 	@Test
 	public void testParseResponseFault() throws Exception
 	{
-		SOAPInterpreter si = new SOAPInterpreter();
+		SoapInterpreter si = new SoapInterpreter();
 		si.parseResponse(
 			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 			+ "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
@@ -75,15 +75,15 @@ public class SOAPInterpreterTest
 			+ "</soapenv:Fault>\n"
 			+ "</soapenv:Body>\n"
 			+ "</soapenv:Envelope>");
-		assertTrue(si.wasFault());
+		assertTrue(si.hasFault());
 	}
 
 	@Test
 	public void testParseResponseNull() throws Exception
 	{
-		SOAPInterpreter si = new SOAPInterpreter();
+		SoapInterpreter si = new SoapInterpreter();
 		si.parseResponse(null);
-		assertFalse(si.wasFault());
+		assertFalse(si.hasFault());
 		assertNull(si.getBodyElements());
 	}
 }

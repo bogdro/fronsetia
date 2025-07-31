@@ -1,26 +1,28 @@
 <%@ page language="java" session="false" %>
-<%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
 <%@ page import="bogdrosoft.fronsetia.OperationLauncher" %>
-<%@ page import="bogdrosoft.fronsetia.SOAPInterpreter" %>
+<%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
+<%@ page import="bogdrosoft.fronsetia.ResponseInterpreter" %>
+<%@ page import="bogdrosoft.fronsetia.ResponseProcessor" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.apache.http.HeaderIterator" %>
 <%
-String wsdlLocation = request.getParameter(RequestUtilities.REQ_PARAM_NAME_WSDL);
+String endpointLocation = request.getParameter(RequestUtilities.REQ_PARAM_NAME_ENDPOINT);
 String opName = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_OP_NAME);
-String soapPrologue = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE);
-String soapHeader = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER);
-String soapMiddle = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE);
-String soapXML = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_BODY);
-String soapEpilogue = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE);
-String soapCType = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
+String payloadPrologue = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE);
+String payloadHeader = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER);
+String payloadMiddle = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE);
+String payloadBody = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY);
+String payloadEpilogue = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE);
+String payloadContentType = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
 String proxyPort = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_PORT);
 String method = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT);
-if (method.isEmpty())
+if (method == null || method.isEmpty())
 {
 	method = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
 }
 
 OperationLauncher ol = new OperationLauncher();
+ResponseProcessor processor = new ResponseProcessor();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
@@ -55,7 +57,7 @@ You should have received a copy of the GNU Affero General Public License
 <link rel="stylesheet" href="resources/fronsetia.css" type="text/css">
 <link rel="icon" type="image/png" href="resources/img/fronsetia-icon.png">
 
-<title> Fronsetia: <%= opName %>: <%= wsdlLocation %> </title>
+<title> Fronsetia: <%= opName %>: <%= endpointLocation %> </title>
 
 <meta name="Author" content="Bogdan D.">
 <meta name="Description" content="Fronsetia - Free Online Service Testing Application">
@@ -67,15 +69,19 @@ You should have received a copy of the GNU Affero General Public License
 
 <h1 class="c">Fronsetia - result of operation</h1>
 <hr>
-WSDL location: <a href="<%= wsdlLocation %>"
-	id="<%= RequestUtilities.REQ_PARAM_NAME_WSDL %>"><%= wsdlLocation %></a><br>
+Endpoint location: <a href="<%= endpointLocation %>"
+	id="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"><%= endpointLocation %></a><br>
+
 Operation name: <code id="<%= RequestUtilities.REQ_PARAM_NAME_OP_NAME %>"><%= opName %></code><br>
+
 Protocol name and version: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_NAME %>"
 	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_NAME)
 	%>/<%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR)
 	%>.<%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR) %></code><br>
+
 Protocol method: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>"
 	><%= method %></code><br>
+
 Protocol authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>"
 	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_USER) %></code>,
 	password=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD %>"
@@ -88,7 +94,7 @@ Protocol authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP
 Proxy: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
 	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_HOST) %>
 <%
-	if ( ! proxyPort.isEmpty() )
+	if (! proxyPort.isEmpty())
 	{
 %>
 		:<%= proxyPort %>
@@ -122,18 +128,19 @@ User-defined request headers:
 	}
 	catch (Throwable ex)
 	{
-%>Exception occurred while performing the operation or displaying input parameters:
+%>
+		Exception occurred while performing the operation or displaying input parameters:
 <%
 		RequestUtilities.printException(ex, out);
 	}
 %></pre>
 Operation input (HTTP body):
-<pre id="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_BODY %>">
-<%= RequestUtilities.makeHTMLSafe(soapPrologue) +
-RequestUtilities.makeHTMLSafe(soapHeader) +
-RequestUtilities.makeHTMLSafe(soapMiddle) +
-RequestUtilities.makeHTMLSafe(soapXML) +
-RequestUtilities.makeHTMLSafe(soapEpilogue) %></pre>
+<pre id="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY %>">
+<%= RequestUtilities.makeHTMLSafe(payloadPrologue) +
+RequestUtilities.makeHTMLSafe(payloadHeader) +
+RequestUtilities.makeHTMLSafe(payloadMiddle) +
+RequestUtilities.makeHTMLSafe(payloadBody) +
+RequestUtilities.makeHTMLSafe(payloadEpilogue) %></pre>
 
 Expected output encoding (used only if can't be detected automatically):
  <code id="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
@@ -160,31 +167,31 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 		String resp = ol.getResponseBody();
 		try
 		{
-			SOAPInterpreter si = new SOAPInterpreter();
-			si.parseResponse(resp);
+			ResponseInterpreter interpreter = processor.getResponseInterpreter();
+			interpreter.parseResponse(resp);
 %>
-			SOAP Fault found in the response:
+			Fault found in the response:
 <%
-			if ( si.wasFault() )
+			if (interpreter.hasFault())
 			{
 %>
 				<span id="<%= RequestUtilities.RESP_FIELD_ID_HAS_FAULT %>"
-					class="soapfault">YES</span><br>
+					class="fault">YES</span><br>
 <%
 			}
 			else
 			{
 %>
 				<span id="<%= RequestUtilities.RESP_FIELD_ID_HAS_FAULT %>"
-					class="nosoapfault">NO</span><br>
+					class="nofault">NO</span><br>
 <%
 			}
 %>
-			SOAP response type (elements): <span
+			Response top elements: <span
 				id="<%= RequestUtilities.RESP_FIELD_ID_BODY_ELEMENTS %>">
 <%
-			List<String> respTypes = si.getBodyElements();
-			if ( respTypes != null )
+			List<String> respTypes = interpreter.getBodyElements();
+			if (respTypes != null)
 			{
 				int respTypeSize = respTypes.size();
 				for ( int i = 0; i < respTypeSize; i++ )
@@ -192,7 +199,7 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 %>
 					<code><%= respTypes.get(i) %></code>
 <%
-					if ( i < respTypeSize - 1 )
+					if (i < respTypeSize - 1)
 					{
 %>
 						,
@@ -207,13 +214,13 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 		catch (NoClassDefFoundError ncdfe)
 		{
 %>
-			Unable to get response SOAP status and type - axiom.jar or axis2-saaj.jar not installed or not usable.
+			Unable to get response status and type - axiom.jar or axis2-saaj.jar not installed or not usable.
 <%
 		}
 		catch (Throwable ex)
 		{
 %>
-			Unable to get response SOAP status and type.
+			Unable to get response status and type.
 <%
 		}
 %>
@@ -222,7 +229,7 @@ HTTP response headers:
 <%
 		out.flush();
 		HeaderIterator hi = ol.getRespHeaders();
-		if ( hi != null )
+		if (hi != null)
 		{
 %>
 <pre id="<%= RequestUtilities.RESP_FIELD_ID_HEADERS %>">

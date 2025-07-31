@@ -1,5 +1,5 @@
 /*
- * WSDLCheck - a class that checks WSDL files.
+ * SoapEndpointParser - a class that checks WSDL files.
  *
  * Copyright (C) 2011-2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
@@ -22,11 +22,12 @@
  * along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 
-package bogdrosoft.fronsetia;
+package bogdrosoft.fronsetia.soap;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -62,58 +63,102 @@ import org.apache.xmlbeans.impl.xsd2inst.SampleXmlUtil;
 
 import org.w3c.dom.Element;
 
+import bogdrosoft.fronsetia.EndpointParser;
+import bogdrosoft.fronsetia.RequestUtilities;
+
 /**
- * WSDLCheck - a class that checks WSDL files.
+ * SoapEndpointParser - a class that checks WSDL files.
  * @author Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  */
-public class WSDLCheck
+public class SoapEndpointParser implements EndpointParser
 {
 	private WSDLReader wsdlReader = null;
 	private SchemaType[] globalElems = null;
 	private String wsdlLocation = null;
-	private Map<String, String> operationsAndXMLs = null;
-	private Map<String, String> operationsAndURLs = null;
+	private Map<String, String> operationsAndXMLs = Collections.emptyMap();
+	private Map<String, String> operationsAndURLs = Collections.emptyMap();
+	private Exception parseException;
 
-	/**
-	 * Creates an instance of WSDLCheck.
-	 * @param wsdlAddress the location of the WSDL file to process.
-	 */
-	public WSDLCheck(String wsdlAddress)
+	@Override
+	public Set<String> getListOfOperations()
 	{
-		wsdlLocation = wsdlAddress;
+		return operationsAndURLs.keySet();
 	}
 
-	/**
-	 * Gets the operations from the given WSDL file.
-	 * @return a Map of the operations. Operation names are the keys,
-	 * 	skeleton XML strings are the values.
-	 */
-	public Map<String, String> getOperations() throws WSDLException
+	@Override
+	public List<String> getListOfTransportHeadersForOperation(String operationName)
 	{
-		if (operationsAndXMLs == null)
-		{
-			if (operationsAndURLs == null)
-			{
-				operationsAndURLs = new HashMap<String, String>(10);
-			}
-			operationsAndXMLs = processWSDL();
-		}
-		return operationsAndXMLs;
+		return Collections.singletonList("SOAPAction: \"/" + operationName + "\"");
 	}
 
-	/**
-	 * Gets the operations' URLs from the given WSDL file.
-	 * @return a Map of the operations. Operation names are the keys,
-	 * 	operation URLs are the values.
-	 */
-	public Map<String, String> getOperationURLs() throws WSDLException
+	@Override
+	public String getUrlForOperation(String operationName)
 	{
-		if (operationsAndURLs == null)
+		return operationsAndURLs.get(operationName);
+	}
+
+	@Override
+	public String getDefaultPayloadPrologueForOperation(String operationName)
+	{
+		return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soapenv:Header>";
+	}
+
+	@Override
+	public String getDefaultPayloadHeaderForOperation(String operationName)
+	{
+		return "";
+	}
+
+	@Override
+	public String getDefaultPayloadMiddleForOperation(String operationName)
+	{
+		return "</soapenv:Header>\n<soapenv:Body>";
+	}
+
+	@Override
+	public String getDefaultPayloadForOperation(String operationName)
+	{
+		String operXML = operationsAndXMLs.get(operationName);
+		if ( operXML == null || operXML.isEmpty() )
 		{
-			operationsAndURLs = new HashMap<String, String>(10);
-			operationsAndXMLs = processWSDL();
+			operXML = "<" + operationName + "></" + operationName + ">";
 		}
-		return operationsAndURLs;
+		return operXML;
+	}
+
+	@Override
+	public String getDefaultPayloadEpilogueForOperation(String operationName)
+	{
+		return "</soapenv:Body>\n</soapenv:Envelope>";
+	}
+
+	@Override
+	public Exception getParsingException()
+	{
+		return parseException;
+	}
+
+	@Override
+	public void parse(String url)
+	{
+		try
+		{
+			wsdlLocation = url;
+			parseException = null;
+			operationsAndURLs = new HashMap<String, String>();
+			operationsAndXMLs = new HashMap<String, String>();
+			processWSDL();
+		}
+		catch (WSDLException e)
+		{
+			parseException = e;
+		}
+	}
+
+	@Override
+	public String getDefaultContentType()
+	{
+		return "application/soap+xml";//"text/xml";
 	}
 
 	/**

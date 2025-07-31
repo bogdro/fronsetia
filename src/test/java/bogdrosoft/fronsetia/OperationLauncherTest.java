@@ -65,20 +65,20 @@ public class OperationLauncherTest
 	private Map<String, String> prepareRequestParams()
 	{
 		Map<String, String> p = new HashMap<String, String>(1);
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE,
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE,
 			"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n"
 			+ "<soapenv:Header>");
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER, "");
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE,
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE,
 			"</soapenv:Header><soapenv:Body>");
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_BODY, "");
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE,
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE,
 			"</soapenv:Body></soapenv:Envelope>");
-		p.put (RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE,
+		p.put(RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE,
 			RequestUtilities.DEFAULT_CONTENT_TYPE);
-		p.put (RequestUtilities.REQ_PARAM_NAME_CHARSET, "UTF-8");
-		p.put (RequestUtilities.REQ_PARAM_NAME_OP_URL, "http://localhost:1234/test");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD, "POST");
+		p.put(RequestUtilities.REQ_PARAM_NAME_CHARSET, "UTF-8");
+		p.put(RequestUtilities.REQ_PARAM_NAME_OP_URL, "http://localhost:1234/test");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD, "POST");
 		return p;
 	}
 
@@ -101,7 +101,7 @@ public class OperationLauncherTest
 	public void testPrepareContentTypeEmpty() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE, "");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -110,7 +110,7 @@ public class OperationLauncherTest
 	public void testPrepareNoContentType() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.remove (RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
+		p.remove(RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -119,8 +119,8 @@ public class OperationLauncherTest
 	public void testPrepareWithHttpAuth() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -129,7 +129,7 @@ public class OperationLauncherTest
 	public void testPrepareWithHttpAuthNoUser() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -138,7 +138,7 @@ public class OperationLauncherTest
 	public void testPrepareWithHttpAuthNoPass() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -147,10 +147,10 @@ public class OperationLauncherTest
 	public void testPrepareWithHttpAuthNT() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION, "ntwork");
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN, "ntdomain");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION, "ntwork");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN, "ntdomain");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -159,9 +159,9 @@ public class OperationLauncherTest
 	public void testPrepareWithHttpAuthNTNoWorkstation() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN, "ntdomain");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN, "ntdomain");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -170,9 +170,9 @@ public class OperationLauncherTest
 	public void testPrepareWithHttpAuthNTNoDomain() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION, "ntwork");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION, "ntwork");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -181,12 +181,12 @@ public class OperationLauncherTest
 	public void testPrepareWithProxy() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -195,11 +195,11 @@ public class OperationLauncherTest
 	public void testPrepareWithProxyNoHost() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -208,11 +208,11 @@ public class OperationLauncherTest
 	public void testPrepareWithProxyNoPort() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -221,11 +221,11 @@ public class OperationLauncherTest
 	public void testPrepareWithProxyNoUser() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -234,11 +234,11 @@ public class OperationLauncherTest
 	public void testPrepareWithProxyNoPassword() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -247,11 +247,11 @@ public class OperationLauncherTest
 	public void testPrepareWithProxyNoNTWorkstation() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -260,11 +260,11 @@ public class OperationLauncherTest
 	public void testPrepareWithProxyNoNTDomain() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -273,7 +273,7 @@ public class OperationLauncherTest
 	public void testPrepareWithAllSSL() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL, "1");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -282,7 +282,7 @@ public class OperationLauncherTest
 	public void testPrepareNoMethod() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.remove (RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
+		p.remove(RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -291,9 +291,9 @@ public class OperationLauncherTest
 	public void testPrepareWithProtocol() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -302,8 +302,8 @@ public class OperationLauncherTest
 	public void testPrepareWithProtocolNoName() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -312,8 +312,8 @@ public class OperationLauncherTest
 	public void testPrepareWithProtocolNoMajor() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -322,8 +322,8 @@ public class OperationLauncherTest
 	public void testPrepareWithProtocolNoMinor() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
-		p.put (RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
 		ServletRequest m = new MockServletRequest(p);
 		new OperationLauncher().prepare(m);
 	}
@@ -351,7 +351,7 @@ public class OperationLauncherTest
 	public void testProcessEntityWithSplit() throws Exception
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_SOAP_SPLIT_RESP, "1");
+		p.put(RequestUtilities.REQ_PARAM_NAME_SPLIT_RESP, "1");
 		// Mockito doesn't work...
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
@@ -375,7 +375,7 @@ public class OperationLauncherTest
 	public void testProcessEntityNoCharset() throws Exception
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.remove (RequestUtilities.REQ_PARAM_NAME_CHARSET);
+		p.remove(RequestUtilities.REQ_PARAM_NAME_CHARSET);
 		// Mockito doesn't work...
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
@@ -387,7 +387,7 @@ public class OperationLauncherTest
 	public void testProcessEntityEmptyCharset() throws Exception
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_CHARSET, "");
+		p.put(RequestUtilities.REQ_PARAM_NAME_CHARSET, "");
 		// Mockito doesn't work...
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
@@ -399,7 +399,7 @@ public class OperationLauncherTest
 	public void testProcessEntityInvalidCharset() throws Exception
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.put (RequestUtilities.REQ_PARAM_NAME_CHARSET, "fail");
+		p.put(RequestUtilities.REQ_PARAM_NAME_CHARSET, "fail");
 		// Mockito doesn't work...
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
@@ -411,7 +411,7 @@ public class OperationLauncherTest
 	public void testProcessEntityNoContentType() throws Exception
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.remove (RequestUtilities.REQ_PARAM_NAME_CHARSET);
+		p.remove(RequestUtilities.REQ_PARAM_NAME_CHARSET);
 		// Mockito doesn't work...
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
@@ -425,7 +425,7 @@ public class OperationLauncherTest
 	public void testProcessEntityContentTypeInvalidCharset() throws Exception
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.remove (RequestUtilities.REQ_PARAM_NAME_CHARSET);
+		p.remove(RequestUtilities.REQ_PARAM_NAME_CHARSET);
 		// Mockito doesn't work...
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
@@ -439,7 +439,7 @@ public class OperationLauncherTest
 	public void testProcessEntityContentTypeNoCharset() throws Exception
 	{
 		Map<String, String> p = prepareRequestParams();
-		p.remove (RequestUtilities.REQ_PARAM_NAME_CHARSET);
+		p.remove(RequestUtilities.REQ_PARAM_NAME_CHARSET);
 		// Mockito doesn't work...
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();

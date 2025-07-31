@@ -1,12 +1,17 @@
 <%@ page language="java" session="false" %>
-<%@ page import="bogdrosoft.fronsetia.WSDLCheck" %>
+<%@ page import="bogdrosoft.fronsetia.EndpointParser" %>
+<%@ page import="bogdrosoft.fronsetia.EndpointProcessor" %>
 <%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
+<%@ page import="bogdrosoft.fronsetia.soap.SoapEndpointParser" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.HashSet" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
-<% String wsdlLocation = request.getParameter(RequestUtilities.REQ_PARAM_NAME_WSDL); %>
+<%
+String endpointUrl = request.getParameter(RequestUtilities.REQ_PARAM_NAME_ENDPOINT);
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <!--
@@ -40,7 +45,7 @@ You should have received a copy of the GNU Affero General Public License
 <link rel="stylesheet" href="resources/fronsetia.css" type="text/css">
 <link rel="icon" type="image/png" href="resources/img/fronsetia-icon.png">
 
-<title> Fronsetia: <%= wsdlLocation %> </title>
+<title> Fronsetia: <%= endpointUrl %> </title>
 
 <meta name="Author" content="Bogdan D.">
 <meta name="Description" content="Fronsetia - Free Online Service Testing Application">
@@ -51,64 +56,35 @@ You should have received a copy of the GNU Affero General Public License
 </head><body>
 
 <h1 class="c">Fronsetia - operations available at<br>
-	<a href="<%= wsdlLocation %>"><%= wsdlLocation %></a></h1>
+	<a href="<%= endpointUrl %>"><%= endpointUrl %></a></h1>
 
 <br>
 <%
-        /*
-         * Predefined variables:
-         * "request" is a subclass of javax.servlet.http.HttpServletRequest,
-         * "response" is a subclass of javax.servlet.http.HttpServletResponse,
-         * "pageContext" is a javax.servlet.jsp.PageContext,
-         * "session" is a subclass of javax.servlet.http.HttpSession,
-         * "application" is a javax.servlet.ServletContext,
-         * "out" is a javax.servlet.jsp.JspWriter,
-         * "config" is a javax.servlet.ServletConfig,
-         * "page" is a java.lang.Object processing the current page.
-         */
+	/*
+	 * Predefined variables:
+	 * "request" is a subclass of javax.servlet.http.HttpServletRequest,
+	 * "response" is a subclass of javax.servlet.http.HttpServletResponse,
+	 * "pageContext" is a javax.servlet.jsp.PageContext,
+	 * "session" is a subclass of javax.servlet.http.HttpSession,
+	 * "application" is a javax.servlet.ServletContext,
+	 * "out" is a javax.servlet.jsp.JspWriter,
+	 * "config" is a javax.servlet.ServletConfig,
+	 * "page" is a java.lang.Object processing the current page.
+	 */
 
-	WSDLCheck w = new WSDLCheck(wsdlLocation);
-	Map<String, String> operationsAndXMLs = new HashMap<String, String>();
-	Map<String, String> operationsAndURLs = new HashMap<String, String>();
-	Set<String> operationNames = new HashSet<String>();
-
-	try
+	EndpointProcessor processor = new EndpointProcessor();
+	EndpointParser parser = processor.parse(endpointUrl);
+	Exception parseException = parser.getParsingException();
+	if (parseException != null)
 	{
-		operationsAndXMLs = w.getOperations();
-		operationsAndURLs = w.getOperationURLs();
-		operationNames = operationsAndXMLs.keySet();
-	}
-	catch (Throwable ex)
-	{
-		if (! wsdlLocation.toLowerCase(Locale.ENGLISH).endsWith("wsdl"))
-		{
-			try
-			{
-				w = new WSDLCheck(wsdlLocation + "?WSDL");
-				operationsAndXMLs = w.getOperations();
-				operationsAndURLs = w.getOperationURLs();
-				operationNames = operationsAndXMLs.keySet();
-			}
-			catch (Throwable ex2)
-			{
 %>
-				Exception caught while parsing the WSDL:
-				<pre><%
-				RequestUtilities.printException(ex2, out);
+		Exception caught while parsing the endpoint:
+		<pre><%
+		RequestUtilities.printException(parseException, out);
 %></pre>
 <%
-			}
-		}
-		else
-		{
-			%>
-			Exception caught while parsing the WSDL:
-			<pre><%
-			RequestUtilities.printException(ex, out);
-%></pre>
-<%
-		}
 	}
+	Set<String> operationNames = parser.getListOfOperations();
 
 	for ( String opName : operationNames )
 	{
@@ -116,12 +92,11 @@ You should have received a copy of the GNU Affero General Public License
 		<a href="#<%= opName %>"><%= opName %></a><br>
 <%
 	}
-	if ( operationNames.isEmpty() )
+	if (operationNames.isEmpty())
 	{
 %>
 		<hr>
-		<h2 class="c">Fronsetia /
-		WSDL4J could not find any operations in the given WSDL file.</h2>
+		<h2 class="c">Fronsetia could not find any operations in the given endpoint.</h2>
 		<br><br>
 <%
 	}
@@ -138,12 +113,12 @@ You should have received a copy of the GNU Affero General Public License
 
 			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_OP_NAME %>"
 				value="<%= opName %>">
-			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_WSDL %>"
-				value="<%= wsdlLocation %>">
+			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"
+				value="<%= endpointUrl %>">
 			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_OP_URL %>"
-				value="<%= operationsAndURLs.get(opName) %>">
+				value="<%= parser.getUrlForOperation(opName) %>">
 
-			The following headers are sent by default. To change them, unselect them
+			The following headers are sent by default. To change them, de-select them
 			here and put your versions in the <q>Additional headers</q>
 			area below. If you put any of the selected headers in the
 			<q>Additional headers</q>, you will get an error.
@@ -201,18 +176,28 @@ You should have received a copy of the GNU Affero General Public License
 			</div>
 
 			<br>
-			Content-Type (without the charset):
+			Content-Type (without the character set):
 			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE %>"
-				value="<%= RequestUtilities.DEFAULT_CONTENT_TYPE %>" size="60">
+				value="<%= parser.getDefaultContentType() %>" size="60">
 			<br><br>
 
-			Additional headers (one per line, example: <code>SOAPAction: "/<%= opName %>"</code>):
+<%
+			List<String> transportHeaders = parser.getListOfTransportHeadersForOperation(opName);
+			int headerCount = transportHeaders.size();
+%>
+			Additional headers (one per line):
 			<br>
 			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>" rows="5" cols="80">
-SOAPAction: "/<%= opName %>"</textarea>
+<%
+			for (int i = 0; i < headerCount; i++)
+			{
+				out.println(transportHeaders.get(i));
+			}
+%>
+</textarea>
 
 			<br><br>
-			Authentication for the service:<br>
+			HTTP Authentication for the service:<br>
 			<div class="inputblock">
 			Username: <input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>"
@@ -263,43 +248,62 @@ SOAPAction: "/<%= opName %>"</textarea>
 
 			</div><br>
 
-			<div class="soapdatablock">
-			<h3 class="important c">SOAP</h3>
+			<div class="protodatablock">
+			<h3 class="important c">Protocol</h3>
 
+<%
+			String payloadPrologue = parser.getDefaultPayloadPrologueForOperation(opName);
+			if (payloadPrologue != null)
+			{
+%>
 			<br><br>
-			SOAP prologue (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_PROLOGUE %>" rows="2" cols="80">
-&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"&gt;
-&lt;soapenv:Header&gt;</textarea>
+			Payload prologue (don't modify unless you know what you're doing):<br>
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE %>" rows="2" cols="80">
+<%= RequestUtilities.makeHTMLSafe(payloadPrologue) %></textarea>
+<%
+			}
+			String payloadHeader = parser.getDefaultPayloadHeaderForOperation(opName);
+			if (payloadHeader != null)
+			{
+%>
+			<br><br>
+			Payload header (usually you don't need to put anything here):<br>
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER %>" rows="5"
+				cols="80"><%= RequestUtilities.makeHTMLSafe(payloadHeader) %></textarea>
+<%
+			}
+			String payloadMiddle = parser.getDefaultPayloadMiddleForOperation(opName);
+			if (payloadMiddle != null)
+			{
+%>
+			<br><br>
+			Payload middle (don't modify unless you know what you're doing):<br>
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE %>" rows="2" cols="80">
+<%= RequestUtilities.makeHTMLSafe(payloadMiddle) %></textarea>
 
+<%
+			}
+			String payloadBody = parser.getDefaultPayloadForOperation(opName);
+			if (payloadBody != null)
+			{
+%>
 			<br><br>
-			SOAP header (usually you don't need to put anything here):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_HEADER %>" rows="5"
-				cols="80"></textarea>
-
+			Payload body (put your XML data here):<br>
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY %>"
+				rows="20" cols="80"><%= RequestUtilities.makeHTMLSafe(payloadBody) %></textarea>
+<%
+			}
+			String payloadEpilogue = parser.getDefaultPayloadEpilogueForOperation(opName);
+			if (payloadEpilogue != null)
+			{
+%>
 			<br><br>
-			Middle (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_MIDDLE %>" rows="2" cols="80">
-&lt;/soapenv:Header&gt;
-&lt;soapenv:Body&gt;</textarea>
-
-			<br><br>
-			SOAP body (put your XML data here):<br>
-			<%
-				String operXML = operationsAndXMLs.get(opName);
-				if ( operXML == null || operXML.isEmpty() )
-				{
-					operXML = "&lt;" + opName + "&gt;&lt;/" + opName + "&gt;";
-				}
-			%>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_BODY %>"
-				rows="20" cols="80"><%= operXML %></textarea>
-			<br><br>
-			SOAP epilogue (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_EPILOGUE %>" rows="2" cols="80">
-&lt;/soapenv:Body&gt;
-&lt;/soapenv:Envelope&gt;</textarea>
-
+			Payload epilogue (don't modify unless you know what you're doing):<br>
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE %>" rows="2" cols="80">
+<%= RequestUtilities.makeHTMLSafe(payloadEpilogue) %></textarea>
+<%
+			}
+%>
 			</div>
 
 			<br><br>
@@ -307,11 +311,11 @@ SOAPAction: "/<%= opName %>"</textarea>
 			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
 				value="<%= RequestUtilities.DEFAULT_CHARSET %>" size="60">
 			<br><br>
-			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_SOAP_SPLIT_RESP %>"
+			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_SPLIT_RESP %>"
 				checked="checked">Split response into lines
 
 			<br><br>
-			<div class="c"><input type="submit" value="<%= opName %>"></div>
+			<div class="c"><input type="submit" value="Call <%= opName %>"></div>
 
 		</form>
 <%
