@@ -253,15 +253,34 @@ You should have received a copy of the GNU Affero General Public License
 			<h3 class="important c">Protocol</h3>
 
 <%
-			String payloadPrologue = parser.getDefaultPayloadPrologueForOperation(opName);
-			if (payloadPrologue != null)
+			List<String> payloadPrologues = parser.getDefaultPayloadProloguesForOperation(opName);
+			if (payloadPrologues != null)
 			{
+				int size = payloadPrologues.size();
+				String prologue = "";
+				if (size > 0)
+				{
+					prologue = payloadPrologues.get(0);
+				}
 %>
-			<br><br>
-			Payload prologue (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE %>" rows="2" cols="80">
-<%= RequestUtilities.makeHTMLSafe(payloadPrologue) %></textarea>
+				<br><br>
+				Payload prologue (don't modify unless you know what you're doing):<br>
+				<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE %>" rows="2" cols="80">
+<%= RequestUtilities.makeHTMLSafe(prologue) %></textarea>
 <%
+				if (size > 1)
+				{
+%>
+					<br><br>
+					Alternative payload prologues:<br>
+<%
+					for (int i = 1; i < size; i++)
+					{
+%>
+						<pre><%= RequestUtilities.makeHTMLSafe(payloadPrologues.get(i)) %></pre>
+<%
+					}
+				}
 			}
 			String payloadHeader = parser.getDefaultPayloadHeaderForOperation(opName);
 			if (payloadHeader != null)

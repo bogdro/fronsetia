@@ -88,9 +88,9 @@ public class RestEndpointParser implements EndpointParser
 	}
 
 	@Override
-	public String getDefaultPayloadPrologueForOperation(String operationName)
+	public List<String> getDefaultPayloadProloguesForOperation(String operationName)
 	{
-		return "";
+		return Collections.singletonList("");
 	}
 
 	@Override

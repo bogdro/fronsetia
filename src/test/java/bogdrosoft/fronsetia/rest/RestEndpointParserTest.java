@@ -50,7 +50,7 @@ public class RestEndpointParserTest
 		assertNotNull(p.getDefaultPayloadForOperation(""));
 		assertNotNull(p.getDefaultPayloadHeaderForOperation(""));
 		assertNotNull(p.getDefaultPayloadMiddleForOperation(""));
-		assertNotNull(p.getDefaultPayloadPrologueForOperation(""));
+		assertNotNull(p.getDefaultPayloadProloguesForOperation(""));
 		assertNotNull(p.getListOfTransportHeadersForOperation(""));
 		assertNull(p.getParsingException());
 	}

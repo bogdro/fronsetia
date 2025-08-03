@@ -68,11 +68,11 @@ public interface EndpointParser
 	String getUrlForOperation(String operationName);
 
 	/**
-	 * Gets the default payload prologue for the given operation.
-	 * @param operationName the operation name to get the default payload prologue for.
-	 * @return the default payload prologue for the given operation.
+	 * Gets the default payload prologues to choose from for the given operation.
+	 * @param operationName the operation name to get the default payload prologues for.
+	 * @return the default payload prologues for the given operation.
 	 */
-	String getDefaultPayloadPrologueForOperation(String operationName);
+	List<String> getDefaultPayloadProloguesForOperation(String operationName);
 
 	/**
 	 * Gets the default payload header for the given operation.

@@ -26,6 +26,7 @@ package bogdrosoft.fronsetia.soap;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -99,9 +100,12 @@ public class SoapEndpointParser implements EndpointParser
 	}
 
 	@Override
-	public String getDefaultPayloadPrologueForOperation(String operationName)
+	public List<String> getDefaultPayloadProloguesForOperation(String operationName)
 	{
-		return "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soapenv:Header>";
+		return Arrays.asList(
+			"<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\">\n<soapenv:Header>",
+			"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soapenv:Header>"
+		);
 	}
 
 	@Override
