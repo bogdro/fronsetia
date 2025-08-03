@@ -38,6 +38,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import bogdrosoft.fronsetia.helpers.MockServletRequest;
+import bogdrosoft.fronsetia.soap.SoapInterpreter;
 import jakarta.servlet.ServletRequest;
 
 /**
@@ -51,6 +52,7 @@ public class RequestUtilitiesTest
 	private static final String PARAM_NAME = "p_name";
 	private static final String PARAM_VALUE = "p_value";
 	private static final String EXCEPTION_MSG = "some-exception-message";
+	private static final ResponseInterpreter INTERPRETER = new SoapInterpreter();
 
 	@BeforeAll
 	public static void setUp() throws Exception
@@ -142,13 +144,13 @@ public class RequestUtilitiesTest
 	public void testSplitByTags()
 	{
 		assertEquals("a&gt;\nb>\n",
-				RequestUtilities.splitByTags("a&gt;b>"));
+				RequestUtilities.splitByTags("a&gt;b>", INTERPRETER.getReplacemenets()));
 	}
 
 	@Test
 	public void testSplitByTagsNull()
 	{
-		assertEquals("", RequestUtilities.splitByTags(null));
+		assertEquals("", RequestUtilities.splitByTags(null, INTERPRETER.getReplacemenets()));
 	}
 
 	@Test

@@ -1,5 +1,5 @@
 /*
- * ResponseProcessor - a class to process protocol responses.
+ * EndpointType - an enum of supported endpoint types.
  *
  * Copyright (C) 2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
@@ -24,25 +24,12 @@
 
 package bogdrosoft.fronsetia;
 
-import bogdrosoft.fronsetia.rest.RestInterpreter;
-import bogdrosoft.fronsetia.soap.SoapInterpreter;
-
 /**
- * ResponseProcessor - a class to process protocol responses.
+ * EndpointType - an enum of supported endpoint types.
  * @author Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  */
-public class ResponseProcessor
+public enum EndpointType
 {
-	/**
-	 * Finds and returns an appropriate response parser.
-	 * @return an appropriate response parser.
-	 */
-	public ResponseInterpreter getResponseInterpreter(EndpointType type)
-	{
-		if (type == EndpointType.SOAP)
-		{
-			return new SoapInterpreter();
-		}
-		return new RestInterpreter();
-	}
+	SOAP,
+	REST;
 }

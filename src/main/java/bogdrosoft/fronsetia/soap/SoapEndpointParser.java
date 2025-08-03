@@ -64,6 +64,7 @@ import org.apache.xmlbeans.impl.xsd2inst.SampleXmlUtil;
 import org.w3c.dom.Element;
 
 import bogdrosoft.fronsetia.EndpointParser;
+import bogdrosoft.fronsetia.EndpointType;
 import bogdrosoft.fronsetia.RequestUtilities;
 
 /**
@@ -159,6 +160,12 @@ public class SoapEndpointParser implements EndpointParser
 	public String getDefaultContentType()
 	{
 		return "application/soap+xml";//"text/xml";
+	}
+
+	@Override
+	public EndpointType getType()
+	{
+		return EndpointType.SOAP;
 	}
 
 	/**

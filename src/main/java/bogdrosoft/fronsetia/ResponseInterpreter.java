@@ -25,6 +25,7 @@
 package bogdrosoft.fronsetia;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ResponseInterpreter - an interface for response parsers.
@@ -50,4 +51,10 @@ public interface ResponseInterpreter
 	 * @return a list of names of the top-level elements of the response.
 	 */
 	List<String> getBodyElements();
+
+	/**
+	 * Returns a list of expressions and replacements to replace in the response.
+	 * @return a list of expressions and replacements to replace in the response.
+	 */
+	Map<String, String> getReplacemenets();
 }

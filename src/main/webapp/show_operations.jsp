@@ -2,11 +2,10 @@
 <%@ page import="bogdrosoft.fronsetia.EndpointParser" %>
 <%@ page import="bogdrosoft.fronsetia.EndpointProcessor" %>
 <%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
-<%@ page import="bogdrosoft.fronsetia.soap.SoapEndpointParser" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.HashSet" %>
-<%@ page import="java.util.Locale" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Locale" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Set" %>
 <%
@@ -49,7 +48,7 @@ You should have received a copy of the GNU Affero General Public License
 
 <meta name="Author" content="Bogdan D.">
 <meta name="Description" content="Fronsetia - Free Online Service Testing Application">
-<meta name="Keywords" content="SOAP, WSDL, service tester">
+<meta name="Keywords" content="SOAP, WSDL, REST, service tester">
 <meta name="Language" content="en">
 <meta name="Generator" content="KWrite/Kate; www.kate-editor.org">
 
@@ -115,6 +114,8 @@ You should have received a copy of the GNU Affero General Public License
 				value="<%= opName %>">
 			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"
 				value="<%= endpointUrl %>">
+			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT_TYPE %>"
+				value="<%= parser.getType() %>">
 			<input type="hidden" name="<%= RequestUtilities.REQ_PARAM_NAME_OP_URL %>"
 				value="<%= parser.getUrlForOperation(opName) %>">
 
@@ -288,7 +289,7 @@ You should have received a copy of the GNU Affero General Public License
 			{
 %>
 			<br><br>
-			Payload body (put your XML data here):<br>
+			Payload body (put your data here):<br>
 			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY %>"
 				rows="20" cols="80"><%= RequestUtilities.makeHTMLSafe(payloadBody) %></textarea>
 <%

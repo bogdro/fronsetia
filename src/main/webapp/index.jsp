@@ -35,7 +35,7 @@ You should have received a copy of the GNU Affero General Public License
 
 <meta name="Author" content="Bogdan D.">
 <meta name="Description" content="Fronsetia - Free Online Service Testing Application">
-<meta name="Keywords" content="SOAP, WSDL, service tester">
+<meta name="Keywords" content="SOAP, WSDL, REST, service tester">
 <meta name="Language" content="en">
 <meta name="Generator" content="KWrite/Kate; www.kate-editor.org">
 
@@ -48,28 +48,40 @@ Fronsetia
 <hr>
 
 <p>
-This application allows the user to view the operations of the Web service specified by the
-<acronym title="Web Services Description Language" lang="en">WSDL</acronym>
-document located at the given URL and to call them using user-provided data
-(<acronym title="Hypertext Transfer Protocol" lang="en">HTTP</acronym> headers,
-<acronym title="Simple Object Access Protocol" lang="en">SOAP</acronym> envelope tags,
-SOAP header and SOAP body data).
+This application allows the user to view the operations of a Web service specified by either of:
+</p>
+<ul>
+ <li>the <acronym title="Web Services Description Language" lang="en">WSDL</acronym>
+  document located at the given URL - for
+  <acronym title="Simple Object Access Protocol" lang="en">SOAP</acronym> services,</li>
+ <li>an <acronym title="Hypertext Transfer Protocol" lang="en">HTTP</acronym>
+  endpoint - for <acronym title="Representational state transfer" lang="en">REST</acronym>
+  services</li>
+</ul>
+<p>
+and to call them using user-provided data
+(HTTP headers, SOAP envelope tags,
+SOAP header and SOAP body data - in case of SOAP services, or
+<acronym title="JavaScript Object Notation" lang="en">JSON</acronym>
+in case of REST services).
 </p>
 <p>
 The user-provided data is not validated - this allows many tests to performed,
 including tests with invalid or non-standard HTTP headers, invalid
-<acronym title="Extensible Markup Language" lang="en">XML</acronym> data
+<acronym title="Extensible Markup Language" lang="en">XML</acronym> or JSON data
 and even invalid SOAP envelope tags.
 </p>
 <p>
-If the document specifies any XML Schema definitions, this application will try to provide
-the user with sample XML data for each service's operation. If no such definitions are found,
-the SOAP body field will be filled with the operation's name tags.
+If the WSDL document for a SOAP Web service specifies any XML Schema definitions,
+this application will try to provide the user with sample XML data for each
+service's operation. If no such definitions are found, the SOAP body field will
+be filled with the operation's name tags.
 </p>
 
 <form method="GET" action="show_operations.jsp" class="c">
 
-WSDL location: <input type="text" size="60" name="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"><br>
+Service WSDL or endpoint location:
+<input type="text" size="60" name="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"><br>
 <br>
 <input type="reset" value="Clear">
 <input type="submit" value="Find services">

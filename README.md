@@ -6,8 +6,8 @@ Fronsetia (Free Online Service Testing Application) is a web application that al
 
 Fronsetia allows you to:
 
+-   send customised requests to a webservice,
 -   read WSDL definitions,
--   send customised requests to the webservice,
 -   override or remove the standard HTTP headers from the request to be sent,
 -   set any other HTTP header you wish,
 -   set the protocol name and version,
@@ -32,6 +32,7 @@ separate fields for various parameters).
 
 Features:
 
+-   supports REST Web Services,
 -   supports Web Services Description Language (WSDL),
 -   supports Simple Object Access Protocol (SOAP),
 -   supports Hypertext Transfer Protocol (HTTP),

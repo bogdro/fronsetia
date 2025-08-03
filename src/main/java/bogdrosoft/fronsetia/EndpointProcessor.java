@@ -26,6 +26,7 @@ package bogdrosoft.fronsetia;
 
 import java.util.Locale;
 
+import bogdrosoft.fronsetia.rest.RestEndpointParser;
 import bogdrosoft.fronsetia.soap.SoapEndpointParser;
 
 /**
@@ -40,13 +41,18 @@ public class EndpointProcessor
 	 */
 	public EndpointParser parse(String endpoint)
 	{
-		EndpointParser soapParser = new SoapEndpointParser();
-		soapParser.parse(endpoint);
-		if (soapParser.getParsingException() != null
+		EndpointParser parser = new SoapEndpointParser();
+		parser.parse(endpoint);
+		if (parser.getParsingException() != null
 				&& ! endpoint.toLowerCase(Locale.ENGLISH).endsWith("wsdl"))
 		{
-			soapParser.parse(endpoint + "?WSDL");
+			parser.parse(endpoint + "?WSDL");
 		}
-		return soapParser;
+		if (parser.getParsingException() != null)
+		{
+			parser = new RestEndpointParser();
+			parser.parse(endpoint);
+		}
+		return parser;
 	}
 }

@@ -27,8 +27,11 @@ package bogdrosoft.fronsetia.soap;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,6 +46,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import bogdrosoft.fronsetia.RequestUtilities;
 import bogdrosoft.fronsetia.ResponseInterpreter;
 
 /**
@@ -51,13 +55,24 @@ import bogdrosoft.fronsetia.ResponseInterpreter;
  */
 public class SoapInterpreter implements ResponseInterpreter
 {
+	private static final Map<String, String> REPLACEMENTS;
+
 	private boolean hasFault;
 	private List<String> bodyElements;
+
+	static
+	{
+		HashMap<String, String> repl = new HashMap<String, String>(2);
+		repl.put(RequestUtilities.RIGHT_ANGLE_BRACE, RequestUtilities.RIGHT_ANGLE_BRACE_LF);
+		repl.put(RequestUtilities.RIGHT_ANGLE_BRACE_ENTITY, RequestUtilities.RIGHT_ANGLE_BRACE_ENTITY_LF);
+		REPLACEMENTS = Collections.unmodifiableMap(repl);
+	}
 
 	/**
 	 * Parses the given SOAP response and sets private fields.
 	 * @param resp the SOAP response to parse.
 	 */
+	@Override
 	public void parseResponse(String resp)
 		throws SAXException, IOException, ParserConfigurationException
 	{
@@ -89,6 +104,7 @@ public class SoapInterpreter implements ResponseInterpreter
 	 * Tells if there was a SOAP fault in the parsed SOAP response.
 	 * @return TRUE if there was a SOAP fault in the parsed SOAP response.
 	 */
+	@Override
 	public boolean hasFault()
 	{
 		return hasFault;
@@ -98,6 +114,7 @@ public class SoapInterpreter implements ResponseInterpreter
 	 * Returns a list of names of the top-level elements of the SOAP response.
 	 * @return a list of names of the top-level elements of the SOAP response.
 	 */
+	@Override
 	public List<String> getBodyElements()
 	{
 		if ( bodyElements != null )
@@ -105,5 +122,11 @@ public class SoapInterpreter implements ResponseInterpreter
 			return new ArrayList<String>(bodyElements);
 		}
 		return null;
+	}
+
+	@Override
+	public Map<String, String> getReplacemenets()
+	{
+		return REPLACEMENTS;
 	}
 }

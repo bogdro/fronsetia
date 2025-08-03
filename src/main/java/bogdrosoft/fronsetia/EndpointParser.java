@@ -36,6 +36,12 @@ public interface EndpointParser
 	void parse(String url);
 
 	/**
+	 * Gets the type of the endpoint.
+	 * @return the type of the endpoint.
+	 */
+	EndpointType getType();
+
+	/**
 	 * Gets the list of operations found by this parser.
 	 * @return the list of operations found by this parser.
 	 */

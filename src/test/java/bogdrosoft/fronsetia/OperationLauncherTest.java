@@ -36,6 +36,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import bogdrosoft.fronsetia.helpers.MockServletRequest;
+import bogdrosoft.fronsetia.soap.SoapInterpreter;
 import jakarta.servlet.ServletRequest;
 
 /**
@@ -45,6 +46,7 @@ import jakarta.servlet.ServletRequest;
 public class OperationLauncherTest
 {
 	private static StringEntity RESP;
+	private static ResponseInterpreter INTERPRETER = new SoapInterpreter();
 
 	@BeforeAll
 	public static void setUp() throws Exception
@@ -344,7 +346,7 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
-		ol.processEntity(RESP, m);
+		ol.processEntity(RESP, m, INTERPRETER);
 	}
 
 	@Test
@@ -356,7 +358,7 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
-		ol.processEntity(RESP, m);
+		ol.processEntity(RESP, m, INTERPRETER);
 	}
 
 
@@ -368,7 +370,7 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
-		ol.processEntity(new StringEntity(""), m);
+		ol.processEntity(new StringEntity(""), m, INTERPRETER);
 	}
 
 	@Test
@@ -380,7 +382,7 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
-		ol.processEntity(RESP, m);
+		ol.processEntity(RESP, m, INTERPRETER);
 	}
 
 	@Test
@@ -392,7 +394,7 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
-		ol.processEntity(RESP, m);
+		ol.processEntity(RESP, m, INTERPRETER);
 	}
 
 	@Test
@@ -404,7 +406,7 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
-		ol.processEntity(RESP, m);
+		ol.processEntity(RESP, m, INTERPRETER);
 	}
 
 	@Test
@@ -418,7 +420,7 @@ public class OperationLauncherTest
 		ol.prepare(m);
 		StringEntity se = new StringEntity(RESP.toString());
 		se.setContentType((String)null);
-		ol.processEntity(se, m);
+		ol.processEntity(se, m, INTERPRETER);
 	}
 
 	@Test
@@ -432,7 +434,7 @@ public class OperationLauncherTest
 		ol.prepare(m);
 		StringEntity se = new StringEntity(RESP.toString());
 		se.setContentType("application/soap+xml; charset=fail");
-		ol.processEntity(se, m);
+		ol.processEntity(se, m, INTERPRETER);
 	}
 
 	@Test
@@ -446,7 +448,7 @@ public class OperationLauncherTest
 		ol.prepare(m);
 		StringEntity se = new StringEntity(RESP.toString());
 		se.setContentType("application/soap+xml");
-		ol.processEntity(se, m);
+		ol.processEntity(se, m, INTERPRETER);
 	}
 
 	@Test

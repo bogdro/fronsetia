@@ -1,4 +1,5 @@
 <%@ page language="java" session="false" %>
+<%@ page import="bogdrosoft.fronsetia.EndpointType" %>
 <%@ page import="bogdrosoft.fronsetia.OperationLauncher" %>
 <%@ page import="bogdrosoft.fronsetia.RequestUtilities" %>
 <%@ page import="bogdrosoft.fronsetia.ResponseInterpreter" %>
@@ -7,6 +8,7 @@
 <%@ page import="org.apache.http.HeaderIterator" %>
 <%
 String endpointLocation = request.getParameter(RequestUtilities.REQ_PARAM_NAME_ENDPOINT);
+EndpointType endpointType = EndpointType.valueOf(request.getParameter(RequestUtilities.REQ_PARAM_NAME_ENDPOINT_TYPE));
 String opName = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_OP_NAME);
 String payloadPrologue = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE);
 String payloadHeader = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER);
@@ -21,8 +23,9 @@ if (method == null || method.isEmpty())
 	method = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
 }
 
-OperationLauncher ol = new OperationLauncher();
 ResponseProcessor processor = new ResponseProcessor();
+ResponseInterpreter interpreter = processor.getResponseInterpreter(endpointType);
+OperationLauncher ol = new OperationLauncher();
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
@@ -61,7 +64,7 @@ You should have received a copy of the GNU Affero General Public License
 
 <meta name="Author" content="Bogdan D.">
 <meta name="Description" content="Fronsetia - Free Online Service Testing Application">
-<meta name="Keywords" content="SOAP, WSDL, service tester">
+<meta name="Keywords" content="SOAP, WSDL, REST, service tester">
 <meta name="Language" content="en">
 <meta name="Generator" content="KWrite/Kate; www.kate-editor.org">
 
@@ -91,6 +94,7 @@ Protocol authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP
 	NT domain=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN %>"
 	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN) %></code>
 	<br>
+
 Proxy: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
 	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_HOST) %>
 <%
@@ -117,7 +121,7 @@ User-defined request headers:
 	try
 	{
 		ol.prepare(request);
-		ol.perform(request);
+		ol.perform(request, interpreter);
 		HeaderIterator reqhi = ol.getReqHeaders();
 		out.flush();
 		while (reqhi.hasNext())
@@ -167,7 +171,6 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 		String resp = ol.getResponseBody();
 		try
 		{
-			ResponseInterpreter interpreter = processor.getResponseInterpreter();
 			interpreter.parseResponse(resp);
 %>
 			Fault found in the response:
@@ -214,7 +217,7 @@ HTTP response line: <code id="<%= RequestUtilities.RESP_FIELD_ID_STATUS_LINE %>"
 		catch (NoClassDefFoundError ncdfe)
 		{
 %>
-			Unable to get response status and type - axiom.jar or axis2-saaj.jar not installed or not usable.
+			Unable to get response status and type - parser libraries not installed or not usable.
 <%
 		}
 		catch (Throwable ex)

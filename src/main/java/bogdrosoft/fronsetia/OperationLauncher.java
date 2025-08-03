@@ -220,12 +220,12 @@ public class OperationLauncher
 	 * Performs the operation and sets the response fields.
 	 * @param request the request to get the parameters from.
 	 */
-	public void perform (final ServletRequest request)
+	public void perform (final ServletRequest request, ResponseInterpreter interpreter)
 		throws IOException
 	{
 		hr = hc.execute(host, hreq);
 		reqHeaders = interceptor.getFinalRequestHeaders();
-		processEntity(hr.getEntity(), request);
+		processEntity(hr.getEntity(), request, interpreter);
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class OperationLauncher
 	 * @param request the configuration request.
 	 * @throws IOException
 	 */
-	void processEntity(HttpEntity ent, ServletRequest request)
+	void processEntity(HttpEntity ent, ServletRequest request, ResponseInterpreter interpreter)
 		throws IOException
 	{
 		// a ByteArrayOutputStream will grow anyway, so we can cast the length to int
@@ -355,7 +355,7 @@ public class OperationLauncher
 		}
 		if ( RequestUtilities.hasParameter(request, RequestUtilities.REQ_PARAM_NAME_SPLIT_RESP) )
 		{
-			responseBody = RequestUtilities.splitByTags(responseBody);
+			responseBody = RequestUtilities.splitByTags(responseBody, interpreter.getReplacemenets());
 		}
 	}
 }

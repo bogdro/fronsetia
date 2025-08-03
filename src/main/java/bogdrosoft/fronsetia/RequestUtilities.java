@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Map;
 
 import jakarta.servlet.ServletRequest;
 
@@ -39,6 +40,9 @@ public class RequestUtilities
 {
 	/** The name of the parameter which holds the location of the endpoint. */
 	public static final String REQ_PARAM_NAME_ENDPOINT = "Fronsetia_endpoint";
+
+	/** The name of the parameter which holds the type of the endpoint. */
+	public static final String REQ_PARAM_NAME_ENDPOINT_TYPE = "Fronsetia_endpoint_type";
 
 	/** The name of the parameter which holds the name of the operation to call. */
 	public static final String REQ_PARAM_NAME_OP_NAME = "Fronsetia_opName";
@@ -193,15 +197,15 @@ public class RequestUtilities
 	/** The default character set to use when reading server replies. */
 	public static final String DEFAULT_CHARSET = "UTF-8";
 
+	public static final String RIGHT_ANGLE_BRACE = ">";
+	public static final String RIGHT_ANGLE_BRACE_ENTITY = "&gt;";
+	public static final String RIGHT_ANGLE_BRACE_LF = ">\n";
+	public static final String RIGHT_ANGLE_BRACE_ENTITY_LF = "&gt;\n";
+
 	private static final String LEFT_ANGLE_BRACE = "<";
-	private static final String RIGHT_ANGLE_BRACE = ">";
 	private static final String AMPERSAND = "&";
 	private static final String LEFT_ANGLE_BRACE_ENTITY = "&lt;";
-	private static final String RIGHT_ANGLE_BRACE_ENTITY = "&gt;";
 	private static final String AMPERSAND_ENTITY = "&amp;";
-
-	private static final String RIGHT_ANGLE_BRACE_LF = ">\n";
-	private static final String RIGHT_ANGLE_BRACE_ENTITY_LF = "&gt;\n";
 
 	// this is a utility class
 	private RequestUtilities() {}
@@ -248,14 +252,20 @@ public class RequestUtilities
 	 * @param s The String to correct.
 	 * @return The corrected String.
 	 */
-	public static String splitByTags (String s)
+	public static String splitByTags (String s, Map<String, String> toReplace)
 	{
 		if ( s == null )
 		{
 			return EMPTY_STR;
 		}
-		return s.replaceAll (RIGHT_ANGLE_BRACE, RIGHT_ANGLE_BRACE_LF)
-			.replaceAll (RIGHT_ANGLE_BRACE_ENTITY, RIGHT_ANGLE_BRACE_ENTITY_LF);
+		if (toReplace != null)
+		{
+			for (Map.Entry<String, String> repl : toReplace.entrySet())
+			{
+				s = s.replaceAll(repl.getKey(), repl.getValue());
+			}
+		}
+		return s;
 	}
 
 	/**
