@@ -143,6 +143,9 @@ public class RequestUtilities
 	/** The name of the parameter which tells if the response should be split into lines. */
 	public static final String REQ_PARAM_NAME_SPLIT_RESP = "Fronsetia_splitResp";
 
+	/** The name of the parameter which tells which security protocol to use (SSL/TLS). */
+	public static final String REQ_PARAM_NAME_SECURE_PROTOCOL = "Fronsetia_secureProto";
+
 	/** The ID of the element that contains the response code. */
 	public static final String RESP_FIELD_ID_CODE = "Fronsetia_respCode";
 

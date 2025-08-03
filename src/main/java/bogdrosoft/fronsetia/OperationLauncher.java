@@ -175,7 +175,12 @@ public class OperationLauncher
 		if ( RequestUtilities.hasParameter(request,
 				RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL) )
 		{
-			b.setConnectionManager(HttpsWrapper.createSecureConnManager());
+			b.setConnectionManager(
+				HttpsWrapper.createSecureConnManager(
+					RequestUtilities.getParameter(request,
+						RequestUtilities.REQ_PARAM_NAME_SECURE_PROTOCOL)
+				)
+			);
 		}
 		hc = b.build();
 

@@ -244,6 +244,10 @@ You should have received a copy of the GNU Affero General Public License
 			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL %>"
 				checked="checked" class="noindent">Accept all SSL certificates
 				and authentication (applies both to the service and to the proxy)
+			<br>
+			Security protocol:
+			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_SECURE_PROTOCOL %>"
+				value="TLS" size="60">
 			<br><br>
 
 

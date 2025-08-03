@@ -37,7 +37,7 @@ public class HttpsWrapperTest
 	@Test
 	public void testCreateSecureConnManager()
 	{
-		assertNotNull(HttpsWrapper.createSecureConnManager());
+		assertNotNull(HttpsWrapper.createSecureConnManager("TLS"));
 	}
 
 	@Test

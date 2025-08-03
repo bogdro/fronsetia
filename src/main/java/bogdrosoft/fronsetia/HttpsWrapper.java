@@ -51,18 +51,17 @@ public class HttpsWrapper
 	/**
 	 * Creates an 'accept all TLS/SSL' HttpClient.
 	 * See http://tech.chitgoks.com/2011/04/24/how-to-avoid-javax-net-ssl-sslpeerunverifiedexception-peer-not-authenticated-problem-using-apache-httpclient/
-	 * @param base the instance to base on.
-	 * @param ports the ports to apply the connection scheme to.
+	 * @param protocol The protocol to use.
 	 * @return a HttpClientConnectionManager that accepts all TLS/SSL connections, or NULL in case of errors.
 	 */
-	public static HttpClientConnectionManager createSecureConnManager()
+	public static HttpClientConnectionManager createSecureConnManager(String protocol)
 	{
 		try
 		{
 			PlainConnectionSocketFactory plainsf =
 					PlainConnectionSocketFactory.getSocketFactory();
-			SSLContext ctx = SSLContext.getInstance ("TLS");
-			ctx.init (null, new TrustManager[]{AcceptAllTrustManager.INSTANCE}, null);
+			SSLContext ctx = SSLContext.getInstance(protocol);
+			ctx.init(null, new TrustManager[]{AcceptAllTrustManager.INSTANCE}, null);
 			SSLConnectionSocketFactory ssf = new SSLConnectionSocketFactory
 					(ctx, NoopHostnameVerifier.INSTANCE);
 			Registry<ConnectionSocketFactory> r =
@@ -86,24 +85,24 @@ public class HttpsWrapper
 		public static final AcceptAllTrustManager INSTANCE = new AcceptAllTrustManager();
 		private static final X509Certificate[] ACCEPTED_ISSUERS = new X509Certificate[0];
 
-		private AcceptAllTrustManager() {}
+		private AcceptAllTrustManager() {/* one instance needed */}
 
 		@Override
-		public void checkClientTrusted (X509Certificate[] xcs, String string)
+		public void checkClientTrusted(X509Certificate[] xcs, String string)
 			throws CertificateException
 		{
 			/* no need */
 		}
 
 		@Override
-		public void checkServerTrusted (X509Certificate[] xcs, String string)
+		public void checkServerTrusted(X509Certificate[] xcs, String string)
 			throws CertificateException
 		{
 			/* no need */
 		}
 
 		@Override
-		public X509Certificate[] getAcceptedIssuers ()
+		public X509Certificate[] getAcceptedIssuers()
 		{
 			return ACCEPTED_ISSUERS;
 		}
