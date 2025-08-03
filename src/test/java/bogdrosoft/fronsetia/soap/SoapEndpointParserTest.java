@@ -68,19 +68,19 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheck() throws Exception
+	public void testBasic() throws Exception
 	{
 		checkFile("sample.wsdl");
 	}
 
 	@Test
-	public void testWSDLCheckV12() throws Exception
+	public void testV12() throws Exception
 	{
 		checkFile("sample-v1.2.wsdl");
 	}
 
 	@Test
-	public void testWSDLCheckNoServices() throws Exception
+	public void testNoServices() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-nosrv.wsdl"));
@@ -88,25 +88,25 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckNoTypes() throws Exception
+	public void testNoTypes() throws Exception
 	{
 		checkFile("sample-notypes.wsdl");
 	}
 
 	@Test
-	public void testWSDLCheckNoImports() throws Exception
+	public void testNoImports() throws Exception
 	{
 		checkFile("sample-noimports.wsdl");
 	}
 
 	@Test
-	public void testWSDLCheckNoIncludes() throws Exception
+	public void testNoIncludes() throws Exception
 	{
 		checkFile("sample-noincludes.wsdl");
 	}
 
 	@Test
-	public void testWSDLCheckNoPorts() throws Exception
+	public void testNoPorts() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-noports.wsdl"));
@@ -114,7 +114,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckNoOperations() throws Exception
+	public void testNoOperations() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-nooperations.wsdl"));
@@ -122,7 +122,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckNoOperInput() throws Exception
+	public void testNoOperInput() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-noinput.wsdl"));
@@ -130,7 +130,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckNoDefinitions() throws Exception
+	public void testNoDefinitions() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-nodef.wsdl"));
@@ -138,7 +138,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckEmptyTypes() throws Exception
+	public void testEmptyTypes() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-empty-types.wsdl"));
@@ -146,7 +146,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckPortNoBinding() throws Exception
+	public void testPortNoBinding() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-no-bind.wsdl"));
@@ -154,7 +154,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckBindingNoType() throws Exception
+	public void testBindingNoType() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-bind-no-type.wsdl"));
@@ -162,7 +162,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckOperationNoName() throws Exception
+	public void testOperationNoName() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-oper-no-name.wsdl"));
@@ -170,7 +170,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckInputNoMsg() throws Exception
+	public void testInputNoMsg() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-in-no-msg.wsdl"));
@@ -178,7 +178,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckMsgNoQName() throws Exception
+	public void testMsgNoQName() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-msg-no-qname.wsdl"));
@@ -186,7 +186,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckInMsgNoQName() throws Exception
+	public void testInMsgNoQName() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-in-msg-no-name.wsdl"));
@@ -194,7 +194,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckInMsgNoLocalName() throws Exception
+	public void testInMsgNoLocalName() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-in-msg-no-localname.wsdl"));
@@ -202,7 +202,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckInMsgPartNoType() throws Exception
+	public void testInMsgPartNoType() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-msg-part-no-type.wsdl"));
@@ -210,7 +210,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testWSDLCheckUnknownSoapVersion() throws Exception
+	public void testUnknownSoapVersion() throws Exception
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(getFullPathFor("sample-v1.3.wsdl"));
