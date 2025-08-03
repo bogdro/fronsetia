@@ -222,33 +222,12 @@ public class SoapEndpointParser implements EndpointParser
 							{
 								for (Object el : schImportsValues)
 								{
-									if (el instanceof List)
-									{
-										for (Object lel : (List<?>)el)
-										{
-											if (lel instanceof SchemaReference)
-											{
-												schemaLocations.add(
-													((SchemaReference) lel)
-														.getSchemaLocationURI());
-											}
-										}
-									}
+									addSchemaReference(schemaLocations, el);
 								}
 							}
 						}
 						List<?> schIncludes = si.getIncludes();
-						if (schIncludes != null)
-						{
-							for (Object el : schIncludes)
-							{
-								if (el instanceof SchemaReference)
-								{
-									schemaLocations.add(((SchemaReference) el)
-										.getSchemaLocationURI());
-								}
-							}
-						}
+						addSchemaReference(schemaLocations, schIncludes);
 					}
 				}
 			}
@@ -441,5 +420,24 @@ public class SoapEndpointParser implements EndpointParser
 			}
 		}
 		return RequestUtilities.EMPTY_STR;
+	}
+
+	private void addSchemaReference(Set<String> schemaLocations, Object list)
+	{
+		if (list instanceof List)
+		{
+			List<?> schemaList = (List<?>)list;
+			int size = schemaList.size();
+			for (int i = 0; i < size; i++)
+			{
+				Object ref = schemaList.get(i);
+				if (ref instanceof SchemaReference)
+				{
+					schemaLocations.add(
+						((SchemaReference) ref).getSchemaLocationURI()
+					);
+				}
+			}
+		}
 	}
 }
