@@ -151,8 +151,7 @@ public class SoapEndpointParser implements EndpointParser
 			wsdlLocation = url;
 			parseException = null;
 			operationsAndURLs = new HashMap<String, String>();
-			operationsAndXMLs = new HashMap<String, String>();
-			processWSDL();
+			operationsAndXMLs = processWSDL();
 		}
 		catch (WSDLException e)
 		{
@@ -298,10 +297,6 @@ public class SoapEndpointParser implements EndpointParser
 								{
 									for (Object extel : portExtElems)
 									{
-										if (extel == null)
-										{
-											continue;
-										}
 										if (extel instanceof SOAPAddress)
 										{
 											operationsAndURLs.put (
@@ -426,7 +421,7 @@ public class SoapEndpointParser implements EndpointParser
 		return RequestUtilities.EMPTY_STR;
 	}
 
-	private void addSchemaReference(Set<String> schemaLocations, Object list)
+	void addSchemaReference(Set<String> schemaLocations, Object list)
 	{
 		if (list instanceof List)
 		{

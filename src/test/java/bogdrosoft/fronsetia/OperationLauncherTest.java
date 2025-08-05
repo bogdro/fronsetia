@@ -290,6 +290,15 @@ public class OperationLauncherTest
 	}
 
 	@Test
+	public void testPrepareMethodFromInput() throws URISyntaxException
+	{
+		Map<String, String> p = prepareRequestParams();
+		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT, "POST");
+		ServletRequest m = new MockServletRequest(p);
+		new OperationLauncher().prepare(m);
+	}
+
+	@Test
 	public void testPrepareWithProtocol() throws URISyntaxException
 	{
 		Map<String, String> p = prepareRequestParams();

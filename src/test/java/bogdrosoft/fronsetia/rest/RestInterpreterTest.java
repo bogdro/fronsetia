@@ -61,4 +61,20 @@ public class RestInterpreterTest
 		assertFalse(ri.hasFault());
 		assertNotNull(ri.getBodyElements());
 	}
+
+	@Test
+	public void testReplacemenets() throws Exception
+	{
+		RestInterpreter ri = new RestInterpreter();
+		ri.parseResponse("{ \"a\": { \"b\": 1 }, \"c\": 2 }");
+		assertNotNull(ri.getReplacemenets());
+	}
+
+	@Test
+	public void testReplacemenetsNull() throws Exception
+	{
+		RestInterpreter ri = new RestInterpreter();
+		ri.parseResponse(null);
+		assertNotNull(ri.getReplacemenets());
+	}
 }
