@@ -44,7 +44,7 @@ You should have received a copy of the GNU Affero General Public License
 <link rel="stylesheet" href="resources/fronsetia.css" type="text/css">
 <link rel="icon" type="image/png" href="resources/img/fronsetia-icon.png">
 
-<title> Fronsetia: <%= endpointUrl %> </title>
+<title> Fronsetia: <%= RequestUtilities.makeHTMLSafe(endpointUrl) %> </title>
 
 <meta name="Author" content="Bogdan D.">
 <meta name="Description" content="Fronsetia - Free Online Service Testing Application">
@@ -55,7 +55,8 @@ You should have received a copy of the GNU Affero General Public License
 </head><body>
 
 <h1 class="c">Fronsetia - operations available at<br>
-	<a href="<%= endpointUrl %>"><%= endpointUrl %></a></h1>
+	<a href="<%= RequestUtilities.makeHTMLSafe(endpointUrl) %>"
+	><%= RequestUtilities.makeHTMLSafe(endpointUrl) %></a></h1>
 
 <br>
 <%

@@ -18,7 +18,7 @@ String payloadEpilogue = RequestUtilities.getParameter(request, RequestUtilities
 String payloadContentType = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
 String proxyPort = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_PORT);
 String method = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT);
-if (method == null || method.isEmpty())
+if (method.isEmpty())
 {
 	method = RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
 }
@@ -60,7 +60,8 @@ You should have received a copy of the GNU Affero General Public License
 <link rel="stylesheet" href="resources/fronsetia.css" type="text/css">
 <link rel="icon" type="image/png" href="resources/img/fronsetia-icon.png">
 
-<title> Fronsetia: <%= opName %>: <%= endpointLocation %> </title>
+<title> Fronsetia: <%= RequestUtilities.makeHTMLSafe(opName) %>:
+	<%= RequestUtilities.makeHTMLSafe(endpointLocation) %> </title>
 
 <meta name="Author" content="Bogdan D.">
 <meta name="Description" content="Fronsetia - Free Online Service Testing Application">
@@ -72,31 +73,34 @@ You should have received a copy of the GNU Affero General Public License
 
 <h1 class="c">Fronsetia - result of operation</h1>
 <hr>
-Endpoint location: <a href="<%= endpointLocation %>"
-	id="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"><%= endpointLocation %></a><br>
+Endpoint location: <a href="<%= RequestUtilities.makeHTMLSafe(endpointLocation) %>"
+	id="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"
+	><%= RequestUtilities.makeHTMLSafe(endpointLocation) %></a><br>
 
-Operation name: <code id="<%= RequestUtilities.REQ_PARAM_NAME_OP_NAME %>"><%= opName %></code><br>
+Operation name: <code id="<%= RequestUtilities.REQ_PARAM_NAME_OP_NAME %>"
+	><%= RequestUtilities.makeHTMLSafe(opName) %></code><br>
 
 Protocol name and version: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_NAME %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_NAME)
-	%>/<%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR)
-	%>.<%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR) %></code><br>
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_NAME))
+	%>/<%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR))
+	%>.<%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR))
+	%></code><br>
 
 Protocol method: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>"
-	><%= method %></code><br>
+	><%= RequestUtilities.makeHTMLSafe(method) %></code><br>
 
 Protocol authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_USER) %></code>,
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_USER)) %></code>,
 	password=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD) %></code>,
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD)) %></code>,
 	NT workstation=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION) %></code>,
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION)) %></code>,
 	NT domain=<code id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN) %></code>
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN)) %></code>
 	<br>
 
 Proxy: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_HOST) %>
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_HOST)) %>
 <%
 	if (! proxyPort.isEmpty())
 	{
@@ -107,13 +111,13 @@ Proxy: <code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
 %>
 </code><br>
 Proxy authentication: user=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_USER %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_USER) %></code>,
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_USER)) %></code>,
 	password=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD) %></code>,
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD)) %></code>,
 	NT workstation=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION) %></code>,
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION)) %></code>,
 	NT domain=<code id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN) %></code>
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN)) %></code>
 	<br>
 User-defined request headers:
 <pre id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>">
@@ -148,7 +152,7 @@ RequestUtilities.makeHTMLSafe(payloadEpilogue) %></pre>
 
 Expected output encoding (used only if can't be detected automatically):
  <code id="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
-	><%= RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_CHARSET) %></code>
+	><%= RequestUtilities.makeHTMLSafe(RequestUtilities.getParameter(request, RequestUtilities.REQ_PARAM_NAME_CHARSET)) %></code>
 
 
 
