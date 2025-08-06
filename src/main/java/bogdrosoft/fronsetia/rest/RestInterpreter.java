@@ -60,7 +60,7 @@ public class RestInterpreter implements ResponseInterpreter
 	{
 		if (resp != null)
 		{
-			try(Reader sr = new StringReader(resp);
+			try (Reader sr = new StringReader(resp);
 				JsonReader r = Json.createReader(sr))
 			{
 				JsonObject obj = r.readObject();

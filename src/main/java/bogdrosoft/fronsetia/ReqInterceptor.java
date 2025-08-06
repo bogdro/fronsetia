@@ -117,10 +117,10 @@ public class ReqInterceptor implements HttpRequestInterceptor
 		if ( userHttpHeaders != null )
 		{
 			String[] userHttpHdrs = userHttpHeaders
-				.replaceAll (RequestUtilities.NEWLINE_CR,
+				.replace(RequestUtilities.NEWLINE_CR,
 					RequestUtilities.NEWLINE_LF)
-				.replaceAll (LF_PLUS, RequestUtilities.NEWLINE_LF)
-				.split (RequestUtilities.NEWLINE_LF);
+				.replaceAll(LF_PLUS, RequestUtilities.NEWLINE_LF)
+				.split(RequestUtilities.NEWLINE_LF);
 			if ( userHttpHdrs != null )
 			{
 				for ( int i = 0; i < userHttpHdrs.length; i++ )

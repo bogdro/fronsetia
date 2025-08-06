@@ -245,9 +245,9 @@ public class RequestUtilities
 		{
 			return EMPTY_STR;
 		}
-		return s.replaceAll (AMPERSAND, AMPERSAND_ENTITY)
-			.replaceAll (LEFT_ANGLE_BRACE, LEFT_ANGLE_BRACE_ENTITY)
-			.replaceAll (RIGHT_ANGLE_BRACE, RIGHT_ANGLE_BRACE_ENTITY);
+		return s.replace(AMPERSAND, AMPERSAND_ENTITY)
+			.replace(LEFT_ANGLE_BRACE, LEFT_ANGLE_BRACE_ENTITY)
+			.replace(RIGHT_ANGLE_BRACE, RIGHT_ANGLE_BRACE_ENTITY);
 	}
 
 	/**
