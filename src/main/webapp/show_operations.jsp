@@ -127,24 +127,39 @@ You should have received a copy of the GNU Affero General Public License
 			<ul>
 				<li><input type="checkbox"
 					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH %>"
+					id="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH %>"
 					class="noindent"
-					checked="checked"> Send default <code>Content-Length</code> header</li>
+					checked="checked">
+					<label for="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_LENGTH %>"
+					>Send default <code>Content-Length</code> header</label></li>
 				<li><input type="checkbox"
 					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST %>"
+					id="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST %>"
 					class="noindent"
-					checked="checked"> Send default <code>Host</code> header</li>
+					checked="checked">
+					<label for="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_HOST %>"
+					>Send default <code>Host</code> header</label></li>
 				<li><input type="checkbox"
 					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION %>"
+					id="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION %>"
 					class="noindent"
-					checked="checked"> Send default <code>Connection</code> header</li>
+					checked="checked">
+					<label for="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONNECTION %>"
+					>Send default <code>Connection</code> header</label></li>
 				<li><input type="checkbox"
 					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT %>"
+					id"<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT %>"
 					class="noindent"
-					checked="checked"> Send default <code>User-Agent</code> header</li>
+					checked="checked">
+					<label for="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT %>"
+					>Send default <code>User-Agent</code> header</label></li>
 				<li><input type="checkbox"
 					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE %>"
+					id="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE %>"
 					class="noindent"
-					checked="checked"> Send default <code>Content-Type</code> header</li>
+					checked="checked">
+					<label for="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE %>"
+					>Send default <code>Content-Type</code> header</label></li>
 			</ul>
 			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS %>"
 				class="noindent"> Remove all default headers (overrides the above list)
@@ -153,17 +168,26 @@ You should have received a copy of the GNU Affero General Public License
 			Protocol properties (note that the protocol will always be sent
 			as <code>NAME/MAJOR.MINOR</code>, like <code>HTTP/1.1</code>):<br>
 			<div class="inputblock">
-			Protocol name: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_NAME %>">Protocol name</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_NAME %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_NAME %>"
 				value="HTTP" size="60" class="noindent"><br>
-			Protocol major version: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR %>">Protocol major version</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR %>"
 				value="1" size="60" class="noindent"><br>
-			Protocol minor version: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR %>">Protocol minor version</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR %>"
 				value="1" size="60" class="noindent"><br>
-			Protocol method:
-				<select name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>">
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>">Protocol method</label>:
+				<select
+					name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>"
+					id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD %>"
+					>
 					<option value="DELETE">DELETE</option>
 					<option value="GET">GET</option>
 					<option value="HEAD">HEAD</option>
@@ -178,8 +202,9 @@ You should have received a copy of the GNU Affero General Public License
 			</div>
 
 			<br>
-			Content-Type (without the character set):
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE %>">Content-Type</label> (without the character set):
 			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE %>"
 				value="<%= parser.getDefaultContentType() %>" size="60">
 			<br><br>
 
@@ -187,9 +212,11 @@ You should have received a copy of the GNU Affero General Public License
 			List<String> transportHeaders = parser.getListOfTransportHeadersForOperation(opName);
 			int headerCount = transportHeaders.size();
 %>
-			Additional headers (one per line):
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>">Additional headers</label> (one per line):
 			<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>" rows="5" cols="80">
+			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>"
+			id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_HEADERS %>"
+			rows="5" cols="80">
 <%
 			for (int i = 0; i < headerCount; i++)
 			{
@@ -201,53 +228,78 @@ You should have received a copy of the GNU Affero General Public License
 			<br><br>
 			HTTP Authentication for the service:<br>
 			<div class="inputblock">
-			Username: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>">Username</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_USER %>"
 				value="" size="60" class="noindent"><br>
-			Password: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD %>">Password</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD %>"
 				value="" size="60" class="noindent"><br>
-			Workstation name (NT logins only): <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION %>">Workstation name</label> (NT logins only):
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION %>"
 				value="" size="60" class="noindent"><br>
-			Domain name (NT logins only): <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN %>">Domain name</label> (NT logins only):
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN %>"
 				value="" size="60" class="noindent"><br>
 			</div>
 			<br>
 			Proxy server (this is the proxy that <span class="important">THIS SERVER</span>,
 			not your browser, should use to connect to the given service):
 			<div class="inputblock">
-			Host: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>">Host</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_HOST %>"
 				value="" size="60" class="noindent"><br>
-			Port: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PORT %>">Port</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PORT %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PORT %>"
 				value="" size="60" class="noindent"><br>
 			</div>
 			<br>
 			Proxy authentication:
 			<div class="inputblock">
-			Username: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_USER %>">Username</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_USER %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_USER %>"
 				value="" size="60" class="noindent"><br>
-			Password: <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD %>">Password</label>:
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD %>"
 				value="" size="60" class="noindent"><br>
-			Workstation name (NT logins only): <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION %>">Workstation name</label> (NT logins only):
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION %>"
 				value="" size="60" class="noindent"><br>
-			Domain name (NT logins only): <input type="text"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN %>">Domain name</label> (NT logins only):
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN %>"
 				value="" size="60" class="noindent"><br>
 			</div>
 
-			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL %>"
-				checked="checked" class="noindent">Accept all SSL certificates
-				and authentication (applies both to the service and to the proxy)
+			<input type="checkbox"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL %>"
+				checked="checked" class="noindent"
+				><label for="<%= RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL %>">Accept all SSL certificates
+				and authentication</label> (applies both to the service and to the proxy)
 			<br>
-			Security protocol:
-			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_SECURE_PROTOCOL %>"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_SECURE_PROTOCOL %>">Security protocol</label>:
+			<input type="text"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_SECURE_PROTOCOL %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_SECURE_PROTOCOL %>"
 				value="TLS" size="60">
 			<br><br>
 
@@ -269,8 +321,12 @@ You should have received a copy of the GNU Affero General Public License
 				}
 %>
 				<br><br>
-				Payload prologue (don't modify unless you know what you're doing):<br>
-				<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE %>" rows="2" cols="80">
+				<label for="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE %>">Payload prologue</label>
+				(don't modify unless you know what you're doing):<br>
+				<textarea
+					name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE %>"
+					id="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE %>"
+					rows="2" cols="80">
 <%= RequestUtilities.makeHTMLSafe(prologue) %></textarea>
 <%
 				if (size > 1)
@@ -292,9 +348,12 @@ You should have received a copy of the GNU Affero General Public License
 			{
 %>
 			<br><br>
-			Payload header (usually you don't need to put anything here):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER %>" rows="5"
-				cols="80"><%= RequestUtilities.makeHTMLSafe(payloadHeader) %></textarea>
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER %>">Payload header</label>
+			(usually you don't need to put anything here):<br>
+			<textarea
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER %>"
+				rows="5" cols="80"><%= RequestUtilities.makeHTMLSafe(payloadHeader) %></textarea>
 <%
 			}
 			String payloadMiddle = parser.getDefaultPayloadMiddleForOperation(opName);
@@ -302,8 +361,12 @@ You should have received a copy of the GNU Affero General Public License
 			{
 %>
 			<br><br>
-			Payload middle (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE %>" rows="2" cols="80">
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE %>">Payload middle</label>
+			(don't modify unless you know what you're doing):<br>
+			<textarea
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE %>"
+				rows="2" cols="80">
 <%= RequestUtilities.makeHTMLSafe(payloadMiddle) %></textarea>
 
 <%
@@ -313,8 +376,11 @@ You should have received a copy of the GNU Affero General Public License
 			{
 %>
 			<br><br>
-			Payload body (put your data here):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY %>"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY %>">Payload body</label>
+			(put your data here):<br>
+			<textarea
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY %>"
 				rows="20" cols="80"><%= RequestUtilities.makeHTMLSafe(payloadBody) %></textarea>
 <%
 			}
@@ -323,8 +389,12 @@ You should have received a copy of the GNU Affero General Public License
 			{
 %>
 			<br><br>
-			Payload epilogue (don't modify unless you know what you're doing):<br>
-			<textarea name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE %>" rows="2" cols="80">
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE %>">Payload epilogue</label>
+			(don't modify unless you know what you're doing):<br>
+			<textarea
+				name="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE %>"
+				rows="2" cols="80">
 <%= RequestUtilities.makeHTMLSafe(payloadEpilogue) %></textarea>
 <%
 			}
@@ -332,15 +402,22 @@ You should have received a copy of the GNU Affero General Public License
 			</div>
 
 			<br><br>
-			Response character set (if can't be detected automatically):
-			<input type="text" name="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
+			<label for="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>">Response character set</label>
+			(if can't be detected automatically):
+			<input type="text"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_CHARSET %>"
 				value="<%= RequestUtilities.DEFAULT_CHARSET %>" size="60">
 			<br><br>
-			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_SPLIT_RESP %>"
-				checked="checked">Split response into lines
+			<input type="checkbox"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_SPLIT_RESP %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_SPLIT_RESP %>"
+				checked="checked"
+				><label for="<%= RequestUtilities.REQ_PARAM_NAME_SPLIT_RESP %>"
+				>Split response into lines</label>
 
 			<br><br>
-			<div class="c"><input type="submit" value="Call <%= opName %>"></div>
+			<div class="c"><input type="submit" value="Call <%= opName %>" id="submit_button"></div>
 
 		</form>
 <%

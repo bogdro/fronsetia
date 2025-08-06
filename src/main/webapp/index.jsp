@@ -80,11 +80,12 @@ be filled with the operation's name tags.
 
 <form method="GET" action="show_operations.jsp" class="c">
 
-Service WSDL or endpoint location:
-<input type="text" size="60" name="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"><br>
+<label for="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>">Service WSDL or endpoint location</label>:
+<input type="text" size="60" name="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"
+id="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"><br>
 <br>
-<input type="reset" value="Clear">
-<input type="submit" value="Find services">
+<input type="reset" value="Clear" id="reset_button">
+<input type="submit" value="Find services" id="submit_button">
 </form>
 
 <br><br>
