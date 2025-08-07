@@ -95,10 +95,12 @@ public class OperationLauncherTest
 	@Test
 	public void testPrepare() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		// Mockito doesn't work...
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
