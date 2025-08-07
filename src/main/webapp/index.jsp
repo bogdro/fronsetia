@@ -84,8 +84,10 @@ be filled with the operation's name tags.
 <input type="text" size="60" name="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"
 id="<%= RequestUtilities.REQ_PARAM_NAME_ENDPOINT %>"><br>
 <br>
-<input type="reset" value="Clear" id="reset_button">
 <input type="submit" value="Find services" id="submit_button">
+<br><br>
+<label for="reset_button">Reset form</label>:
+<input type="reset" value="Clear" id="reset_button">
 </form>
 
 <br><br>
