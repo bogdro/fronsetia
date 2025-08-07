@@ -24,8 +24,10 @@
 
 package bogdrosoft.fronsetia;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -47,7 +49,7 @@ import bogdrosoft.fronsetia.helpers.MockServletRequest;
  */
 public class ReqInterceptorTest
 {
-	private Map<String, String> prepareRequestParams()
+	private static Map<String, String> prepareRequestParams()
 	{
 		Map<String, String> p = new HashMap<String, String>(1);
 		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE, "");
@@ -63,7 +65,7 @@ public class ReqInterceptorTest
 		return p;
 	}
 
-	private BasicHttpEntityEnclosingRequest prepareReqWithParams(Map<String, String> p)
+	private static BasicHttpEntityEnclosingRequest prepareReqWithParams(Map<String, String> p)
 	{
 		BasicHttpEntityEnclosingRequest req =
 			new BasicHttpEntityEnclosingRequest(
@@ -77,7 +79,7 @@ public class ReqInterceptorTest
 		return req;
 	}
 
-	private boolean checkHeader(HeaderIterator hi, String name, String value)
+	private static boolean checkHeader(HeaderIterator hi, String name, String value)
 	{
 		while (hi.hasNext ())
 		{
@@ -100,6 +102,7 @@ public class ReqInterceptorTest
 				p.get(RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD),
 				p.get(RequestUtilities.REQ_PARAM_NAME_OP_URL));
 		ri.process(req, null);
+		assertNotNull(ri.getFinalRequestHeaders());
 	}
 
 	@Test
@@ -241,52 +244,61 @@ public class ReqInterceptorTest
 	@Test
 	public void testRemoveHeaderAllNull()
 	{
-		ReqInterceptor.removeHeader(null, null, null);
+		assertDoesNotThrow(() -> ReqInterceptor.removeHeader(null, null, null));
 	}
 
 	@Test
 	public void testRemoveHeaderWithReq()
 	{
-		ReqInterceptor.removeHeader(
+		assertDoesNotThrow(() -> ReqInterceptor.removeHeader(
 			new BasicHttpEntityEnclosingRequest("POST",
 					"http://localhost:1234/test"),
-			null, null);
+			null, null)
+		);
 	}
 
 	@Test
 	public void testRemoveHeaderWithList()
 	{
-		ReqInterceptor.removeHeader(null, new ArrayList<Header>(), null);
+		assertDoesNotThrow(
+			() -> ReqInterceptor.removeHeader(null, new ArrayList<Header>(), null)
+		);
 	}
 
 	@Test
 	public void testRemoveHeaderWithHeaderName()
 	{
-		ReqInterceptor.removeHeader(null, null, "Content-Type");
+		assertDoesNotThrow(
+			() -> ReqInterceptor.removeHeader(null, null, "Content-Type")
+		);
 	}
 
 	@Test
 	public void testRemoveHeaderWithReqAndList()
 	{
-		ReqInterceptor.removeHeader(
-			new BasicHttpEntityEnclosingRequest("POST",
-					"http://localhost:1234/test"),
-			new ArrayList<Header>(), null);
+		Map<String, String> p = prepareRequestParams();
+		BasicHttpEntityEnclosingRequest req = prepareReqWithParams(p);
+		ReqInterceptor.removeHeader(req, new ArrayList<Header>(), null);
+		assertTrue(checkHeader(req.headerIterator(),
+				"Content-Type", "application/soap+xml"));
 	}
 
 	@Test
 	public void testRemoveHeaderWithReqAndHeaderName()
 	{
-		ReqInterceptor.removeHeader(
-			new BasicHttpEntityEnclosingRequest("POST",
-					"http://localhost:1234/test"),
-			null, "Content-Type");
+		Map<String, String> p = prepareRequestParams();
+		BasicHttpEntityEnclosingRequest req = prepareReqWithParams(p);
+		ReqInterceptor.removeHeader(req, null, "Content-Type");
+		assertTrue(checkHeader(req.headerIterator(),
+				"Content-Type", "application/soap+xml"));
 	}
 
 	@Test
 	public void testRemoveHeaderWithListAndHeaderName()
 	{
-		ReqInterceptor.removeHeader(null, new ArrayList<Header>(), "Content-Type");
+		assertDoesNotThrow(
+			() -> ReqInterceptor.removeHeader(null, new ArrayList<Header>(), "Content-Type")
+		);
 	}
 
 	@Test

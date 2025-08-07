@@ -25,14 +25,15 @@
 package bogdrosoft.fronsetia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.entity.StringEntity;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import bogdrosoft.fronsetia.helpers.MockServletRequest;
@@ -45,26 +46,33 @@ import jakarta.servlet.ServletRequest;
  */
 public class OperationLauncherTest
 {
-	private static StringEntity RESP;
-	private static ResponseInterpreter INTERPRETER = new SoapInterpreter();
+	private static final StringEntity RESP;
+	private static final ResponseInterpreter INTERPRETER = new SoapInterpreter();
 
-	@BeforeAll
-	public static void setUp() throws Exception
+	static
 	{
-		RESP = new StringEntity(
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-				+ "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
-				+ "<soapenv:Body>\n"
-				+ "<getVersionResponse soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\n"
-				+ "<getVersionReturn xsi:type=\"xsd:string\">\n"
-				+ "Apache Axis version: 1.4\n"
-				+ "Built on Apr 22, 2006 (06:55:48 PDT)</getVersionReturn>\n"
-				+ "</getVersionResponse>\n"
-				+ "</soapenv:Body>\n"
-				+ "</soapenv:Envelope>");
+		try
+		{
+			RESP = new StringEntity(
+					"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+					+ "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
+					+ "<soapenv:Body>\n"
+					+ "<getVersionResponse soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\n"
+					+ "<getVersionReturn xsi:type=\"xsd:string\">\n"
+					+ "Apache Axis version: 1.4\n"
+					+ "Built on Apr 22, 2006 (06:55:48 PDT)</getVersionReturn>\n"
+					+ "</getVersionResponse>\n"
+					+ "</soapenv:Body>\n"
+					+ "</soapenv:Envelope>");
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+			throw new IllegalArgumentException(e);
+		}
 	}
 
-	private Map<String, String> prepareRequestParams()
+	private static Map<String, String> prepareRequestParams()
 	{
 		Map<String, String> p = new HashMap<String, String>(1);
 		p.put(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE,
@@ -96,92 +104,111 @@ public class OperationLauncherTest
 	@Test
 	public void testPrepareNullRequest() throws URISyntaxException
 	{
-		new OperationLauncher().prepare(null);
+		OperationLauncher ol = new OperationLauncher();
+		ol.prepare(null);
+		assertNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareContentTypeEmpty() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE, "");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareNoContentType() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.remove(RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithHttpAuth() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithHttpAuthNoUser() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithHttpAuthNoPass() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithHttpAuthNT() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION, "ntwork");
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN, "ntdomain");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithHttpAuthNTNoWorkstation() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_NT_DOMAIN, "ntdomain");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithHttpAuthNTNoDomain() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_USER, "user");
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_PASSWORD, "pass");
 		p.put(RequestUtilities.REQ_PARAM_NAME_HTTP_NT_WORKSTATION, "ntwork");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProxy() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
@@ -190,12 +217,14 @@ public class OperationLauncherTest
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProxyNoHost() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
@@ -203,12 +232,14 @@ public class OperationLauncherTest
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProxyNoPort() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_USER, "proxyuser");
@@ -216,12 +247,14 @@ public class OperationLauncherTest
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProxyNoUser() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
@@ -229,12 +262,14 @@ public class OperationLauncherTest
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProxyNoPassword() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
@@ -242,12 +277,14 @@ public class OperationLauncherTest
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProxyNoNTWorkstation() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
@@ -255,12 +292,14 @@ public class OperationLauncherTest
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_DOMAIN, "proxydomain");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProxyNoNTDomain() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_HOST, "proxy");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PORT, "8080");
@@ -268,75 +307,90 @@ public class OperationLauncherTest
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_PASSWORD, "proxypass");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROXY_NT_WORKSTATION, "proxyworkstation");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithAllSSL() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_ACCEPT_ALL_SSL, "1");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareNoMethod() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.remove(RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD);
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareMethodFromInput() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT, "POST");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProtocol() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProtocolNoName() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProtocolNoMajor() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MINOR, "0");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	@Test
 	public void testPrepareWithProtocolNoMinor() throws URISyntaxException
 	{
+		OperationLauncher ol = new OperationLauncher();
 		Map<String, String> p = prepareRequestParams();
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_NAME, "HTTP");
 		p.put(RequestUtilities.REQ_PARAM_NAME_PROTO_MAJOR, "1");
 		ServletRequest m = new MockServletRequest(p);
-		new OperationLauncher().prepare(m);
+		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 	}
 
 	/*
@@ -355,7 +409,9 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		ol.processEntity(RESP, m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 	@Test
@@ -367,7 +423,9 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		ol.processEntity(RESP, m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 
@@ -379,7 +437,9 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		ol.processEntity(new StringEntity(""), m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 	@Test
@@ -391,7 +451,9 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		ol.processEntity(RESP, m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 	@Test
@@ -403,7 +465,9 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		ol.processEntity(RESP, m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 	@Test
@@ -415,7 +479,9 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		ol.processEntity(RESP, m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 	@Test
@@ -427,9 +493,11 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		StringEntity se = new StringEntity(RESP.toString());
 		se.setContentType((String)null);
 		ol.processEntity(se, m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 	@Test
@@ -441,9 +509,11 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		StringEntity se = new StringEntity(RESP.toString());
 		se.setContentType("application/soap+xml; charset=fail");
 		ol.processEntity(se, m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 	@Test
@@ -455,9 +525,11 @@ public class OperationLauncherTest
 		ServletRequest m = new MockServletRequest(p);
 		OperationLauncher ol = new OperationLauncher();
 		ol.prepare(m);
+		assertNotNull(ol.getRequest());
 		StringEntity se = new StringEntity(RESP.toString());
 		se.setContentType("application/soap+xml");
 		ol.processEntity(se, m, INTERPRETER);
+		assertNotNull(ol.getResponseBody());
 	}
 
 	@Test

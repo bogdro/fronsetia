@@ -24,6 +24,7 @@
 
 package bogdrosoft.fronsetia;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -178,7 +179,7 @@ public class RequestUtilitiesTest
 	}
 
 	@Test
-	public void testPrintException() throws IOException
+	public void testPrintException()
 	{
 		StringWriter sw = new StringWriter();
 		RequestUtilities.printException(new Exception(EXCEPTION_MSG), sw);
@@ -186,7 +187,7 @@ public class RequestUtilitiesTest
 	}
 
 	@Test
-	public void testPrintExceptionNullEx() throws IOException
+	public void testPrintExceptionNullEx()
 	{
 		StringWriter sw = new StringWriter();
 		RequestUtilities.printException(null, sw);
@@ -194,22 +195,28 @@ public class RequestUtilitiesTest
 	}
 
 	@Test
-	public void testPrintExceptionNullWriter() throws IOException
+	public void testPrintExceptionNullWriter()
 	{
-		RequestUtilities.printException(new Exception(EXCEPTION_MSG), null);
+		assertDoesNotThrow(
+			() -> RequestUtilities.printException(new Exception(EXCEPTION_MSG), null)
+		);
 	}
 
 	@Test
-	public void testPrintExceptionNullWriterNullEx() throws IOException
+	public void testPrintExceptionNullWriterNullEx()
 	{
-		RequestUtilities.printException(null, null);
+		assertDoesNotThrow(
+			() -> RequestUtilities.printException(null, null)
+		);
 	}
 
 	@Test
-	public void testPrintExceptionFailingWriter() throws IOException
+	public void testPrintExceptionFailingWriter()
 	{
-		RequestUtilities.printException(new Exception(EXCEPTION_MSG),
-			new FailingWriter());
+		assertDoesNotThrow(
+			() -> RequestUtilities.printException(new Exception(EXCEPTION_MSG),
+					new FailingWriter())
+		);
 	}
 
 	private class FailingWriter extends Writer

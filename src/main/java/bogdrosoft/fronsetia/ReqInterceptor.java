@@ -199,4 +199,10 @@ public class ReqInterceptor implements HttpRequestInterceptor
 			}
 		}
 	}
+
+	// separate method just for unit tests
+	HttpRequest getRequestToSend()
+	{
+		return requestToSend;
+	}
 }

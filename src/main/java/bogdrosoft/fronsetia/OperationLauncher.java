@@ -52,6 +52,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
+import org.apache.http.message.BasicHttpRequest;
 
 import jakarta.servlet.ServletRequest;
 
@@ -362,5 +363,11 @@ public class OperationLauncher
 		{
 			responseBody = RequestUtilities.splitByTags(responseBody, interpreter.getReplacemenets());
 		}
+	}
+
+	// separate method just for unit tests
+	BasicHttpRequest getRequest()
+	{
+		return hreq;
 	}
 }
