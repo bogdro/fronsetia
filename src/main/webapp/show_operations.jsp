@@ -148,7 +148,7 @@ You should have received a copy of the GNU Affero General Public License
 					>Send default <code>Connection</code> header</label></li>
 				<li><input type="checkbox"
 					name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT %>"
-					id"<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT %>"
+					id="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT %>"
 					class="noindent"
 					checked="checked">
 					<label for="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_USER_AGENT %>"
@@ -161,8 +161,12 @@ You should have received a copy of the GNU Affero General Public License
 					<label for="<%= RequestUtilities.REQ_PARAM_NAME_SEND_HDR_CONTENT_TYPE %>"
 					>Send default <code>Content-Type</code> header</label></li>
 			</ul>
-			<input type="checkbox" name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS %>"
-				class="noindent"> Remove all default headers (overrides the above list)
+			<input type="checkbox"
+				name="<%= RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS %>"
+				class="noindent">
+				<label for="<%= RequestUtilities.REQ_PARAM_NAME_SEND_NO_HEADERS %>"
+				>Remove all default headers</label> (overrides the above list)
 
 			<br><br>
 			Protocol properties (note that the protocol will always be sent
@@ -196,8 +200,11 @@ You should have received a copy of the GNU Affero General Public License
 					<option value="PUT">PUT</option>
 					<option value="TRACE">TRACE</option>
 				</select>
-			- or specify manually (overrides the drop-down value): <input type="text"
+			- or <label for="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT %>"
+			>specify the method manually</label> (overrides the drop-down value):
+			<input type="text"
 				name="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT %>"
+				id="<%= RequestUtilities.REQ_PARAM_NAME_PROTO_METHOD_INPUT %>"
 				value="POST" size="60" class="noindent"><br>
 			</div>
 
