@@ -49,7 +49,7 @@ public class SoapEndpointParserTest
 	private static final String OPER_NAME = "getPriceList";
 	private static final String OPER_URL = "http://localhost:8080/soap/servlet/rpcrouter";
 
-	private SoapEndpointParser checkFile(String fileName) throws Exception
+	private SoapEndpointParser checkFile(String fileName)
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor(fileName));
@@ -60,20 +60,20 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testBasic() throws Exception
+	public void testBasic()
 	{
 		SoapEndpointParser p = checkFile("sample.wsdl");
 		assertNull(p.getParsingException());
 	}
 
 	@Test
-	public void testV12() throws Exception
+	public void testV12()
 	{
 		checkFile("sample-v1.2.wsdl");
 	}
 
 	@Test
-	public void testNoServices() throws Exception
+	public void testNoServices()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-nosrv.wsdl"));
@@ -81,25 +81,25 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testNoTypes() throws Exception
+	public void testNoTypes()
 	{
 		checkFile("sample-notypes.wsdl");
 	}
 
 	@Test
-	public void testNoImports() throws Exception
+	public void testNoImports()
 	{
 		checkFile("sample-noimports.wsdl");
 	}
 
 	@Test
-	public void testNoIncludes() throws Exception
+	public void testNoIncludes()
 	{
 		checkFile("sample-noincludes.wsdl");
 	}
 
 	@Test
-	public void testNoPorts() throws Exception
+	public void testNoPorts()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-noports.wsdl"));
@@ -107,7 +107,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testNoOperations() throws Exception
+	public void testNoOperations()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-nooperations.wsdl"));
@@ -115,7 +115,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testNoOperInput() throws Exception
+	public void testNoOperInput()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-noinput.wsdl"));
@@ -123,7 +123,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testNoDefinitions() throws Exception
+	public void testNoDefinitions()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-nodef.wsdl"));
@@ -131,7 +131,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testEmptyTypes() throws Exception
+	public void testEmptyTypes()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-empty-types.wsdl"));
@@ -139,7 +139,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testPortNoBinding() throws Exception
+	public void testPortNoBinding()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-no-bind.wsdl"));
@@ -147,7 +147,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testBindingNoType() throws Exception
+	public void testBindingNoType()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-bind-no-type.wsdl"));
@@ -155,7 +155,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testOperationNoName() throws Exception
+	public void testOperationNoName()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-oper-no-name.wsdl"));
@@ -163,7 +163,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testInputNoMsg() throws Exception
+	public void testInputNoMsg()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-in-no-msg.wsdl"));
@@ -171,7 +171,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testMsgNoQName() throws Exception
+	public void testMsgNoQName()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-msg-no-qname.wsdl"));
@@ -179,7 +179,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testInMsgNoQName() throws Exception
+	public void testInMsgNoQName()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-in-msg-no-name.wsdl"));
@@ -187,7 +187,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testInMsgNoLocalName() throws Exception
+	public void testInMsgNoLocalName()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-in-msg-no-localname.wsdl"));
@@ -195,7 +195,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testInMsgPartNoType() throws Exception
+	public void testInMsgPartNoType()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-msg-part-no-type.wsdl"));
@@ -203,7 +203,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testUnknownSoapVersion() throws Exception
+	public void testUnknownSoapVersion()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample-v1.3.wsdl"));
@@ -211,7 +211,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testProcessXSD() throws Exception
+	public void testProcessXSD()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample.wsdl"));
@@ -240,7 +240,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testProcessXSDBothNull() throws Exception
+	public void testProcessXSDBothNull()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample.wsdl"));
@@ -248,7 +248,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testProcessXSDLocationsNull() throws Exception
+	public void testProcessXSDLocationsNull()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample.wsdl"));
@@ -256,7 +256,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testProcessXSDElementsNull() throws Exception
+	public void testProcessXSDElementsNull()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample.wsdl"));
@@ -264,7 +264,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testProcessXSDNullSchemaElement() throws Exception
+	public void testProcessXSDNullSchemaElement()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample.wsdl"));
@@ -274,7 +274,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testProcessXSDWrongRoot() throws Exception
+	public void testProcessXSDWrongRoot()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample.wsdl"));
@@ -284,7 +284,7 @@ public class SoapEndpointParserTest
 	}
 
 	@Test
-	public void testProcessXSDNoRoot() throws Exception
+	public void testProcessXSDNoRoot()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
 		p.parse(TestHelper.getFullPathFor("sample.wsdl"));
