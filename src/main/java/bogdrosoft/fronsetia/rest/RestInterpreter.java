@@ -49,7 +49,7 @@ public class RestInterpreter implements ResponseInterpreter
 
 	static
 	{
-		HashMap<String, String> repl = new HashMap<String, String>(2);
+		Map<String, String> repl = new HashMap<String, String>(2);
 		repl.put("\\{", "{\n");
 		repl.put("\\}", "\n}\n");
 		REPLACEMENTS = Collections.unmodifiableMap(repl);

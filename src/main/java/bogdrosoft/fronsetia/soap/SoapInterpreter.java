@@ -62,7 +62,7 @@ public class SoapInterpreter implements ResponseInterpreter
 
 	static
 	{
-		HashMap<String, String> repl = new HashMap<String, String>(2);
+		Map<String, String> repl = new HashMap<String, String>(2);
 		repl.put(RequestUtilities.RIGHT_ANGLE_BRACE, RequestUtilities.RIGHT_ANGLE_BRACE_LF);
 		repl.put(RequestUtilities.RIGHT_ANGLE_BRACE_ENTITY, RequestUtilities.RIGHT_ANGLE_BRACE_ENTITY_LF);
 		REPLACEMENTS = Collections.unmodifiableMap(repl);
