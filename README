@@ -89,7 +89,7 @@ How to run:
 You can get all the JAR libraries from https://central.sonatype.com/ (as for
 all Maven libraries) or the respective projects' pages:
 
-- wsdl4j.jar - the WSDL4J project (http://wsdl4j.sf.net/),
+- wsdl4j.jar - the WSDL4J project (https://sourceforge.net/projects/wsdl4j/),
 - xbean.jar - the Apache XmlBeans (https://xmlbeans.apache.org/),
 - httpclient.jar - the Apache HttpComponents (https://hc.apache.org/),
 - httpcore.jar - the Apache HttpComponents,
