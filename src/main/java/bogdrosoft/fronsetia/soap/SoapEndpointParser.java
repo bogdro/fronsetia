@@ -412,7 +412,7 @@ public class SoapEndpointParser implements EndpointParser
 					continue;
 				}
 				String nameLocalPart = elementName.getLocalPart();
-				if (nameLocalPart != null && rootElem.equals(nameLocalPart))
+				if (nameLocalPart != null && nameLocalPart.equals(rootElem))
 				{
 					return SampleXmlUtil.createSampleForType(st);
 				}
