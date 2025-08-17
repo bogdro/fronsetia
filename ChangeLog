@@ -1,6 +1,89 @@
+2025-08-10	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
+
+	* Fronsetia version 2.0
+	  Re-architectured to separate protocol-specific classes from general
+	  code and JSP pages and created middle-layer classes. Added support
+	  for REST and generic HTTP webservices. Improved SOAP parsing. Allow
+	  setting the SSL/TLS version. Allow setting the HTTP method manually.
+	  HTML improvements. Tested functioning with Jakarta EE 11 (Apache
+	  Tomcat 11). Code quality fixes, as suggested by SonarCloud, Codacy
+	  and PMD. Other small code changes, updates and simplifications.
+	  Added and improved unit tests - current coverage: src/main: 96.3%,
+	  src/test: 99.2%, total: 98.2%. Documentation updates.
+	* EndpointParser.java, EndpointProcessor.java, ResponseProcessor.java,
+	  ResponseInterpreter.java: Created middle-layer classes and
+	  interfaces between the JSP pages and protocol-specific classes.
+	* soap/SoapEndpointParser.java: Renamed from WSDLCheck.java and moved
+	  to a subpackage.
+	* soap/SoapInterpreter.java: Renamed from SOAPInterpreter.java and
+	  moved to a subpackage.
+	* OperationLauncher.java, ReqInterceptor.java, RequestUtilities.java:
+	  Removed protocol-specific code and names for better separation.
+	* webapp/index.jsp, webapp/show_operations.jsp,
+	  webapp/perform_operation.jsp, webapp/resources/fronsetia.css:
+	  Removed or renamed protocol-specific code and names and use the new
+	  middle-layer classes for better separation.
+	* webapp/show_operations.jsp: When parsing the given URL as WSDL, but
+	  the URL itself doesn't end with "wsdl", add "?WSDL" to the URL and
+	  try to parse it again.
+	* RequestUtilities.java, OperationLauncher.java,
+	  webapp/show_operations.jsp, webapp/perform_operation.jsp: Allow to
+	  specify the HTTP method manually using an input field.
+	* EndpointType.java, src/rest/, test/rest/: Add support for REST
+	  services.
+	* EndpointParser.java, EndpointProcessor.java, OperationLauncher.java,
+	  ResponseInterpreter.java, ResponseProcessor.java, webapp/index.jsp,
+	  webapp/perform_operation.jsp, webapp/show_operations.jsp: Updated to
+	  support REST services.
+	* RequestUtilities.java: Extended to support REST services.
+	* soap/SoapEndpointParser.java, soap/SoapInterpreter.java,
+	  OperationLauncherTest.java, RequestUtilitiesTest.java: Adapted
+	  after changes done to support REST services.
+	* soap/SoapEndpointParser.java: Moved some common code to separate
+	  methods.
+	* EndpointParser.java, rest/RestEndpointParser.java,
+	  soap/SoapEndpointParser.java, webapp/show_operations.jsp,
+	  rest/RestEndpointParserTest.java: Support more prologues.
+	* HttpsWrapper.java, OperationLauncher.java, RequestUtilities.java,
+	  webapp/show_operations.jsp, HttpsWrapperTest.java: Allow setting the
+	  SSL/TLS version.
+	* ReqInterceptor.java (process), RequestUtilities.java (makeHTMLSafe):
+	  More performant string processing.
+	* webapp/resources/fronsetia.css: Made submit buttons bigger.
+	* webapp/resources/authors.html, webapp/resources/install.html,
+	  webapp/resources/readme.html: Added the "REST" keyword.
+	* webapp/show_operations.jsp, webapp/perform_operation.jsp: Added
+	  more HTML-escaping.
+	* webapp/show_operations.jsp, webapp/perform_operation.jsp,
+	  webapp/index.jsp: Added IDs and <label>s.
+	* OperationLauncher.java (getRequest), ReqInterceptor.java
+	  (getRequestToSend): Added getter methods for unit tests.
+	* soap/SoapEndpointParserTest.java: Renamed from WSDLCheckTest.java,
+	  updated and moved to a subpackage.
+	* soap/SoapInterpreterTest.java: Renamed from SOAPInterpreterTest.java,
+	  updated and moved to a subpackage.
+	* OperationLauncherTest.java, ReqInterceptorTest.java: Updated after
+	  changes and creation of the middle-layer classes.
+	* OperationLauncherTest.java, ReqInterceptorTest.java,
+	  RequestUtilitiesTest.java: Added test assertions, removed useless
+	  "throws" clauses.
+	* soap/SoapEndpointParserTest.java: Removed useless "throws" clauses.
+	* rest/RestInterpreterTest.java, soap/SoapEndpointParserTest.java,
+	  OperationLauncherTest.java: Added test methods.
+	* EndpointProcessorTest.java, ResponseProcessorTest.java: Added new
+	  unit test files.
+	* src/test/java/bogdrosoft/fronsetia/helpers/TestHelper.java: Added a
+	  helper class for unit tests.
+	* pom.xml: Added generating coverage report in HTML format. Updated
+	  the dependencies.
+	* Makefile: Added running tests with coverage.
+	* README, README.md: Updated the feature list.
+	* README.md: Added the SonarQube badge.
+
 2024-12-21	Bogdan Drozdowski <bogdro &AT% users . sourceforge . net>
 
 	* Fronsetia version 1.1.1
+	  This is a bugfix-only release. Fixes errors with some WSDL files.
 	* bogdrosoft/fronsetia/WSDLCheck.java (processXSD): Added more null
 	  checks before creating the sample XML. Fixes defect #1.
 	* src/test/java/bogdrosoft/fronsetia/WSDLCheckTest.java: Added one
@@ -174,7 +257,7 @@
 	  replies, if it can't be detected automatically. Fixed problems
 	  reported by the "findbugs" and "jlint" programs. Allow all SSL
 	  certificates (as an option).
-	* resources/soaptester.css: bakground on anchors is now inherited
+	* resources/soaptester.css: background on anchors is now inherited
 	* WSDLCheck.java: made wsdlLocation non-static to allow concurrent
 	  runs. Changed untyped references (raw types) to have the <?> type.
 	* RequestUtilities.java (makeHTMLSafe): added the ampersand to the
