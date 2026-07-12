@@ -336,23 +336,7 @@ public class OperationLauncher
 			}
 			else
 			{
-				String encoding = RequestUtilities.DEFAULT_CHARSET;
-				try
-				{
-					HeaderElement[] headers = ent.getContentType().getElements();
-					for ( HeaderElement he : headers )
-					{
-						if ( he.getParameterByName(PARAM_NAME_CHARSET) != null )
-						{
-							encoding = he.getParameterByName(PARAM_NAME_CHARSET).getValue();
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					encoding = RequestUtilities.DEFAULT_CHARSET;
-				}
-				responseBody = baos.toString(encoding);
+				responseBody = baos.toString(getEncodingFromHeaders(ent));
 			}
 		}
 		catch (Exception ex)
@@ -363,6 +347,27 @@ public class OperationLauncher
 		{
 			responseBody = RequestUtilities.splitByTags(responseBody, interpreter.getReplacemenets());
 		}
+	}
+
+	private static String getEncodingFromHeaders(HttpEntity ent)
+	{
+		String encoding = RequestUtilities.DEFAULT_CHARSET;
+		try
+		{
+			HeaderElement[] headers = ent.getContentType().getElements();
+			for (HeaderElement he : headers)
+			{
+				if ( he.getParameterByName(PARAM_NAME_CHARSET) != null )
+				{
+					encoding = he.getParameterByName(PARAM_NAME_CHARSET).getValue();
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			encoding = RequestUtilities.DEFAULT_CHARSET;
+		}
+		return encoding;
 	}
 
 	// separate method just for unit tests
