@@ -25,6 +25,11 @@
 package bogdrosoft.fronsetia.soap;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,8 +39,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.namespace.QName;
 
 import javax.wsdl.Binding;
 import javax.wsdl.Definition;
@@ -53,6 +56,11 @@ import javax.wsdl.extensions.soap.SOAPAddress;
 import javax.wsdl.extensions.soap12.SOAP12Address;
 import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 
 import org.apache.xmlbeans.SchemaType;
 import org.apache.xmlbeans.SchemaTypeSystem;
@@ -61,8 +69,10 @@ import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlOptions;
 import org.apache.xmlbeans.impl.xb.xsdschema.SchemaDocument;
 import org.apache.xmlbeans.impl.xsd2inst.SampleXmlUtil;
-
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import bogdrosoft.fronsetia.EndpointParser;
 import bogdrosoft.fronsetia.EndpointType;
@@ -75,6 +85,7 @@ import bogdrosoft.fronsetia.RequestUtilities;
 public class SoapEndpointParser implements EndpointParser
 {
 	private WSDLReader wsdlReader = null;
+	private XMLReader xmlReader = null;
 	private SchemaType[] globalElems = null;
 	private String wsdlLocation = null;
 	private Map<String, String> operationsAndXMLs = Collections.emptyMap();
@@ -153,7 +164,7 @@ public class SoapEndpointParser implements EndpointParser
 			operationsAndURLs = new HashMap<String, String>();
 			operationsAndXMLs = processWSDL();
 		}
-		catch (WSDLException e)
+		catch (Exception e)
 		{
 			parseException = e;
 		}
@@ -175,17 +186,40 @@ public class SoapEndpointParser implements EndpointParser
 	 * Processes the WSDL file and returns the operations from the file.
 	 * @return a Map of the operations. Operation names are the keys,
 	 * 	skeleton XML strings are the values.
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws WSDLException
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws MalformedURLException
 	 */
-	private Map<String, String> processWSDL() throws WSDLException
+	private Map<String, String> processWSDL()
+		throws WSDLException, ParserConfigurationException, SAXException,
+		MalformedURLException, IOException, URISyntaxException
 	{
 		Map<String, String> ret = new HashMap<String, String>(10);
 		if (wsdlReader == null)
 		{
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			spf.setFeature("http://xml.org/sax/features/validation", false);
+			spf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+			System.setProperty("javax.xml.accessExternalDTD", "https,http");
+			System.setProperty("javax.xml.accessExternalSchema", "https,http");
+			System.setProperty("javax.xml.accessExternalStylesheet", "https,http");
+			xmlReader = spf.newSAXParser().getXMLReader();
+
 			wsdlReader = WSDLFactory.newInstance().newWSDLReader();
 			wsdlReader.setFeature("javax.wsdl.verbose", false);
 			wsdlReader.setFeature("javax.wsdl.importDocuments", true);
 		}
-		Definition def = wsdlReader.readWSDL(wsdlLocation);
+		InputSource inputSource = new InputSource(
+				new InputStreamReader(new URI(wsdlLocation).toURL().openStream())
+		);
+		SAXSource source = new SAXSource(xmlReader, inputSource);
+		Definition def = wsdlReader.readWSDL(wsdlLocation, source.getInputSource());
 		if (def == null)
 		{
 			return ret;
@@ -343,6 +377,7 @@ public class SoapEndpointParser implements EndpointParser
 			XmlOptions parseOptions = new XmlOptions();
 			parseOptions.setLoadLineNumbers();
 			parseOptions.setLoadMessageDigest();
+			parseOptions.setDisallowDocTypeDeclaration(true);
 
 			if (schemaLocations != null)
 			{
