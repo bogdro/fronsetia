@@ -84,6 +84,10 @@ import bogdrosoft.fronsetia.RequestUtilities;
  */
 public class SoapEndpointParser implements EndpointParser
 {
+	private static final List<String> PROLOGUES = Arrays.asList(
+		"<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\">\n<soapenv:Header>",
+		"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soapenv:Header>"
+	);
 	private WSDLReader wsdlReader = null;
 	private XMLReader xmlReader = null;
 	private SchemaType[] globalElems = null;
@@ -101,7 +105,7 @@ public class SoapEndpointParser implements EndpointParser
 	@Override
 	public List<String> getListOfTransportHeadersForOperation(String operationName)
 	{
-		return Collections.singletonList("SOAPAction: \"/" + operationName + "\"");
+		return Collections.singletonList(String.format("SOAPAction: \"/%s\"", operationName));
 	}
 
 	@Override
@@ -113,10 +117,7 @@ public class SoapEndpointParser implements EndpointParser
 	@Override
 	public List<String> getDefaultPayloadProloguesForOperation(String operationName)
 	{
-		return Arrays.asList(
-			"<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\">\n<soapenv:Header>",
-			"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soapenv:Header>"
-		);
+		return PROLOGUES;
 	}
 
 	@Override
@@ -137,7 +138,7 @@ public class SoapEndpointParser implements EndpointParser
 		String operXML = operationsAndXMLs.get(operationName);
 		if ( operXML == null || operXML.isEmpty() )
 		{
-			operXML = "<" + operationName + "></" + operationName + ">";
+			operXML = String.format("<%s></%s>", operationName, operationName);
 		}
 		return operXML;
 	}
