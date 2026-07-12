@@ -14,7 +14,7 @@ String endpointUrl = request.getParameter(RequestUtilities.REQ_PARAM_NAME_ENDPOI
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
 <!--
-Copyright (C) 2011-2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
+Copyright (C) 2011-2026 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
 
 This file is part of Fronsetia (Free Online Service Testing Application),
  a web application that allows testing webservices.

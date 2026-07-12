@@ -1,7 +1,7 @@
 /*
  * RestInterpreter - a class for parsing REST responses.
  *
- * Copyright (C) 2025 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
+ * Copyright (C) 2025-2026 Bogdan 'bogdro' Drozdowski, bogdro (at) users . sourceforge . net
  *
  * This file is part of Fronsetia (Free Online Service Testing Application),
  *  a web application that allows testing webservices.
