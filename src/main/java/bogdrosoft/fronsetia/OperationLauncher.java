@@ -89,7 +89,7 @@ public class OperationLauncher
 		String payloadPrologue = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_PROLOGUE);
 		String payloadHeader = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_HEADER);
 		String payloadMiddle = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_MIDDLE);
-		String payloadXML = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY);
+		String payloadBody = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_BODY);
 		String payloadEpilogue = request.getParameter(RequestUtilities.REQ_PARAM_NAME_PAYLOAD_EPILOGUE);
 		String payloadCType = request.getParameter(RequestUtilities.REQ_PARAM_NAME_CONTENT_TYPE);
 		if ( payloadCType == null || payloadCType.isEmpty() )
@@ -218,7 +218,7 @@ public class OperationLauncher
 		}
 		host = new HttpHost(operUri.getHost(), operUri.getPort(), operUri.getScheme());
 		hreq.setEntity(new StringEntity(
-			payloadPrologue + payloadHeader + payloadMiddle + payloadXML + payloadEpilogue,
+			payloadPrologue + payloadHeader + payloadMiddle + payloadBody + payloadEpilogue,
 			ContentType.create(payloadCType, Consts.UTF_8)));
 	}
 
