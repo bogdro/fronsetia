@@ -27,7 +27,6 @@ package bogdrosoft.fronsetia.soap;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -88,6 +87,8 @@ public class SoapEndpointParser implements EndpointParser
 		"<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\">\n<soapenv:Header>",
 		"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n<soapenv:Header>"
 	);
+	private static final String ALLOWED_SCHEMA_PROTOCOLS = "https,http";
+
 	private WSDLReader wsdlReader = null;
 	private XMLReader xmlReader = null;
 	private SchemaType[] globalElems = null;
@@ -192,11 +193,10 @@ public class SoapEndpointParser implements EndpointParser
 	 * @throws WSDLException
 	 * @throws URISyntaxException
 	 * @throws IOException
-	 * @throws MalformedURLException
 	 */
 	private Map<String, String> processWSDL()
 		throws WSDLException, ParserConfigurationException, SAXException,
-		MalformedURLException, IOException, URISyntaxException
+		IOException, URISyntaxException
 	{
 		Map<String, String> ret = new HashMap<String, String>(10);
 		if (wsdlReader == null)
@@ -207,9 +207,9 @@ public class SoapEndpointParser implements EndpointParser
 			spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 			spf.setFeature("http://xml.org/sax/features/validation", false);
 			spf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-			System.setProperty("javax.xml.accessExternalDTD", "https,http");
-			System.setProperty("javax.xml.accessExternalSchema", "https,http");
-			System.setProperty("javax.xml.accessExternalStylesheet", "https,http");
+			System.setProperty("javax.xml.accessExternalDTD", ALLOWED_SCHEMA_PROTOCOLS);
+			System.setProperty("javax.xml.accessExternalSchema", ALLOWED_SCHEMA_PROTOCOLS);
+			System.setProperty("javax.xml.accessExternalStylesheet", ALLOWED_SCHEMA_PROTOCOLS);
 			xmlReader = spf.newSAXParser().getXMLReader();
 
 			wsdlReader = WSDLFactory.newInstance().newWSDLReader();
