@@ -83,4 +83,4 @@ coverage:
 reinit:
 	$(MAVEN) archetype:generate -B -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-webapp -DgroupId=bogdrosoft.$(NAME) -DartifactId=$(NAME)-web -Dversion=1.0
 
-.PHONY: all clean dist package reinit test war
+.PHONY: all clean coverage dist package reinit test war
