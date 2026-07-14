@@ -214,9 +214,9 @@ public class SoapEndpointParserTest
 	public void testProcessXSD()
 	{
 		SoapEndpointParser p = new SoapEndpointParser();
-		p.parse(TestHelper.getFullPathFor("sample.wsdl"));
+
 		Set<String> schemaLocations = new HashSet<>();
-		schemaLocations.add(TestHelper.getFullPathFor("shiporder.xsd"));
+		schemaLocations.add(TestHelper.getFullPathFor("shiporder.xsd", true));
 		p.processXSD(schemaLocations, "shiporder", null);
 		// second time, to test globalElems
 		String result = p.processXSD(schemaLocations, "shiporder", null);

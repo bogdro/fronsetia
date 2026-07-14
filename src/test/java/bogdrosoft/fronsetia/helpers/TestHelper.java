@@ -41,8 +41,18 @@ public class TestHelper
 		} else {
 			// IDE unit test run
 			URL u = ClassLoader.getSystemResource(file);
-			dir = u.toString().replace("file:", "");
+			dir = "file://" + u.toString().replace("file:", "");
 		}
 		return dir;
+	}
+
+	public static String getFullPathFor(String file, boolean removePrefix)
+	{
+		String path = getFullPathFor(file);
+		if (removePrefix)
+		{
+			return path.replace("file://", "").replace("file:/", "");
+		}
+		return path;
 	}
 }
