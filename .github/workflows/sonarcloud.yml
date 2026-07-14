@@ -101,3 +101,8 @@ jobs:
           #mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pcoverage -Dsonar.projectKey=bogdro_fronsetia -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=bogdro
           #mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=bogdro_fronsetia -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=bogdro
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pcoverage -Dsonar.projectKey=bogdro_fronsetia -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=bogdro
+      - name: Upload coverage data to Codacy
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r target/site/jacoco/jacoco.xml || true
