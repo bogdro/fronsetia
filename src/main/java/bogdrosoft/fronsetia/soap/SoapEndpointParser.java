@@ -203,6 +203,7 @@ public class SoapEndpointParser implements EndpointParser
 		{
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 			spf.setFeature("http://xml.org/sax/features/external-general-entities", false);
 			spf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 			spf.setFeature("http://xml.org/sax/features/validation", false);
