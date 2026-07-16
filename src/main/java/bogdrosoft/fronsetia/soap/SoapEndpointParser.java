@@ -212,6 +212,7 @@ public class SoapEndpointParser implements EndpointParser
 			System.setProperty("javax.xml.accessExternalSchema", ALLOWED_SCHEMA_PROTOCOLS);
 			System.setProperty("javax.xml.accessExternalStylesheet", ALLOWED_SCHEMA_PROTOCOLS);
 			xmlReader = spf.newSAXParser().getXMLReader();
+			xmlReader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 
 			wsdlReader = WSDLFactory.newInstance().newWSDLReader();
 			wsdlReader.setFeature("javax.wsdl.verbose", false);
